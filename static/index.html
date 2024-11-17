@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>Welcome to Our Service</h1>
+        <p>Your journey starts here.</p>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <a hx-get="/features" hx-target="#main-content">Features</a>
+        <a hx-get="/testimonials" hx-target="#main-content">Testimonials</a>
+        <a hx-get="/contact" hx-target="#main-content">Contact Us</a>
+    </nav>
+
+    <!-- Main Content Section -->
+    <main id="main-content">
+        <section id="about" hx-get="/about-content" hx-trigger="load" hx-target="#about-content">
+            <h2>About Us</h2>
+            <button hx-get="/about-content" hx-trigger="click" hx-target="#about-content">
+                Learn More About Us
+            </button>
+            <div id="about-content">
+                <p>Click above to load more info.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>Contact Us | Privacy Policy</p>
+    </footer>
+</body>
+</html>

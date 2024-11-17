@@ -1,0 +1,170 @@
+from asyncpg import Connection
+from litestar import Controller, get, post
+
+from models import RewardTypeResponse, UserRewardsResponse, LootboxKeyTypeResponse, \
+    UserLootboxKeyAmountsResponse
+from utils.pull import gacha
+
+
+class LootboxController(Controller):
+    path = "/lootbox"
+    tags = ["Lootbox"]
+
+    @get(path="/rewards")
+    async def view_all_rewards(
+        self,
+        db_connection: Connection,
+        reward_type: str | None = None,
+        key_type: str | None = None,
+        rarity: str | None = None,
+    ) -> list[RewardTypeResponse]:
+        """View all possible rewards optionally filtered by reward_type."""
+        query = """
+            SELECT * 
+            FROM lootbox_reward_types 
+            WHERE 
+                ($1::text IS NULL OR type = $1::text) AND 
+                ($2::text IS NULL OR key_type = $2::text) AND
+                ($3::text IS NULL OR rarity = $3::reward_rarity)
+            ORDER BY key_type, name
+        """
+        rows = await db_connection.fetch(query, reward_type, key_type, rarity)
+        return [RewardTypeResponse(**row) for row in rows]
+
+    @get(path="/keys")
+    async def view_all_keys(
+        self,
+        db_connection: Connection,
+        key_type: str | None = None,
+    ) -> list[LootboxKeyTypeResponse]:
+        query = """
+            SELECT * 
+            FROM lootbox_key_types 
+            WHERE 
+                ($1::text IS NULL OR name = $1::text)
+            ORDER BY name
+        """
+        rows = await db_connection.fetch(query, key_type)
+        return [LootboxKeyTypeResponse(**row) for row in rows]
+
+
+    @get(path="/user/{user_id:int}/rewards")
+    async def view_user_rewards(
+        self,
+        db_connection: Connection,
+        user_id: int,
+        reward_type: str | None = None,
+        key_type: str | None = None,
+        rarity: str | None = None,
+    ) -> list[UserRewardsResponse]:
+        """View all rewards a particular user has."""
+        query = """
+            SELECT 
+                ur.user_id, 
+                ur.earned_at,
+                rt.name,
+                rt.type,
+                rt.rarity
+            FROM lootbox_user_rewards ur 
+            LEFT JOIN lootbox_reward_types rt ON ur.reward = rt.name
+            WHERE 
+                ur.user_id = $1::bigint AND
+                ($2::text IS NULL OR reward = $2) AND
+                ($3::text IS NULL OR key_type = $3) AND
+                ($4::text IS NULL OR rarity = $4::reward_rarity)
+        """
+        rows = await db_connection.fetch(query, user_id, reward_type, key_type, rarity)
+        return [UserRewardsResponse(**row) for row in rows]
+
+    @get(path="/users/{user_id:int}/keys")
+    async def view_user_keys(
+        self,
+        db_connection: Connection,
+        user_id: int,
+        key_type: str = "Classic",
+    ) -> list[UserLootboxKeyAmountsResponse]:
+        """View keys owned by a particular user."""
+        query = """
+            SELECT count(*) as amount, key_type 
+            FROM lootbox_user_keys
+            WHERE 
+                ($1::bigint = user_id) AND
+                ($2::text IS NULL OR key_type = $2::text)
+            GROUP BY key_type
+        """
+
+        rows = await db_connection.fetch(query, user_id, key_type)
+        return [UserLootboxKeyAmountsResponse(**row) for row in rows]
+
+    @staticmethod
+    async def _get_user_key_count(conn: Connection, user_id: int, key_type: str):
+        query = "SELECT count(*) as keys FROM lootbox_user_keys WHERE key_type = $1 AND user_id = $2"
+        return await conn.fetchval(query, key_type, user_id)
+
+    @staticmethod
+    async def _use_user_key(conn: Connection, user_id: int, key_type: str):
+        query = """
+            DELETE FROM lootbox_user_keys
+            WHERE earned_at = (
+                SELECT MIN(earned_at)
+                FROM lootbox_user_keys
+                WHERE user_id = $1::bigint AND key_type = $2::text 
+            ) AND user_id = $1::bigint AND key_type = $2::text;
+        """
+        await conn.execute(query, user_id, key_type)
+
+    @get(path="/users/{user_id:int}/keys/{key_type:str}")
+    async def get_random_items(
+        self,
+        db_connection: Connection,
+        user_id: int,
+        key_type: str,
+        amount: int = 3,
+    ) -> list[RewardTypeResponse]:
+        key_count = await self._get_user_key_count(db_connection, user_id, key_type)
+        if key_count <= 0:
+            raise  # TODO: How to raise properly
+
+        rarities = gacha(amount)
+        items = []
+        query = """
+            SELECT * 
+            FROM lootbox_reward_types 
+            WHERE 
+                rarity = $1::reward_rarity AND 
+                key_type = $2::text
+            ORDER BY random() 
+            LIMIT 1;
+        """
+        for rarity in rarities:
+            items.append(await db_connection.fetchrow(query, rarity.lower(), key_type))
+
+        return [RewardTypeResponse(**row) for row in items]
+
+
+    @post(path="/users/{user_id:int}/{key_type:str}/{reward_type:str}")
+    async def grant_reward_to_user(
+        self,
+        db_connection: Connection,
+        user_id: int,
+        key_type: str,
+        reward_type: str,
+    ) -> None:
+        key_count = await self._get_user_key_count(db_connection, user_id, key_type)
+        if key_count <= 0:
+            raise
+
+        async with db_connection.transaction():
+            await self._use_user_key(db_connection, user_id, key_type)
+            query = """
+                INSERT INTO lootbox_user_rewards (user_id, reward) VALUES ($1, $2)
+            """
+            await db_connection.execute(query, user_id, reward_type)
+
+
+    @post(path="/user/{user_id:int}/keys/{key_type:str}")
+    async def grant_key_to_user(self, db_connection: Connection, user_id: int, key_type: str) -> None:
+        query = """
+                    INSERT INTO lootbox_user_keys (user_id, key_type) VALUES ($1, $2)
+                """
+        await db_connection.execute(query, user_id, key_type)
