@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import logging
 import os
-from typing import TYPE_CHECKING
 
-from litestar import Litestar, Response, Request, MediaType
+from litestar import Litestar, MediaType, Request, Response
 from litestar.exceptions import HTTPException
 from litestar.logging import LoggingConfig
 from litestar.openapi import OpenAPIConfig
@@ -17,14 +16,11 @@ from controllers.maps import MapsController
 from controllers.ranks import RanksController
 from controllers.root import RootRouter
 
-if TYPE_CHECKING:
-    pass
-
 log = logging.getLogger(__name__)
 
 
 def plain_text_exception_handler(_: Request, exc: Exception) -> Response:
-    """Default handler for exceptions subclassed from HTTPException."""
+    """Handle exceptions subclassed from HTTPException."""
     status_code = getattr(exc, "status_code", HTTP_500_INTERNAL_SERVER_ERROR)
     detail = getattr(exc, "detail", "")
 
@@ -37,9 +33,7 @@ def plain_text_exception_handler(_: Request, exc: Exception) -> Response:
 
 logging_config = LoggingConfig(
     root={"level": "INFO", "handlers": ["queue_listener"]},
-    formatters={
-        "standard": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"}
-    },
+    formatters={"standard": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"}},
     log_exceptions="always",
 )
 
@@ -55,9 +49,11 @@ dsn = f"postgresql://{psql_user}:{psql_pass}@{psql_host}:{psql_port}/{psql_db}"
 asyncpg = AsyncpgPlugin(config=AsyncpgConfig(pool_config=PoolConfig(dsn=dsn)))
 app = Litestar(
     plugins=[asyncpg],
-    route_handlers=[RootRouter(path="/v1", route_handlers=[
-        MapsController, CompletionsController, LootboxController, RanksController
-    ])],
+    route_handlers=[
+        RootRouter(
+            path="/v1", route_handlers=[MapsController, CompletionsController, LootboxController, RanksController]
+        )
+    ],
     openapi_config=OpenAPIConfig(
         title="GenjiAPI",
         description="GenjiAPI",
@@ -67,4 +63,3 @@ app = Litestar(
     exception_handlers={HTTPException: plain_text_exception_handler},
     logging_config=logging_config,
 )
-

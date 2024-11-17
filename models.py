@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-import datetime
+from typing import TYPE_CHECKING
 
 import msgspec
+
+if TYPE_CHECKING:
+    import datetime
 
 
 class Map(msgspec.Struct):
@@ -89,14 +92,17 @@ class PersonalRecordsResponse(msgspec.Struct):
     medal: str
     total_results: int
 
+
 class RewardTypeResponse(msgspec.Struct):
     name: str
     key_type: str
     rarity: str
     type: str
 
+
 class LootboxKeyTypeResponse(msgspec.Struct):
     name: str
+
 
 class UserRewardsResponse(msgspec.Struct):
     user_id: int
@@ -105,10 +111,12 @@ class UserRewardsResponse(msgspec.Struct):
     type: str
     rarity: str
 
+
 class UserLootboxKeysResponse(msgspec.Struct):
     user_id: int
     key_type: str
     earned_at: datetime.datetime
+
 
 class UserLootboxKeyAmountsResponse(msgspec.Struct):
     key_type: str
@@ -129,6 +137,7 @@ class XPLeaderboardResponse(msgspec.Struct):
     main_tier_name: str
     sub_tier_name: str
     full_tier_name: str
+
 
 class PlayersPerXPTierResponse(msgspec.Struct):
     tier: str

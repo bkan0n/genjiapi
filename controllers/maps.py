@@ -1,15 +1,30 @@
 from __future__ import annotations
 
-from typing import Annotated, Literal
+from typing import TYPE_CHECKING, Annotated, Literal
 
-from asyncpg import Connection
 from litestar import Controller, get
 from litestar.params import Parameter
 
-from models import MapSearchResponse, MostCompletionsAndQualityResponse, TopCreatorsResponse, GuidesResponse, \
-    MapPerDifficultyResponse
-from utils.utilities import MAP_TYPE_T, MAP_NAME_T, MECHANICS_T, RESTRICTIONS_T, DIFFICULTIES_T, TOP_DIFFICULTIES_RANGES, \
-    convert_num_to_difficulty, wrap_string_with_percent
+from models import (
+    GuidesResponse,
+    MapPerDifficultyResponse,
+    MapSearchResponse,
+    MostCompletionsAndQualityResponse,
+    TopCreatorsResponse,
+)
+from utils.utilities import (
+    DIFFICULTIES_T,
+    MAP_NAME_T,
+    MAP_TYPE_T,
+    MECHANICS_T,
+    RESTRICTIONS_T,
+    TOP_DIFFICULTIES_RANGES,
+    convert_num_to_difficulty,
+    wrap_string_with_percent,
+)
+
+if TYPE_CHECKING:
+    from asyncpg import Connection
 
 
 class MapsController(Controller):
@@ -18,8 +33,8 @@ class MapsController(Controller):
 
     @get(path="/statistics/difficulty")
     async def get_maps_per_difficulty(self, db_connection: Connection) -> list[MapPerDifficultyResponse]:
+        """Get the maps per difficulty."""
         query = """
-        
         WITH ranges ("range", "name") AS (
             VALUES  ('[0.0,2.35)'::numrange, 'Easy'),
                     ('[2.35,4.12)'::numrange, 'Medium'),
@@ -53,8 +68,9 @@ class MapsController(Controller):
             str,
             Parameter(
                 pattern=r"^[A-Z0-9]{4,6}$",
-            )
-                  ] | None = None,
+            ),
+        ]
+        | None = None,
         map_type: MAP_TYPE_T | None = None,
         map_name: MAP_NAME_T | None = None,
         creator: str | None = None,
@@ -67,15 +83,17 @@ class MapsController(Controller):
                 ge=1,
                 le=6,
             ),
-        ] | None = None,
+        ]
+        | None = None,
         only_playtest: bool | None = False,
         only_maps_with_medals: bool | None = False,
         page_size: Literal[10, 20, 25, 50] = 10,
         page_number: Annotated[int, Parameter(ge=1)] = 1,
     ) -> list[MapSearchResponse]:
+        """Search for maps."""
         query = """
             WITH website_all_maps AS (
-                SELECT  
+                SELECT
                     m.map_name,
                     array_agg(DISTINCT m.map_type) AS map_type,
                     m.map_code,
@@ -118,14 +136,12 @@ class MapsController(Controller):
                 am.map_name, map_type, am.map_code, am."desc", am.official,
                 am.archived, guide, mechanics, restrictions, am.checkpoints,
                 creators, difficulty, quality, creator_ids, am.gold, am.silver,
-                am.bronze, pa.count AS playtest_votes, pa.required_votes, am.creators_discord_tag, 
+                am.bronze, pa.count AS playtest_votes, pa.required_votes, am.creators_discord_tag,
                 count(*) OVER() AS total_results
-            
             FROM
                 website_all_maps am
             LEFT JOIN playtest p ON am.map_code = p.map_code AND p.is_author IS TRUE
             LEFT JOIN playtest_avgs pa ON pa.map_code = am.map_code
-                              
             WHERE
                 ($1::text IS NULL OR am.map_code = $1)
                 AND ($1::text IS NOT NULL OR ((archived = FALSE)
@@ -143,7 +159,6 @@ class MapsController(Controller):
                 am.map_name, map_type, am.map_code, am."desc", am.official, am.archived, guide, mechanics,
                 restrictions, am.checkpoints, creators, difficulty, quality, creator_ids, am.gold, am.silver,
                 am.bronze, pa.count, pa.required_votes, creators_discord_tag
-                        
             ORDER BY
                 difficulty, quality DESC
             LIMIT $12
@@ -161,7 +176,6 @@ class MapsController(Controller):
             map_code,
             wrap_string_with_percent(map_type),
             map_name,
-            # wrap_string_with_percent(mechanic),
             mechanics,
             difficulty_low_range,
             difficulty_high_range,
@@ -169,7 +183,6 @@ class MapsController(Controller):
             creator,
             not only_playtest,
             only_maps_with_medals,
-            # wrap_string_with_percent(restriction),
             restrictions,
             page_size,
             offset,
@@ -177,12 +190,13 @@ class MapsController(Controller):
         altered_rows = []
         for row in rows:
             altered_row = dict(**row)
-            altered_row['difficulty'] = convert_num_to_difficulty(row['difficulty'])
+            altered_row["difficulty"] = convert_num_to_difficulty(row["difficulty"])
             altered_rows.append(altered_row)
         return [MapSearchResponse(**row) for row in altered_rows]
 
     @get(path="/popular")
     async def get_popular_maps(self, db_connection: Connection) -> list[MostCompletionsAndQualityResponse]:
+        """Get popular maps."""
         query = """
 WITH ranges ("range", "name") AS (
      VALUES  ('[0.0,2.35)'::numrange, 'Easy'),
@@ -246,6 +260,7 @@ ORDER BY
 
     @get(path="/popularcreators")
     async def get_popular_creators(self, db_connection: Connection) -> list[TopCreatorsResponse]:
+        """Get popular creators."""
         query = """
             WITH map_creator_data AS (
                 SELECT m.map_code, mc.user_id, round(avg(quality), 2) AS quality
@@ -278,15 +293,17 @@ ORDER BY
             str,
             Parameter(
                 pattern=r"^[A-Z0-9]{4,6}$",
-            )
-        ] | None = None,
+            ),
+        ]
+        | None = None,
     ) -> list[GuidesResponse]:
+        """Map guide search."""
         query = """
-            SELECT 
+            SELECT
                 map_code,
                 url,
-                count(*) OVER() AS total_results 
-            FROM guides 
+                count(*) OVER() AS total_results
+            FROM guides
             WHERE ($1::text IS NULL OR map_code = $1::text)
             ORDER BY map_code
         """

@@ -137,11 +137,15 @@ DIFFICULTIES_EXT = [
     "Hell",
 ]
 
-DIFFICULTIES = [
-    x for x in filter(lambda y: not ("-" in y or "+" in y), DIFFICULTIES_EXT)
-]
+DIFFICULTIES = list(filter(lambda y: not ("-" in y or "+" in y), DIFFICULTIES_EXT))
 
-def generate_difficulty_ranges(top_level=False) -> dict[str, tuple[float, float]]:
+
+def generate_difficulty_ranges(top_level: bool = False) -> dict[str, tuple[float, float]]:
+    """Generate difficulty ranges for all difficulties or just top_level.
+
+    :param top_level:
+    :return:
+    """
     ranges = {}
     range_length = 10 / len(DIFFICULTIES_EXT)
     cur_range = 0
@@ -166,10 +170,13 @@ def generate_difficulty_ranges(top_level=False) -> dict[str, tuple[float, float]
 
     return ranges
 
+
 TOP_DIFFICULTIES_RANGES = generate_difficulty_ranges(True)
 DIFFICULTIES_RANGES = generate_difficulty_ranges()
 
-def convert_num_to_difficulty(value: float | int) -> str:
+
+def convert_num_to_difficulty(value: float) -> str:
+    """Convert numerical value to difficulty."""
     res = "Hell"
     for diff, _range in DIFFICULTIES_RANGES.items():
         if float(_range[0]) <= float(value) + 0.01 < float(_range[1]):
@@ -178,7 +185,14 @@ def convert_num_to_difficulty(value: float | int) -> str:
     return res
 
 
-def wrap_string_with_percent(string: str | None):
+def wrap_string_with_percent(string: str | None) -> str | None:
+    """Wrap string with percent characters.
+
+    Used for LIKE/ILIKE statements in PostgreSQL.
+
+    :arg string: String to wrap.
+    :returns: Wrapped string.
+    """
     if not string:
         return
     return "%" + string + "%"

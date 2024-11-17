@@ -4,33 +4,36 @@ from asyncpg import Connection
 from litestar import Controller, get
 from litestar.params import Parameter
 
-from utils.utilities import wrap_string_with_percent
 from models import CompletionsResponse, PersonalRecordsResponse
+from utils.utilities import wrap_string_with_percent
 
 
 class CompletionsController(Controller):
     path = "/completions"
     tags = ["Completions"]
+
     @get(path="/search")
     async def completions(
         self,
         db_connection: Connection,
         map_code: Annotated[
-                      str,
-                      Parameter(
-                          pattern=r"^[A-Z0-9]{4,6}$",
-                      )
-                  ] | None = None,
+            str,
+            Parameter(
+                pattern=r"^[A-Z0-9]{4,6}$",
+            ),
+        ]
+        | None = None,
         user: str | None = None,
         page_size: Literal[10, 20, 25, 50] = 10,
         page_number: Annotated[int, Parameter(ge=1)] = 1,
     ) -> list[CompletionsResponse]:
+        """Get completions with map_code and user as filters."""
         query = """
-            SELECT 
+            SELECT
                 r.map_code,
                 record AS time,
                 video,
-                CASE 
+                CASE
                     WHEN record < mm.gold THEN 'Gold'
                     WHEN record < mm.silver AND record >= mm.gold THEN 'Silver'
                     WHEN record < mm.bronze AND record >= mm.silver THEN 'Bronze'
@@ -42,7 +45,7 @@ class CompletionsController(Controller):
             LEFT JOIN users u ON u.user_id = r.user_id
             LEFT JOIN user_global_names ugn ON r.user_id = ugn.user_id
             LEFT JOIN map_medals mm ON r.map_code = mm.map_code
-            WHERE 
+            WHERE
                 ($1::text IS NULL OR r.map_code = $1) AND
                 ($2::text IS NULL OR (nickname ILIKE $2 OR global_name ILIKE $2))
             ORDER BY map_code, record
@@ -62,15 +65,17 @@ class CompletionsController(Controller):
             str,
             Parameter(
                 pattern=r"^[A-Z0-9]{4,6}$",
-            )
-        ] | None = None,
+            ),
+        ]
+        | None = None,
         user: str | None = None,
         page_size: Literal[10, 20, 25, 50] = 10,
         page_number: Annotated[int, Parameter(ge=1)] = 1,
     ) -> list[PersonalRecordsResponse]:
+        """Get personal records from a user."""
         query = """
             WITH ranges ("range", "name") AS (
-                VALUES  
+                VALUES
                     ('[0.0,2.35)'::numrange, 'Easy'),
                     ('[2.35,4.12)'::numrange, 'Medium'),
                     ('[4.12,5.88)'::numrange, 'Hard'),
@@ -78,35 +83,34 @@ class CompletionsController(Controller):
                     ('[7.65,9.41)'::numrange, 'Extreme'),
                     ('[9.41,10.0]'::numrange, 'Hell')
             ), c_data AS (
-            SELECT 
+            SELECT
                 r.map_code,
                 nickname,
                 global_name AS discord_tag,
                 record AS time,
                 avg(mr.difficulty) AS difficulty_value,
-                CASE 
+                CASE
                     WHEN record < mm.gold THEN 'Gold'
                     WHEN record < mm.silver AND record >= mm.gold THEN 'Silver'
                     WHEN record < mm.bronze AND record >= mm.silver THEN 'Bronze'
                 END AS medal,
                 count(*) OVER() AS total_results
-            FROM records r 
-
+            FROM records r
             LEFT JOIN users u ON r.user_id = u.user_id
             LEFT JOIN public.user_global_names ugn ON r.user_id = ugn.user_id
             LEFT JOIN map_medals mm ON r.map_code = mm.map_code
             LEFT JOIN map_ratings mr ON r.map_code = mr.map_code
-            WHERE 
+            WHERE
                 ($1::text IS NULL OR r.map_code = $1) AND
                 ($2::text IS NULL OR (nickname ILIKE $2 OR global_name ILIKE $2))
             GROUP BY r.map_code, nickname, global_name, record , mm.gold, mm.silver, mm.bronze
             )
-            SELECT 
-                map_code, 
-                nickname, 
-                discord_tag, 
-                time, 
-                medal, 
+            SELECT
+                map_code,
+                nickname,
+                discord_tag,
+                time,
+                medal,
                 total_results,
                 name AS difficulty
             FROM ranges r2

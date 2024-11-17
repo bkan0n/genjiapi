@@ -1,7 +1,7 @@
 import random
 
 WEIGHTS = {
-    "Legendary" : {
+    "Legendary": {
         "weight": 3,
     },
     "Epic": {
@@ -12,14 +12,11 @@ WEIGHTS = {
     },
     "Common": {
         "weight": 65,
-    }
+    },
 }
 
 
 def gacha(amount: int) -> list[str]:
-    pulls = random.choices(
-        list(WEIGHTS.keys()),
-        list(map(lambda x: x["weight"], WEIGHTS.values())),
-        k=amount
-    )
+    """Pull random rarities."""
+    pulls = random.choices(list(WEIGHTS.keys()), [x["weight"] for x in WEIGHTS.values()], k=amount)
     return pulls
