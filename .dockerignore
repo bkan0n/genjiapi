@@ -1,0 +1,6 @@
+.env
+Dockerfile
+docker-compose.yaml
+.gitignore
+test_main.http
+.venv

@@ -1,0 +1,24 @@
+services:
+  litestar-genji-api:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: "genji-api"
+    ports:
+      - "80"
+    environment:
+      - PSQL_USER=${PSQL_USER}
+      - PSQL_PASS=${PSQL_PASS}
+      - PSQL_HOST=${PSQL_HOST}
+      - PSQL_PORT=${PSQL_PORT}
+      - PSQL_DB=${PSQL_DB}
+      - API_KEY=${API_KEY}
+    networks:
+      - contabo_network
+      - genji-network
+
+networks:
+  contabo_network:
+    external: true
+  genji-network:
+    external: true
