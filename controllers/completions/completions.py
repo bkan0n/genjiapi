@@ -4,13 +4,32 @@ from asyncpg import Connection
 from litestar import Controller, get
 from litestar.params import Parameter
 
-from models import CompletionsResponse, PersonalRecordsResponse
 from utils.utilities import wrap_string_with_percent
+
+from .models import CompletionsResponse, MapRecordProgressionResponse, PersonalRecordsResponse
 
 
 class CompletionsController(Controller):
-    path = "/completions"
+    path = ""
     tags = ["Completions"]
+
+    @get(path="/progression/{user_id:int}/{map_code:str}")
+    async def get_map_record_progression(
+        self, db_connection: Connection, user_id: int, map_code: str
+    ) -> list[MapRecordProgressionResponse]:
+        """Get the progression over time for a user on a particular map."""
+        query = """
+            SELECT
+                record AS time,
+                inserted_at
+            FROM records
+            WHERE user_id = $1
+                AND map_code = $2
+                AND record < 99999999.99
+            ORDER BY inserted_at;
+        """
+        rows = await db_connection.fetch(query, user_id, map_code)
+        return [MapRecordProgressionResponse(**row) for row in rows]
 
     @get(path="/search")
     async def completions(
@@ -57,10 +76,11 @@ class CompletionsController(Controller):
         rows = await db_connection.fetch(query, map_code, _user, page_size, offset)
         return [CompletionsResponse(**row) for row in rows]
 
-    @get(path="/personal")
+    @get(path="/personal/{user_id:int}")
     async def personal_records(
         self,
         db_connection: Connection,
+        user_id: int,
         map_code: Annotated[
             str,
             Parameter(
@@ -68,7 +88,6 @@ class CompletionsController(Controller):
             ),
         ]
         | None = None,
-        user: str | None = None,
         page_size: Literal[10, 20, 25, 50] = 10,
         page_number: Annotated[int, Parameter(ge=1)] = 1,
     ) -> list[PersonalRecordsResponse]:
@@ -102,7 +121,7 @@ class CompletionsController(Controller):
             LEFT JOIN map_ratings mr ON r.map_code = mr.map_code
             WHERE
                 ($1::text IS NULL OR r.map_code = $1) AND
-                ($2::text IS NULL OR (nickname ILIKE $2 OR global_name ILIKE $2))
+                r.user_id = $2
             GROUP BY r.map_code, nickname, global_name, record , mm.gold, mm.silver, mm.bronze
             )
             SELECT
@@ -128,6 +147,5 @@ class CompletionsController(Controller):
             OFFSET $4::int
         """
         offset = (page_number - 1) * page_size
-        _user = wrap_string_with_percent(user)
-        rows = await db_connection.fetch(query, map_code, _user, page_size, offset)
+        rows = await db_connection.fetch(query, map_code, user_id, page_size, offset)
         return [PersonalRecordsResponse(**row) for row in rows]

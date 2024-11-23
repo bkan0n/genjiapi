@@ -1,13 +1,14 @@
-import asyncpg
 from asyncpg import Connection
 from litestar import Controller, get, post
+from litestar.exceptions import HTTPException
 
-from models import LootboxKeyTypeResponse, RewardTypeResponse, UserLootboxKeyAmountsResponse, UserRewardsResponse
 from utils.pull import gacha
+
+from .models import LootboxKeyTypeResponse, RewardTypeResponse, UserLootboxKeyAmountsResponse, UserRewardsResponse
 
 
 class LootboxController(Controller):
-    path = "/lootbox"
+    path = ""
     tags = ["Lootbox"]
 
     @get(path="/rewards")
@@ -97,7 +98,7 @@ class LootboxController(Controller):
         return [UserLootboxKeyAmountsResponse(**row) for row in rows]
 
     @staticmethod
-    async def _get_user_key_count(conn: Connection, user_id: int, key_type: str) -> asyncpg.Record:
+    async def _get_user_key_count(conn: Connection, user_id: int, key_type: str) -> int:
         query = "SELECT count(*) as keys FROM lootbox_user_keys WHERE key_type = $1 AND user_id = $2"
         return await conn.fetchval(query, key_type, user_id)
 
@@ -124,7 +125,7 @@ class LootboxController(Controller):
         """Get random items."""
         key_count = await self._get_user_key_count(db_connection, user_id, key_type)
         if key_count <= 0:
-            raise  # TODO: How to raise properly
+            raise HTTPException(detail="User does not have enough keys for this action.", status_code=400)
 
         rarities = gacha(amount)
         items = []
@@ -153,7 +154,7 @@ class LootboxController(Controller):
         """Grant reward to user."""
         key_count = await self._get_user_key_count(db_connection, user_id, key_type)
         if key_count <= 0:
-            raise  # TODO:
+            raise HTTPException(detail="User does not have enough keys for this action.", status_code=400)
 
         async with db_connection.transaction():
             await self._use_user_key(db_connection, user_id, key_type)

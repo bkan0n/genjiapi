@@ -5,13 +5,6 @@ from typing import TYPE_CHECKING, Annotated, Literal
 from litestar import Controller, get
 from litestar.params import Parameter
 
-from models import (
-    GuidesResponse,
-    MapPerDifficultyResponse,
-    MapSearchResponse,
-    MostCompletionsAndQualityResponse,
-    TopCreatorsResponse,
-)
 from utils.utilities import (
     DIFFICULTIES_T,
     MAP_NAME_T,
@@ -23,13 +16,51 @@ from utils.utilities import (
     wrap_string_with_percent,
 )
 
+from .models import (
+    GuidesResponse,
+    MapCompletionStatisticsResponse,
+    MapPerDifficultyResponse,
+    MapSearchResponse,
+    MostCompletionsAndQualityResponse,
+    TopCreatorsResponse,
+)
+
 if TYPE_CHECKING:
     from asyncpg import Connection
 
 
 class MapsController(Controller):
-    path = "/maps"
+    path = ""
     tags = ["Maps"]
+
+    @get(path="/statistics/completions/{map_code:str}")
+    async def get_map_completion_statistics(
+        self,
+        db_connection: Connection,
+        map_code: Annotated[
+            str,
+            Parameter(
+                pattern=r"^[A-Z0-9]{4,6}$",
+            ),
+        ]
+        | None = None,
+    ) -> list[MapCompletionStatisticsResponse]:
+        """Get the min, max, avg completion time for a particular map code."""
+        query = """
+            WITH filtered_records AS (
+                SELECT
+                    *
+                FROM records
+                WHERE map_code = $1 AND record < 99999999.99 AND verified = TRUE
+            )
+            SELECT round(min(r.record), 2) AS min, round(max(r.record), 2) AS max, round(avg(r.record), 2) AS avg
+            FROM maps m
+            LEFT JOIN filtered_records r ON m.map_code = r.map_code
+            WHERE $1 = m.map_code
+            GROUP BY m.map_code
+        """
+        rows = await db_connection.fetch(query, map_code)
+        return [MapCompletionStatisticsResponse(**row) for row in rows]
 
     @get(path="/statistics/difficulty")
     async def get_maps_per_difficulty(self, db_connection: Connection) -> list[MapPerDifficultyResponse]:
@@ -55,7 +86,15 @@ class MapsController(Controller):
             count(name) AS amount
         FROM ranges r
         INNER JOIN map_data md ON r.range @> md.difficulty
-        GROUP BY name;
+        GROUP BY name
+        ORDER BY
+        CASE WHEN name = 'Easy' THEN 1
+            WHEN name = 'Medium' THEN 2
+            WHEN name = 'Hard' THEN 3
+            WHEN name = 'Very Hard' THEN 4
+            WHEN name = 'Extreme' THEN 5
+            ELSE 6
+        END;
         """
         rows = await db_connection.fetch(query)
         return [MapPerDifficultyResponse(**row) for row in rows]
@@ -87,11 +126,105 @@ class MapsController(Controller):
         | None = None,
         only_playtest: bool | None = False,
         only_maps_with_medals: bool | None = False,
+        user_id: int | None = None,
+        ignore_completions: bool = False,
         page_size: Literal[10, 20, 25, 50] = 10,
         page_number: Annotated[int, Parameter(ge=1)] = 1,
     ) -> list[MapSearchResponse]:
         """Search for maps."""
-        query = """
+        logged_in_query = """
+            WITH user_completion_data AS (
+                SELECT DISTINCT ON (user_id, map_code, record)
+                    map_code,
+                    record
+                FROM records
+                WHERE $14::bigint IS NULL OR user_id = $14
+                ORDER BY user_id, map_code, record, inserted_at DESC
+            ),
+            website_all_maps AS (
+                SELECT
+                    m.map_name,
+                    array_agg(DISTINCT m.map_type) AS map_type,
+                    m.map_code,
+                    m."desc",
+                    m.official,
+                    m.archived,
+                    array_agg(DISTINCT g.url) AS guide,
+                    array_agg(DISTINCT mech.mechanic) AS mechanics,
+                    array_agg(DISTINCT rest.restriction) AS restrictions,
+                    m.checkpoints,
+                    coalesce(avg(mr.difficulty), 0::numeric) AS difficulty,
+                    coalesce(avg(mr.quality), 0::numeric) AS quality,
+                    array_agg(DISTINCT u.nickname::text) AS creators,
+                    array_agg(DISTINCT ugn.global_name::text) AS creators_discord_tag,
+                    array_agg(DISTINCT mc.user_id) AS creator_ids,
+                    mm.gold,
+                    mm.silver,
+                    mm.bronze
+            FROM maps m
+            LEFT JOIN map_mechanics mech ON mech.map_code::text = m.map_code::text
+            LEFT JOIN map_restrictions rest ON rest.map_code::text = m.map_code::text
+            LEFT JOIN map_creators mc ON m.map_code::text = mc.map_code::text
+            LEFT JOIN users u ON mc.user_id = u.user_id
+            LEFT JOIN map_ratings mr ON m.map_code::text = mr.map_code::text
+            LEFT JOIN guides g ON m.map_code::text = g.map_code::text
+            LEFT JOIN map_medals mm ON m.map_code::text = mm.map_code::text
+            LEFT JOIN user_global_names ugn ON u.user_id::text = ugn.user_id::text
+            GROUP BY m.checkpoints,
+                m.map_name,
+                m.map_code,
+                m."desc",
+                m.official,
+                m.map_type,
+                mm.gold,
+                mm.silver,
+                mm.bronze,
+                m.archived
+            ), filtered_maps AS (
+                SELECT
+                    am.map_name, map_type, am.map_code, am."desc", am.official,
+                    am.archived, guide, mechanics, restrictions, am.checkpoints,
+                    creators, difficulty, quality, creator_ids, am.gold, am.silver,
+                    am.bronze, pa.count AS playtest_votes, pa.required_votes, am.creators_discord_tag,
+                    count(*) OVER() AS total_results
+                FROM
+                    website_all_maps am
+                LEFT JOIN playtest p ON am.map_code = p.map_code AND p.is_author IS TRUE
+                LEFT JOIN playtest_avgs pa ON pa.map_code = am.map_code
+                WHERE
+                    ($1::text IS NULL OR am.map_code = $1)
+                    AND ($1::text IS NOT NULL OR ((archived = FALSE)
+                    AND (official = $9::bool)
+                    AND ($2::text IS NULL OR $2 = ANY(map_type))
+                    AND ($3::text IS NULL OR map_name = $3)
+                    AND ($4::text[] IS NULL OR $4 <@ mechanics)
+                    AND ($11::text[] IS NULL OR $11 <@ restrictions)
+                    AND ($5::numeric(10, 2) IS NULL OR $6::numeric(10, 2) IS NULL OR (difficulty >= $5::numeric(10, 2)
+                    AND difficulty < $6::numeric(10, 2)))
+                    AND ($7::int IS NULL OR quality >= $7)
+                    AND ($8::text IS NULL OR $8 ILIKE ANY(creators) OR $8 ILIKE ANY(creators_discord_tag))
+                    AND ($10::bool IS FALSE OR (gold IS NOT NULL AND silver IS NOT NULL AND bronze IS NOT NULL))))
+                GROUP BY
+                    am.map_name, map_type, am.map_code, am."desc", am.official, am.archived, guide, mechanics,
+                    restrictions, am.checkpoints, creators, difficulty, quality, creator_ids, am.gold, am.silver,
+                    am.bronze, pa.count, pa.required_votes, creators_discord_tag
+            )
+            SELECT
+                fm.*,
+                record AS time,
+                CASE
+                    WHEN record < fm.gold THEN 'Gold'
+                    WHEN record < fm.silver AND record >= fm.gold THEN 'Silver'
+                    WHEN record < fm.bronze AND record >= fm.silver THEN 'Bronze'
+                END AS medal_type
+            FROM filtered_maps fm
+            LEFT JOIN user_completion_data ucd ON fm.map_code = ucd.map_code
+            WHERE $15::bool IS FALSE OR ucd.map_code IS NULL
+            ORDER BY difficulty, quality DESC
+            LIMIT $12
+            OFFSET $13;
+        """
+        logged_out_query = """
             WITH website_all_maps AS (
                 SELECT
                     m.map_name,
@@ -155,15 +288,14 @@ class MapsController(Controller):
                 AND ($7::int IS NULL OR quality >= $7)
                 AND ($8::text IS NULL OR $8 ILIKE ANY(creators) OR $8 ILIKE ANY(creators_discord_tag))
                 AND ($10::bool IS FALSE OR (gold IS NOT NULL AND silver IS NOT NULL AND bronze IS NOT NULL))))
-           GROUP BY
+            GROUP BY
                 am.map_name, map_type, am.map_code, am."desc", am.official, am.archived, guide, mechanics,
                 restrictions, am.checkpoints, creators, difficulty, quality, creator_ids, am.gold, am.silver,
                 am.bronze, pa.count, pa.required_votes, creators_discord_tag
-            ORDER BY
-                difficulty, quality DESC
+            ORDER BY difficulty, quality DESC
             LIMIT $12
-            OFFSET $13;
-            """
+            OFFSET $13
+        """
 
         ranges = TOP_DIFFICULTIES_RANGES.get(difficulty, None)
         difficulty_low_range = None if ranges is None else ranges[0]
@@ -171,8 +303,7 @@ class MapsController(Controller):
 
         offset = (page_number - 1) * page_size
 
-        rows = await db_connection.fetch(
-            query,
+        args = [
             map_code,
             wrap_string_with_percent(map_type),
             map_name,
@@ -186,7 +317,15 @@ class MapsController(Controller):
             restrictions,
             page_size,
             offset,
-        )
+        ]
+
+        if user_id:
+            query = logged_in_query
+            args += [user_id, ignore_completions]
+        else:
+            query = logged_out_query
+
+        rows = await db_connection.fetch(query, *args)
         altered_rows = []
         for row in rows:
             altered_row = dict(**row)
@@ -198,62 +337,62 @@ class MapsController(Controller):
     async def get_popular_maps(self, db_connection: Connection) -> list[MostCompletionsAndQualityResponse]:
         """Get popular maps."""
         query = """
-WITH ranges ("range", "name") AS (
-     VALUES  ('[0.0,2.35)'::numrange, 'Easy'),
-             ('[2.35,4.12)'::numrange, 'Medium'),
-             ('[4.12,5.88)'::numrange, 'Hard'),
-             ('[5.88,7.65)'::numrange, 'Very Hard'),
-             ('[7.65,9.41)'::numrange, 'Extreme'),
-             ('[9.41,10.0]'::numrange, 'Hell')
-),
-completion_data AS (
-    SELECT
-        r.map_code,
-        COUNT(*) AS completions
-    FROM records r
-    GROUP BY r.map_code
-),
-rating_data AS (
-    SELECT
-        m.map_code,
-        AVG(mr.difficulty) AS difficulty,
-        AVG(mr.quality) AS quality
-    FROM maps m
-    LEFT JOIN map_ratings mr ON m.map_code = mr.map_code
-    GROUP BY m.map_code
-),
-map_data AS (
-    SELECT
-        cd.map_code,
-        cd.completions,
-        rd.difficulty,
-        rd.quality
-    FROM completion_data cd
-    LEFT JOIN rating_data rd ON cd.map_code = rd.map_code
-),
-ranked_maps AS (
-    SELECT
-        md.map_code,
-        md.completions,
-        round(md.quality, 2) AS quality,
-        r.name AS difficulty,
-        RANK() OVER (PARTITION BY r.name ORDER BY md.completions DESC, md.quality DESC) AS ranking
-    FROM ranges r
-    INNER JOIN map_data md ON r.range @> md.difficulty
-)
-SELECT *
-FROM ranked_maps
-WHERE ranking <= 5
-ORDER BY
-    CASE difficulty
-        WHEN 'Easy' THEN 1
-        WHEN 'Medium' THEN 2
-        WHEN 'Hard' THEN 3
-        WHEN 'Very Hard' THEN 4
-        WHEN 'Extreme' THEN 5
-        WHEN 'Hell' THEN 6
-    END,
-    ranking;
+            WITH ranges ("range", "name") AS (
+                 VALUES  ('[0.0,2.35)'::numrange, 'Easy'),
+                         ('[2.35,4.12)'::numrange, 'Medium'),
+                         ('[4.12,5.88)'::numrange, 'Hard'),
+                         ('[5.88,7.65)'::numrange, 'Very Hard'),
+                         ('[7.65,9.41)'::numrange, 'Extreme'),
+                         ('[9.41,10.0]'::numrange, 'Hell')
+            ),
+            completion_data AS (
+                SELECT
+                    r.map_code,
+                    COUNT(*) AS completions
+                FROM records r
+                GROUP BY r.map_code
+            ),
+            rating_data AS (
+                SELECT
+                    m.map_code,
+                    AVG(mr.difficulty) AS difficulty,
+                    AVG(mr.quality) AS quality
+                FROM maps m
+                LEFT JOIN map_ratings mr ON m.map_code = mr.map_code
+                GROUP BY m.map_code
+            ),
+            map_data AS (
+                SELECT
+                    cd.map_code,
+                    cd.completions,
+                    rd.difficulty,
+                    rd.quality
+                FROM completion_data cd
+                LEFT JOIN rating_data rd ON cd.map_code = rd.map_code
+            ),
+            ranked_maps AS (
+                SELECT
+                    md.map_code,
+                    md.completions,
+                    round(md.quality, 2) AS quality,
+                    r.name AS difficulty,
+                    RANK() OVER (PARTITION BY r.name ORDER BY md.completions DESC, md.quality DESC) AS ranking
+                FROM ranges r
+                INNER JOIN map_data md ON r.range @> md.difficulty
+            )
+            SELECT *
+            FROM ranked_maps
+            WHERE ranking <= 5
+            ORDER BY
+                CASE difficulty
+                    WHEN 'Easy' THEN 1
+                    WHEN 'Medium' THEN 2
+                    WHEN 'Hard' THEN 3
+                    WHEN 'Very Hard' THEN 4
+                    WHEN 'Extreme' THEN 5
+                    WHEN 'Hell' THEN 6
+                END,
+                ranking;
         """
         rows = await db_connection.fetch(query)
         return [MostCompletionsAndQualityResponse(**row) for row in rows]
