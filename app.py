@@ -11,12 +11,14 @@ from litestar.openapi import OpenAPIConfig
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 from litestar_asyncpg import AsyncpgConfig, AsyncpgPlugin, PoolConfig
 
-from controllers.autocomplete.autocomplete import AutocompleteController
-from controllers.completions import CompletionsController
-from controllers.lootbox import LootboxController
-from controllers.maps import MapsController
-from controllers.ranks import RanksController
-from controllers.root import RootRouter
+from controllers import (
+    AutocompleteController,
+    CompletionsController,
+    LootboxController,
+    MapsController,
+    RanksController,
+    RootRouter,
+)
 
 log = logging.getLogger(__name__)
 
