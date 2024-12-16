@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 from typing import TYPE_CHECKING, Annotated, Literal
 
 from litestar import get, post
@@ -452,5 +451,5 @@ class MapsController(BaseController):
     @post(path="/submit")
     async def submit_map(self, state: State, data: MapSubmissionBody) -> MapSubmissionBody:
         """Submit map."""
-        asyncio.create_task(rabbit.publish(state, "new_map", data))
+        await rabbit.publish(state, "new_map", data)
         return data

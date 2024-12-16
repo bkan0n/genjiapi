@@ -74,6 +74,7 @@ class NewsfeedController(BaseController):
 
     @get(path="/aaa")
     async def aaa(self, state: State) -> str:
+        """Test."""
         async with state.mq_channel_pool.acquire() as channel:  # type: aio_pika.Channel
             message_body = json.dumps({"new_map": {"map_code": "123123"}}).encode("utf-8")
 

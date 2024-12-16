@@ -69,7 +69,7 @@ font = ipy.FontDB.Query("notosans china1 china2 japanese korean")
 
 
 class RankCardBuilder:
-    def __init__(self, data) -> None:
+    def __init__(self, data: dict) -> None:
         self._data = data
 
         self._rank_card = Image.open(f"assets/layer0/{self._data['bg']}.png").convert("RGBA")

@@ -74,6 +74,7 @@ rabbitmq_pass = os.getenv("RABBITMQ_DEFAULT_PASS")
 
 @asynccontextmanager
 async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
+    """Connect to RabbitMQ."""
     _conn = getattr(app.state, "rabbitmq_connection", None)
     if _conn is None:
 
