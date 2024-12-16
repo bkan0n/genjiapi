@@ -13,12 +13,58 @@ services:
       - PSQL_PORT=${PSQL_PORT}
       - PSQL_DB=${PSQL_DB}
       - API_KEY=${API_KEY}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
     networks:
       - contabo_network
       - genji-network
+    depends_on:
+      genji-rabbit:
+        condition: service_healthy
+        restart: true
+
+  genji-rabbit:
+    restart: unless-stopped
+    container_name: genji-rabbit
+    image: rabbitmq:4.0-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    networks:
+      - contabo_network
+      - genji-network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 3
+
+
+  libretranslate:
+    container_name: libretranslate
+    build:
+      context: .
+      dockerfile: LibreTranslate.Dockerfile
+    #restart: unless-stopped
+
+    networks:
+      - contabo_network
+      - genji-network
+    mem_limit: 4g
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - libretranslate.env
+    healthcheck:
+      test: [ 'CMD-SHELL', './venv/bin/python scripts/healthcheck.py' ]
+    volumes:
+      - /opt/libretranslate/data/keys:/app/db:rw
+      - /opt/libretranslate/data/local:/home/libretranslate/.local:rw
+
 
 networks:
   contabo_network:
     external: true
   genji-network:
     external: true
+

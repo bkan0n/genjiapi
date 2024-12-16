@@ -2,7 +2,13 @@ from __future__ import annotations
 
 import logging
 import os
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 
+import aio_pika
+from aio_pika import connect
+from aio_pika.abc import AbstractRobustConnection
+from aio_pika.pool import Pool
 from apitally.litestar import ApitallyPlugin
 from litestar import Litestar, MediaType, Request, Response
 from litestar.exceptions import HTTPException
@@ -19,6 +25,7 @@ from controllers import (
     RanksController,
     RootRouter,
 )
+from controllers.newsfeed.newsfeed import NewsfeedController
 
 log = logging.getLogger(__name__)
 
@@ -57,6 +64,37 @@ apitally_plugin = ApitallyPlugin(
     env="prod",  # or "dev"
 )
 
+
+
+
+
+rabbitmq_user = os.getenv("RABBITMQ_DEFAULT_USER")
+rabbitmq_pass = os.getenv("RABBITMQ_DEFAULT_PASS")
+
+@asynccontextmanager
+async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
+    _conn = getattr(app.state, "rabbitmq_connection", None)
+    if _conn is None:
+
+        async def get_connection() -> AbstractRobustConnection:
+            return await aio_pika.connect_robust(f"amqp://{rabbitmq_user}:{rabbitmq_pass}@genji-rabbit/")
+
+        connection_pool: Pool = Pool(get_connection, max_size=2)
+
+        async def get_channel() -> aio_pika.Channel:
+            async with connection_pool.acquire() as connection:
+                return await connection.channel()
+
+        channel_pool: Pool = Pool(get_channel, max_size=10)
+
+        app.state.mq_channel_pool = channel_pool
+    yield
+
+
+
+
+
+
 app = Litestar(
     plugins=[asyncpg, apitally_plugin],
     route_handlers=[
@@ -68,6 +106,7 @@ app = Litestar(
                 LootboxController,
                 RanksController,
                 AutocompleteController,
+                NewsfeedController,
             ],
         )
     ],
@@ -79,4 +118,5 @@ app = Litestar(
     ),
     exception_handlers={HTTPException: plain_text_exception_handler},
     logging_config=logging_config,
+    lifespan=[rabbitmq_connection]
 )

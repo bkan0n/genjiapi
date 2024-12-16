@@ -8,7 +8,7 @@ from .models import LootboxKeyTypeResponse, RewardTypeResponse, UserLootboxKeyAm
 
 
 class LootboxController(Controller):
-    path = ""
+    path = "/lootbox"
     tags = ["Lootbox"]
 
     @get(path="/rewards")

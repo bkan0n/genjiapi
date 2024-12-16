@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 class RanksController(Controller):
-    path = ""
+    path = "/ranks"
     tags = ["Ranks"]
 
     @get(path="/statistics/xp/players")

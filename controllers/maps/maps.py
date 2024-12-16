@@ -1,10 +1,17 @@
 from __future__ import annotations
 
+import asyncio
 from typing import TYPE_CHECKING, Annotated, Literal
 
-from litestar import Controller, get
+import aio_pika
+import msgspec.json
+from aio_pika import Message, DeliveryMode
+from litestar import Controller, get, post
+from litestar.datastructures import State
 from litestar.params import Parameter
 
+from utils import rabbit
+from utils.rabbit import RabbitMessageBody
 from utils.utilities import (
     DIFFICULTIES_T,
     MAP_NAME_T,
@@ -22,7 +29,7 @@ from .models import (
     MapPerDifficultyResponse,
     MapSearchResponse,
     MostCompletionsAndQualityResponse,
-    TopCreatorsResponse,
+    TopCreatorsResponse, MapSubmissionBody,
 )
 
 if TYPE_CHECKING:
@@ -30,7 +37,7 @@ if TYPE_CHECKING:
 
 
 class MapsController(Controller):
-    path = ""
+    path = "/maps"
     tags = ["Maps"]
 
     @get(path="/statistics/completions/{map_code:str}")
@@ -110,7 +117,7 @@ class MapsController(Controller):
             ),
         ]
         | None = None,
-        map_type: MAP_TYPE_T | None = None,
+        map_type: list[MAP_TYPE_T] | None = None,
         map_name: MAP_NAME_T | None = None,
         creator: str | None = None,
         mechanics: list[MECHANICS_T] | None = None,
@@ -144,12 +151,11 @@ class MapsController(Controller):
             website_all_maps AS (
                 SELECT
                     m.map_name,
-                    array_agg(DISTINCT m.map_type) AS map_type,
+                    m.map_type,
                     m.map_code,
                     m."desc",
                     m.official,
                     m.archived,
-                    array_agg(DISTINCT g.url) AS guide,
                     array_agg(DISTINCT mech.mechanic) AS mechanics,
                     array_agg(DISTINCT rest.restriction) AS restrictions,
                     m.checkpoints,
@@ -167,7 +173,6 @@ class MapsController(Controller):
             LEFT JOIN map_creators mc ON m.map_code::text = mc.map_code::text
             LEFT JOIN users u ON mc.user_id = u.user_id
             LEFT JOIN map_ratings mr ON m.map_code::text = mr.map_code::text
-            LEFT JOIN guides g ON m.map_code::text = g.map_code::text
             LEFT JOIN map_medals mm ON m.map_code::text = mm.map_code::text
             LEFT JOIN user_global_names ugn ON u.user_id::text = ugn.user_id::text
             GROUP BY m.checkpoints,
@@ -183,10 +188,9 @@ class MapsController(Controller):
             ), filtered_maps AS (
                 SELECT
                     am.map_name, map_type, am.map_code, am."desc", am.official,
-                    am.archived, guide, mechanics, restrictions, am.checkpoints,
+                    am.archived, mechanics, restrictions, am.checkpoints,
                     creators, difficulty, quality, creator_ids, am.gold, am.silver,
-                    am.bronze, pa.count AS playtest_votes, pa.required_votes, am.creators_discord_tag,
-                    count(*) OVER() AS total_results
+                    am.bronze, pa.count AS playtest_votes, pa.required_votes, am.creators_discord_tag
                 FROM
                     website_all_maps am
                 LEFT JOIN playtest p ON am.map_code = p.map_code AND p.is_author IS TRUE
@@ -195,7 +199,7 @@ class MapsController(Controller):
                     ($1::text IS NULL OR am.map_code = $1)
                     AND ($1::text IS NOT NULL OR ((archived = FALSE)
                     AND (official = $9::bool)
-                    AND ($2::text IS NULL OR $2 = ANY(map_type))
+                    AND ($2::text[] IS NULL OR $2 <@ map_type)
                     AND ($3::text IS NULL OR map_name = $3)
                     AND ($4::text[] IS NULL OR $4 <@ mechanics)
                     AND ($11::text[] IS NULL OR $11 <@ restrictions)
@@ -205,13 +209,14 @@ class MapsController(Controller):
                     AND ($8::text IS NULL OR $8 ILIKE ANY(creators) OR $8 ILIKE ANY(creators_discord_tag))
                     AND ($10::bool IS FALSE OR (gold IS NOT NULL AND silver IS NOT NULL AND bronze IS NOT NULL))))
                 GROUP BY
-                    am.map_name, map_type, am.map_code, am."desc", am.official, am.archived, guide, mechanics,
+                    am.map_name, map_type, am.map_code, am."desc", am.official, am.archived, mechanics,
                     restrictions, am.checkpoints, creators, difficulty, quality, creator_ids, am.gold, am.silver,
                     am.bronze, pa.count, pa.required_votes, creators_discord_tag
             )
             SELECT
                 fm.*,
                 record AS time,
+                count(*) OVER() AS total_results,
                 CASE
                     WHEN record < fm.gold THEN 'Gold'
                     WHEN record < fm.silver AND record >= fm.gold THEN 'Silver'
@@ -228,12 +233,11 @@ class MapsController(Controller):
             WITH website_all_maps AS (
                 SELECT
                     m.map_name,
-                    array_agg(DISTINCT m.map_type) AS map_type,
+                    map_type,
                     m.map_code,
                     m."desc",
                     m.official,
                     m.archived,
-                    array_agg(DISTINCT g.url) AS guide,
                     array_agg(DISTINCT mech.mechanic) AS mechanics,
                     array_agg(DISTINCT rest.restriction) AS restrictions,
                     m.checkpoints,
@@ -251,7 +255,6 @@ class MapsController(Controller):
             LEFT JOIN map_creators mc ON m.map_code::text = mc.map_code::text
             LEFT JOIN users u ON mc.user_id = u.user_id
             LEFT JOIN map_ratings mr ON m.map_code::text = mr.map_code::text
-            LEFT JOIN guides g ON m.map_code::text = g.map_code::text
             LEFT JOIN map_medals mm ON m.map_code::text = mm.map_code::text
             LEFT JOIN user_global_names ugn ON u.user_id::text = ugn.user_id::text
             GROUP BY m.checkpoints,
@@ -267,7 +270,7 @@ class MapsController(Controller):
             )
             SELECT
                 am.map_name, map_type, am.map_code, am."desc", am.official,
-                am.archived, guide, mechanics, restrictions, am.checkpoints,
+                am.archived, mechanics, restrictions, am.checkpoints,
                 creators, difficulty, quality, creator_ids, am.gold, am.silver,
                 am.bronze, pa.count AS playtest_votes, pa.required_votes, am.creators_discord_tag,
                 count(*) OVER() AS total_results
@@ -279,7 +282,7 @@ class MapsController(Controller):
                 ($1::text IS NULL OR am.map_code = $1)
                 AND ($1::text IS NOT NULL OR ((archived = FALSE)
                 AND (official = $9::bool)
-                AND ($2::text IS NULL OR $2 = ANY(map_type))
+                AND ($2::text[] IS NULL OR $2 <@ map_type)
                 AND ($3::text IS NULL OR map_name = $3)
                 AND ($4::text[] IS NULL OR $4 <@ mechanics)
                 AND ($11::text[] IS NULL OR $11 <@ restrictions)
@@ -289,7 +292,7 @@ class MapsController(Controller):
                 AND ($8::text IS NULL OR $8 ILIKE ANY(creators) OR $8 ILIKE ANY(creators_discord_tag))
                 AND ($10::bool IS FALSE OR (gold IS NOT NULL AND silver IS NOT NULL AND bronze IS NOT NULL))))
             GROUP BY
-                am.map_name, map_type, am.map_code, am."desc", am.official, am.archived, guide, mechanics,
+                am.map_name, map_type, am.map_code, am."desc", am.official, am.archived, mechanics,
                 restrictions, am.checkpoints, creators, difficulty, quality, creator_ids, am.gold, am.silver,
                 am.bronze, pa.count, pa.required_votes, creators_discord_tag
             ORDER BY difficulty, quality DESC
@@ -305,7 +308,7 @@ class MapsController(Controller):
 
         args = [
             map_code,
-            wrap_string_with_percent(map_type),
+            map_type,
             map_name,
             mechanics,
             difficulty_low_range,
@@ -448,3 +451,9 @@ class MapsController(Controller):
         """
         rows = await db_connection.fetch(query, map_code)
         return [GuidesResponse(**row) for row in rows]
+
+    @post(path="/submit")
+    async def submit_map(self, state: State, data: MapSubmissionBody) -> MapSubmissionBody:
+        """Submit map."""
+        asyncio.create_task(rabbit.publish(state, "new_map", data))
+        return data
