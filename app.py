@@ -3,11 +3,9 @@ from __future__ import annotations
 import logging
 import os
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator
+from typing import TYPE_CHECKING, AsyncGenerator
 
 import aio_pika
-from aio_pika import connect
-from aio_pika.abc import AbstractRobustConnection
 from aio_pika.pool import Pool
 from apitally.litestar import ApitallyPlugin
 from litestar import Litestar, MediaType, Request, Response
@@ -22,10 +20,15 @@ from controllers import (
     CompletionsController,
     LootboxController,
     MapsController,
+    MasteryController,
+    RankCardController,
     RanksController,
     RootRouter,
 )
 from controllers.newsfeed.newsfeed import NewsfeedController
+
+if TYPE_CHECKING:
+    from aio_pika.abc import AbstractRobustConnection
 
 log = logging.getLogger(__name__)
 
@@ -65,11 +68,9 @@ apitally_plugin = ApitallyPlugin(
 )
 
 
-
-
-
 rabbitmq_user = os.getenv("RABBITMQ_DEFAULT_USER")
 rabbitmq_pass = os.getenv("RABBITMQ_DEFAULT_PASS")
+
 
 @asynccontextmanager
 async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
@@ -91,10 +92,6 @@ async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
     yield
 
 
-
-
-
-
 app = Litestar(
     plugins=[asyncpg, apitally_plugin],
     route_handlers=[
@@ -107,6 +104,8 @@ app = Litestar(
                 RanksController,
                 AutocompleteController,
                 NewsfeedController,
+                MasteryController,
+                RankCardController,
             ],
         )
     ],
@@ -118,5 +117,5 @@ app = Litestar(
     ),
     exception_handlers={HTTPException: plain_text_exception_handler},
     logging_config=logging_config,
-    lifespan=[rabbitmq_connection]
+    lifespan=[rabbitmq_connection],
 )
