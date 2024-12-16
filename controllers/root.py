@@ -1,7 +1,7 @@
 import os
 import typing
 
-from litestar import Router
+from litestar import Controller, Router
 from litestar.connection import ASGIConnection
 from litestar.exceptions import HTTPException
 from litestar.handlers import BaseRouteHandler
@@ -13,6 +13,10 @@ async def api_key_guard(connection: ASGIConnection, _: BaseRouteHandler) -> None
     api_key = connection.headers.get("X-API-KEY")
     if api_key != os.getenv("API_KEY"):
         raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Invalid or missing API key")
+
+
+class BaseController(Controller):
+    guards = [api_key_guard]
 
 
 class RootRouter(Router):

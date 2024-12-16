@@ -34,14 +34,17 @@ class NewsfeedMapResponse(msgspec.Struct, omit_defaults=True):
     silver: float = None
     bronze: float = None
 
+
 class NewsfeedMessageResponse(msgspec.Struct, omit_defaults=True):
     content: str
+
 
 class NewsfeedDataResponse(msgspec.Struct, omit_defaults=True):
     map: NewsfeedMapResponse = None
     user: NewsfeedUserResponse = None
     record: NewsfeedRecordResponse = None
     message: NewsfeedMessageResponse = None
+
 
 class NewsfeedResponse(msgspec.Struct):
     type: str

@@ -1,13 +1,14 @@
 from asyncpg import Connection
-from litestar import Controller, get, post
+from litestar import get, post
 from litestar.exceptions import HTTPException
 
 from utils.pull import gacha
 
+from ..root import BaseController
 from .models import LootboxKeyTypeResponse, RewardTypeResponse, UserLootboxKeyAmountsResponse, UserRewardsResponse
 
 
-class LootboxController(Controller):
+class LootboxController(BaseController):
     path = "/lootbox"
     tags = ["Lootbox"]
 

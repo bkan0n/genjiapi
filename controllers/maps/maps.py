@@ -3,15 +3,10 @@ from __future__ import annotations
 import asyncio
 from typing import TYPE_CHECKING, Annotated, Literal
 
-import aio_pika
-import msgspec.json
-from aio_pika import Message, DeliveryMode
-from litestar import Controller, get, post
-from litestar.datastructures import State
+from litestar import get, post
 from litestar.params import Parameter
 
 from utils import rabbit
-from utils.rabbit import RabbitMessageBody
 from utils.utilities import (
     DIFFICULTIES_T,
     MAP_NAME_T,
@@ -20,23 +15,25 @@ from utils.utilities import (
     RESTRICTIONS_T,
     TOP_DIFFICULTIES_RANGES,
     convert_num_to_difficulty,
-    wrap_string_with_percent,
 )
 
+from ..root import BaseController
 from .models import (
     GuidesResponse,
     MapCompletionStatisticsResponse,
     MapPerDifficultyResponse,
     MapSearchResponse,
+    MapSubmissionBody,
     MostCompletionsAndQualityResponse,
-    TopCreatorsResponse, MapSubmissionBody,
+    TopCreatorsResponse,
 )
 
 if TYPE_CHECKING:
     from asyncpg import Connection
+    from litestar.datastructures import State
 
 
-class MapsController(Controller):
+class MapsController(BaseController):
     path = "/maps"
     tags = ["Maps"]
 

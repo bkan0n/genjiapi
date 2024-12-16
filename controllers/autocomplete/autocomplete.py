@@ -2,8 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from litestar import Controller, get
+from litestar import get
 
+from ..root import BaseController
 from .models import (
     CreatorAutocompleteResponse,
     MapCodeAutocompleteResponse,
@@ -14,7 +15,7 @@ if TYPE_CHECKING:
     from asyncpg import Connection
 
 
-class AutocompleteController(Controller):
+class AutocompleteController(BaseController):
     path = "/autocomplete"
     tags = ["Autocomplete"]
 

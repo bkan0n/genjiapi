@@ -1,15 +1,16 @@
 from typing import Annotated, Literal
 
 from asyncpg import Connection
-from litestar import Controller, get
+from litestar import get
 from litestar.params import Parameter
 
 from utils.utilities import wrap_string_with_percent
 
+from ..root import BaseController
 from .models import CompletionsResponse, MapRecordProgressionResponse, PersonalRecordsResponse
 
 
-class CompletionsController(Controller):
+class CompletionsController(BaseController):
     path = "/completions"
     tags = ["Completions"]
 

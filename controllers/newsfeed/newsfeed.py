@@ -1,7 +1,6 @@
 import json
 from typing import Annotated, Literal
 
-import litestar
 from aio_pika import DeliveryMode, Message
 from asyncpg import Connection, Record
 from litestar import get
@@ -10,6 +9,7 @@ from litestar.params import Parameter
 
 from utils.utilities import convert_num_to_difficulty
 
+from ..root import BaseController
 from .models import (
     NewsfeedDataResponse,
     NewsfeedMapResponse,
@@ -20,7 +20,7 @@ from .models import (
 )
 
 
-class NewsfeedController(litestar.Controller):
+class NewsfeedController(BaseController):
     path = "/newsfeed"
     tags = ["newsfeed"]
 
@@ -30,7 +30,6 @@ class NewsfeedController(litestar.Controller):
         timestamp = row["timestamp"]
         data_json = row["data"]
         total_results = row["total_results"]
-
 
         data_dict = json.loads(data_json)
 
@@ -42,8 +41,6 @@ class NewsfeedController(litestar.Controller):
         data = NewsfeedDataResponse(map=map_data, user=user_data, record=record_data, message=message_data)
         return NewsfeedResponse(type=type_, timestamp=timestamp, data=data, total_results=total_results)
 
-
-
     @get(path="/")
     async def get_newsfeed(
         self,
@@ -51,8 +48,8 @@ class NewsfeedController(litestar.Controller):
         page_size: Literal[10, 20, 25, 50] = 10,
         page_number: Annotated[int, Parameter(ge=1)] = 1,
         type_: Annotated[
-            Literal["map_edit", "guide", "new_map", "role", "record", "announcement"
-        ] | None, Parameter(query="type")] = None,
+            Literal["map_edit", "guide", "new_map", "role", "record", "announcement"] | None, Parameter(query="type")
+        ] = None,
     ) -> list[NewsfeedResponse]:
         """Get newsfeed."""
         query = """
