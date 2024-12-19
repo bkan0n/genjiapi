@@ -4,14 +4,13 @@ import asyncio
 import io
 
 import asyncpg  # noqa: TCH002
-from litestar import get
+from litestar import Controller, get
 from litestar.response import Stream
 
-from ..root import BaseController
 from .utils import RankCardBuilder, fetch_user_rank_data, find_highest_rank
 
 
-class RankCardController(BaseController):
+class RankCardController(Controller):
     path = "/rank_card"
     tags = ["Rank Card"]
 
