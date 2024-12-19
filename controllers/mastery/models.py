@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from urllib.parse import quote
+import re
 
 import msgspec
 
@@ -33,9 +33,16 @@ class MapMasteryData(msgspec.Struct):
                 icon_name = name
         return icon_name
 
+    @staticmethod
+    def _sanitize_string(string: str) -> str:
+        string = re.sub(r"[^a-zA-Z\s]", "", string)
+        string = string.strip().replace(" ", "_")
+        return string.lower()
+
     def _icon_url(self) -> str:
-        path_ = f"/assets/mastery/{self.map_name}/{self.level}.png"
-        return quote(path_, safe="=./")
+        _sanitized_map_name = self._sanitize_string(self.map_name)
+        _lowered_level = self.level.lower()
+        return f"assets/mastery/{_sanitized_map_name}_{_lowered_level}.png"
 
 
 class MultipleMapMasteryData(msgspec.Struct):
