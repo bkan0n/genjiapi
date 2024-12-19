@@ -85,13 +85,16 @@ class AutocompleteController(BaseController):
         """Get autocomplete for creators."""
         query = """
             WITH combined_names AS (
-                SELECT nickname AS name
+                SELECT
+                    nickname AS name,
+                    u.user_id
                 FROM users u
                 UNION DISTINCT
-                SELECT global_name AS name
+                SELECT global_name AS name,
+                 user_id
                 FROM user_global_names
             )
-            SELECT name FROM combined_names ORDER BY similarity($1::text, name) DESC LIMIT $2::int
+            SELECT name, user_id FROM combined_names ORDER BY similarity($1::text, name) DESC LIMIT $2::int
         """
         rows = await db_connection.fetch(query, value, page_size)
         return [CreatorAutocompleteResponse(**row) for row in rows]

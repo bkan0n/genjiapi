@@ -13,3 +13,4 @@ class MapCodeAutocompleteResponse(msgspec.Struct):
 
 class CreatorAutocompleteResponse(msgspec.Struct):
     name: str
+    user_id: int
