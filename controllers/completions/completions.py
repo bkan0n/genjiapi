@@ -151,7 +151,7 @@ class CompletionsController(BaseController):
         rows = await db_connection.fetch(query, map_code, user_id, page_size, offset)
         return [PersonalRecordsResponse(**row) for row in rows]
 
-    @get(path="/statistics/{user_id:int}")
+    @get(path="/statistics/time-played/user/{user_id:int}")
     async def get_time_played_per_user(
         self,
         db_connection: Connection,
@@ -166,7 +166,7 @@ class CompletionsController(BaseController):
         await db_connection.fetchrow(query, user_id)
         return 0
 
-    @get(path="/statistics/{user_id:int}")
+    @get(path="/statistics/time-played/rank/{user_id:int}")
     async def get_time_played_per_rank(
         self,
         db_connection: Connection,
