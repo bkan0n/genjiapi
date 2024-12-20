@@ -3,16 +3,20 @@ from __future__ import annotations
 import logging
 import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import TYPE_CHECKING, AsyncGenerator
 
 import aio_pika
 from aio_pika.pool import Pool
 from apitally.litestar import ApitallyPlugin
 from litestar import Litestar, MediaType, Request, Response
+from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.exceptions import HTTPException
 from litestar.logging import LoggingConfig
 from litestar.openapi import OpenAPIConfig
+from litestar.static_files import create_static_files_router
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
+from litestar.template import TemplateConfig
 from litestar_asyncpg import AsyncpgConfig, AsyncpgPlugin, PoolConfig
 
 from controllers import (
@@ -108,6 +112,11 @@ app = Litestar(
                 MasteryController,
                 RankCardController,
             ],
+        ),
+        create_static_files_router(
+            path="/assets",
+            directories=["assets"],
+            send_as_attachment=True,
         )
     ],
     openapi_config=OpenAPIConfig(
@@ -119,4 +128,8 @@ app = Litestar(
     exception_handlers={HTTPException: plain_text_exception_handler},
     logging_config=logging_config,
     lifespan=[rabbitmq_connection],
+    template_config=TemplateConfig(
+        directory=Path("templates"),
+        engine=JinjaTemplateEngine,
+    ),
 )
