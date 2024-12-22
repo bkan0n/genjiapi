@@ -734,7 +734,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/maps/search",
+							"raw": "{{baseUrl}}/v1/maps/search?map_name=<null,string>&difficulty=<null,string>&ignore_completions=false&page_size=10&page_number=1",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -756,8 +756,7 @@
 								},
 								{
 									"key": "map_name",
-									"value": "<null,string>",
-									"disabled": true
+									"value": "<null,string>"
 								},
 								{
 									"key": "creator",
@@ -776,8 +775,7 @@
 								},
 								{
 									"key": "difficulty",
-									"value": "<null,string>",
-									"disabled": true
+									"value": "<null,string>"
 								},
 								{
 									"key": "minimum_quality",
@@ -801,18 +799,15 @@
 								},
 								{
 									"key": "ignore_completions",
-									"value": "false",
-									"disabled": true
+									"value": "false"
 								},
 								{
 									"key": "page_size",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								},
 								{
 									"key": "page_number",
-									"value": "1",
-									"disabled": true
+									"value": "1"
 								}
 							]
 						}
@@ -1161,7 +1156,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/completions/search",
+							"raw": "{{baseUrl}}/v1/completions/search?page_size=10&page_number=1",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1183,13 +1178,11 @@
 								},
 								{
 									"key": "page_size",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								},
 								{
 									"key": "page_number",
-									"value": "1",
-									"disabled": true
+									"value": "1"
 								}
 							]
 						}
@@ -1334,12 +1327,12 @@
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								},
 								{
 									"key": "map_code",
-									"value": "<string>",
+									"value": "{{MAP_CODE_TEST}}",
 									"description": "(Required) "
 								}
 							]
@@ -1478,7 +1471,7 @@
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -1609,7 +1602,7 @@
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -1655,12 +1648,11 @@
 							"header": [
 								{
 									"key": "Content-Type",
-									"value": "application/json",
-									"uuid": "a87c04fe-ce6c-4321-a6ef-8bca81e55e4d"
+									"value": "application/json"
 								}
 							],
 							"cookie": [],
-							"body": "\"<number>\""
+							"body": "{}"
 						},
 						{
 							"id": "49d5dd60-c064-488b-910a-2c5f1f043d50",
@@ -1725,7 +1717,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/completions/personal/:user_id",
+							"raw": "{{baseUrl}}/v1/completions/personal/:user_id?page_size=10&page_number=1",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1743,19 +1735,17 @@
 								},
 								{
 									"key": "page_size",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								},
 								{
 									"key": "page_number",
-									"value": "1",
-									"disabled": true
+									"value": "1"
 								}
 							],
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -1901,7 +1891,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/lootbox/users/:user_id/keys/:key_type",
+							"raw": "{{baseUrl}}/v1/lootbox/users/:user_id/keys/:key_type?amount=3",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1916,19 +1906,18 @@
 							"query": [
 								{
 									"key": "amount",
-									"value": "3",
-									"disabled": true
+									"value": "3"
 								}
 							],
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								},
 								{
 									"key": "key_type",
-									"value": "<string>",
+									"value": "Classic",
 									"description": "(Required) "
 								}
 							]
@@ -2081,12 +2070,12 @@
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{NEBULA}}",
 									"description": "(Required) "
 								},
 								{
 									"key": "key_type",
-									"value": "<string>",
+									"value": "Winter",
 									"description": "(Required) "
 								}
 							]
@@ -2647,7 +2636,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/lootbox/users/:user_id/keys",
+							"raw": "{{baseUrl}}/v1/lootbox/users/:user_id/keys?key_type=Classic",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -2661,14 +2650,13 @@
 							"query": [
 								{
 									"key": "key_type",
-									"value": "Classic",
-									"disabled": true
+									"value": "Classic"
 								}
 							],
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -2825,7 +2813,7 @@
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -2973,7 +2961,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/ranks/leaderboard/all",
+							"raw": "{{baseUrl}}/v1/ranks/leaderboard/all?sort_column=xp_amount&sort_direction=asc&page_size=10&page_number=1",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -3001,23 +2989,19 @@
 								},
 								{
 									"key": "sort_column",
-									"value": "xp_amount",
-									"disabled": true
+									"value": "xp_amount"
 								},
 								{
 									"key": "sort_direction",
-									"value": "asc",
-									"disabled": true
+									"value": "asc"
 								},
 								{
 									"key": "page_size",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								},
 								{
 									"key": "page_number",
-									"value": "1",
-									"disabled": true
+									"value": "1"
 								}
 							]
 						}
@@ -3318,7 +3302,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/autocomplete/creators?value=<string>",
+							"raw": "{{baseUrl}}/v1/autocomplete/creators?value= &page_size=10",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -3330,13 +3314,12 @@
 							"query": [
 								{
 									"key": "value",
-									"value": "<string>",
+									"value": " ",
 									"description": "(Required) "
 								},
 								{
 									"key": "page_size",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								}
 							]
 						}
@@ -3451,7 +3434,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/autocomplete/map-codes?value=<string>",
+							"raw": "{{baseUrl}}/v1/autocomplete/map-codes?value= &page_size=10",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -3463,13 +3446,12 @@
 							"query": [
 								{
 									"key": "value",
-									"value": "<string>",
+									"value": " ",
 									"description": "(Required) "
 								},
 								{
 									"key": "page_size",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								}
 							]
 						}
@@ -3649,7 +3631,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/autocomplete/map-names?value=<string>",
+							"raw": "{{baseUrl}}/v1/autocomplete/map-names?value= &page_size=10",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -3661,13 +3643,12 @@
 							"query": [
 								{
 									"key": "value",
-									"value": "<string>",
+									"value": " ",
 									"description": "(Required) "
 								},
 								{
 									"key": "page_size",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								}
 							]
 						}
@@ -3847,7 +3828,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/autocomplete/map-types?value=<string>",
+							"raw": "{{baseUrl}}/v1/autocomplete/map-types?value= &page_size=10",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -3859,13 +3840,12 @@
 							"query": [
 								{
 									"key": "value",
-									"value": "<string>",
+									"value": " ",
 									"description": "(Required) "
 								},
 								{
 									"key": "page_size",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								}
 							]
 						}
@@ -4051,7 +4031,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/newsfeed",
+							"raw": "{{baseUrl}}/v1/newsfeed?page_size=10&page_number=1&type=<null,string>",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -4062,18 +4042,15 @@
 							"query": [
 								{
 									"key": "page_size",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								},
 								{
 									"key": "page_number",
-									"value": "1",
-									"disabled": true
+									"value": "1"
 								},
 								{
 									"key": "type",
-									"value": "<null,string>",
-									"disabled": true
+									"value": "<null,string>"
 								}
 							]
 						}
@@ -4200,7 +4177,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/v1/mastery/:user_id",
+							"raw": "{{baseUrl}}/v1/mastery/:user_id?map_name=<null,string>",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -4212,14 +4189,13 @@
 							"query": [
 								{
 									"key": "map_name",
-									"value": "<null,string>",
-									"disabled": true
+									"value": "<null,string>"
 								}
 							],
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -4361,7 +4337,7 @@
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -4646,7 +4622,7 @@
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -4688,30 +4664,34 @@
 							"_postman_previewlanguage": "text",
 							"header": [
 								{
-									"disabled": true,
+									"disabled": false,
 									"description": "File size in bytes",
 									"key": "content-length",
 									"value": "<string>",
-									"uuid": "1563b379-e53d-4540-ac78-de42622371cc"
+									"uuid": "1563b379-e53d-4540-ac78-de42622371cc",
+									"enabled": true
 								},
 								{
-									"disabled": true,
+									"disabled": false,
 									"description": "Last modified data-time in RFC 2822 format",
 									"key": "last-modified",
 									"value": "<dateTime>",
-									"uuid": "18b092e5-25b3-4521-b131-6db091baa5d1"
+									"uuid": "18b092e5-25b3-4521-b131-6db091baa5d1",
+									"enabled": true
 								},
 								{
-									"disabled": true,
+									"disabled": false,
 									"description": "Entity tag",
 									"key": "etag",
 									"value": "<string>",
-									"uuid": "8432c60e-c9fc-4348-991a-be750e1daa40"
+									"uuid": "8432c60e-c9fc-4348-991a-be750e1daa40",
+									"enabled": true
 								},
 								{
 									"key": "Content-Type",
 									"value": "",
-									"uuid": "f2c450b6-f270-483a-a59c-9e7c16ff61cc"
+									"uuid": "f2c450b6-f270-483a-a59c-9e7c16ff61cc",
+									"enabled": true
 								}
 							],
 							"cookie": [],
@@ -4790,7 +4770,7 @@
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -4917,7 +4897,7 @@
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -5048,7 +5028,7 @@
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -5178,7 +5158,7 @@
 							"variable": [
 								{
 									"key": "user_id",
-									"value": "<integer>",
+									"value": "{{ARROW_ID}}",
 									"description": "(Required) "
 								}
 							]
@@ -5723,6 +5703,159 @@
 				}
 			],
 			"id": "2d3b8516-5465-43f9-bf56-2daa6c836e5c"
+		},
+		{
+			"name": "DebugGrantRewardNoKey",
+			"id": "213a9641-3235-4097-b051-83c94e93ea4d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/v1/lootbox/users/debug/:user_id/:key_type/:reward_type/:reward_name",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"lootbox",
+						"users",
+						"debug",
+						":user_id",
+						":key_type",
+						":reward_type",
+						":reward_name"
+					],
+					"variable": [
+						{
+							"key": "user_id",
+							"value": "<integer>",
+							"description": "(Required) "
+						},
+						{
+							"key": "key_type",
+							"value": "<string>",
+							"description": "(Required) "
+						},
+						{
+							"key": "reward_type",
+							"value": "<string>",
+							"description": "(Required) "
+						},
+						{
+							"key": "reward_name",
+							"value": "<string>",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "c01fd422-25a3-413c-86d2-f36facc34a3a",
+					"name": "Document created, URL follows",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/lootbox/users/debug/:user_id/:key_type/:reward_type/:reward_name",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"lootbox",
+								"users",
+								"debug",
+								":user_id",
+								":key_type",
+								":reward_type",
+								":reward_name"
+							],
+							"variable": [
+								{
+									"key": "user_id"
+								},
+								{
+									"key": "key_type"
+								},
+								{
+									"key": "reward_type"
+								},
+								{
+									"key": "reward_name"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "text",
+					"header": [],
+					"cookie": []
+				},
+				{
+					"id": "357e2d46-df2a-49a9-9f3b-356d3cb02932",
+					"name": "Bad request syntax or unsupported method",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/lootbox/users/debug/:user_id/:key_type/:reward_type/:reward_name",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"lootbox",
+								"users",
+								"debug",
+								":user_id",
+								":key_type",
+								":reward_type",
+								":reward_name"
+							],
+							"variable": [
+								{
+									"key": "user_id"
+								},
+								{
+									"key": "key_type"
+								},
+								{
+									"key": "reward_type"
+								},
+								{
+									"key": "reward_name"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\"\n}"
+				}
+			]
 		}
 	],
 	"auth": {
@@ -5766,9 +5899,9 @@
 	],
 	"variable": [
 		{
-			"id": "625e7ca4-4797-47c3-92c7-9ddda89d53fc",
+			"id": "86003477-1124-49cf-ba0a-01739b5d8949",
 			"key": "baseUrl",
-			"value": "https://api.genji.pk",
+			"value": "/",
 			"type": "string"
 		}
 	]

@@ -9,7 +9,7 @@ id = 6f52b44d-f634-495e-bc5a-2407add8f871
 
 [config.relations.collections]
 rootDirectory = postman/collections
-files[] = {"id":"28335799-2bf4c008-cb89-4420-aad9-1fec125fa5b4","path":"GenjiAPI.json","metaData":{}}
+files[] = {"id":"28335799-2bf4c008-cb89-4420-aad9-1fec125fa5b4","path":"GenjiAPI.json","metaData":{"generateCollectionPreferences":"{\"updateCollectionSync\":true}"}}
 
 [config.relations.collections.metaData]
 
