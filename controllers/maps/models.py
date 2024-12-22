@@ -208,7 +208,7 @@ class ArchiveMapBody(msgspec.Struct):
         }
 
 
-map_submission_request_example = Example(
+map_submission_request_example = [Example(
     summary="Map submission request",
     description="Map submission request",
     value=MapSubmissionBody(
@@ -220,4 +220,4 @@ map_submission_request_example = Example(
         creator_id=37,
         nickname="TestUser",
     )
-)
+)]
