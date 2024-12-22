@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "c91fb423-cc80-4376-8338-735461825bcd",
+		"_postman_id": "5d9a4204-7894-4cb1-8d22-d49f7321fb18",
 		"name": "Genji API",
 		"description": "GenjiAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_uid": "28335799-c91fb423-cc80-4376-8338-735461825bcd"
+		"_uid": "28335799-5d9a4204-7894-4cb1-8d22-d49f7321fb18"
 	},
 	"item": [
 		{
@@ -18,7 +18,7 @@
 							"item": [
 								{
 									"name": "GetMapCompletionStatistics",
-									"id": "53c8814a-5fe7-483d-9744-d369924e25d5",
+									"id": "4555b9ae-a293-4efa-aff8-de58d4e57def",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -53,7 +53,7 @@
 									},
 									"response": [
 										{
-											"id": "d0695516-c80e-4da2-8b8e-eb246c5f4018",
+											"id": "a1a61c48-61ed-485f-9134-9007663f9967",
 											"name": "Request fulfilled, document follows",
 											"originalRequest": {
 												"method": "GET",
@@ -97,7 +97,7 @@
 											"body": "[\n  {\n    \"min\": \"<number>\",\n    \"max\": \"<number>\",\n    \"avg\": \"<number>\"\n  },\n  {\n    \"min\": \"<number>\",\n    \"max\": \"<number>\",\n    \"avg\": \"<number>\"\n  }\n]"
 										},
 										{
-											"id": "d9751572-4ff0-4197-baa6-00cdf0508fe1",
+											"id": "6fa58211-9daf-496c-80d7-f6ad1807bc9d",
 											"name": "Bad request syntax or unsupported method",
 											"originalRequest": {
 												"method": "GET",
@@ -138,13 +138,13 @@
 												}
 											],
 											"cookie": [],
-											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 										}
 									]
 								},
 								{
 									"name": "GetMapsPerDifficulty",
-									"id": "208bfde2-f8f9-4c93-b380-29a6880c3809",
+									"id": "0f855972-516b-4a26-935a-10ea0dabd986",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -171,7 +171,7 @@
 									},
 									"response": [
 										{
-											"id": "cbff62a4-00b5-4774-a125-4c6d096fce60",
+											"id": "5d4917e5-2f17-4c52-b7f2-0bde2a506610",
 											"name": "Request fulfilled, document follows",
 											"originalRequest": {
 												"method": "GET",
@@ -209,11 +209,11 @@
 									]
 								}
 							],
-							"id": "4fc4effc-4a44-4bdb-aaeb-5e84ec62b6ce"
+							"id": "9a51b1f8-4437-45e1-9171-90e838a229a2"
 						},
 						{
 							"name": "BulkArchive",
-							"id": "e9f8ac84-69d9-4031-9f9d-95683817b66a",
+							"id": "c297e244-3da0-4703-b49a-343deae8d7f7",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -252,7 +252,7 @@
 							},
 							"response": [
 								{
-									"id": "93305015-b11d-45a9-9b9e-73adbe84791c",
+									"id": "98fedbc1-f495-4f5a-9f31-bfb5bac19c45",
 									"name": "Document created, URL follows",
 									"originalRequest": {
 										"method": "POST",
@@ -296,7 +296,7 @@
 									"body": "[\n  {\n    \"map_code\": \"<string>\",\n    \"rabbit_data\": \"<object>\"\n  },\n  {\n    \"map_code\": \"<string>\",\n    \"rabbit_data\": \"<object>\"\n  }\n]"
 								},
 								{
-									"id": "a0165d7e-1a9f-4757-807e-e290c1217cb2",
+									"id": "cde80add-2a1c-44a8-af0c-81964699b968",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "POST",
@@ -337,13 +337,13 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
 						{
 							"name": "BulkUnarchive",
-							"id": "be5496ef-3ec8-458c-a4bf-3ddbdc7ba3a9",
+							"id": "df79442a-52c5-4fd9-860c-6ca61c0f0043",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -382,7 +382,7 @@
 							},
 							"response": [
 								{
-									"id": "9052d1be-43c7-4b81-9671-7cbf63d2051d",
+									"id": "e1d07ea0-6cc8-430f-a853-807ba750a60a",
 									"name": "Document created, URL follows",
 									"originalRequest": {
 										"method": "POST",
@@ -426,7 +426,7 @@
 									"body": "[\n  {\n    \"map_code\": \"<string>\",\n    \"rabbit_data\": \"<object>\"\n  },\n  {\n    \"map_code\": \"<string>\",\n    \"rabbit_data\": \"<object>\"\n  }\n]"
 								},
 								{
-									"id": "1d98668c-2013-4e1d-8a7d-b765ad8c62d0",
+									"id": "412c64d8-ce0d-4d52-af5f-e505f0134315",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "POST",
@@ -467,13 +467,13 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
 						{
 							"name": "GetPopularCreators",
-							"id": "4cff2b8e-31a7-4b66-a1b5-ff0794828040",
+							"id": "f9209526-3553-44fb-b7b9-ed0800028699",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -499,7 +499,7 @@
 							},
 							"response": [
 								{
-									"id": "2e1afc6e-6e82-4d15-ad0a-913202fffe26",
+									"id": "443fb307-1b0f-4d22-b631-e221ffa6e0d7",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -537,7 +537,7 @@
 						},
 						{
 							"name": "GetPopularMaps",
-							"id": "6ff8b6ca-db50-4ab1-9802-e2fa32ef7c95",
+							"id": "575bbe2c-0bcb-44cd-896d-3413870fac84",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -563,7 +563,7 @@
 							},
 							"response": [
 								{
-									"id": "7e741248-0380-47ea-8f56-2696ce8fb5e1",
+									"id": "07bead93-0a6b-4332-86dd-6710bfe090b1",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -601,7 +601,7 @@
 						},
 						{
 							"name": "Guides",
-							"id": "a5f10e50-5fb2-4861-8470-1e63faf58a04",
+							"id": "8dc92e33-2f46-4461-918f-674ae58c83fd",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -634,7 +634,7 @@
 							},
 							"response": [
 								{
-									"id": "71545258-b054-4b08-8d68-bda632fc1bec",
+									"id": "d504c51a-8358-4058-8b93-0aec78fda767",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -675,7 +675,7 @@
 									"body": "[\n  {\n    \"map_code\": \"<string>\",\n    \"total_results\": \"<integer>\",\n    \"url\": \"<string>\"\n  },\n  {\n    \"map_code\": \"<string>\",\n    \"total_results\": \"<integer>\",\n    \"url\": \"<string>\"\n  }\n]"
 								},
 								{
-									"id": "2385b496-90dc-4717-941d-440d65e24af7",
+									"id": "e6eba0ac-ab0b-4503-894b-8b23a660cad2",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -713,7 +713,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
@@ -723,19 +723,18 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6274d26e-775c-49c0-b3ba-093c9ccc2002",
+										"id": "b58ac806-68d7-40ad-b5a3-d26a7162e5fa",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											""
+											"});"
 										],
 										"type": "text/javascript",
 										"packages": {}
 									}
 								}
 							],
-							"id": "34d4329f-bc40-4814-a8eb-c140b90864d0",
+							"id": "9f7eb45f-66a0-43b7-a14a-fa3bf8f914aa",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -759,8 +758,8 @@
 									],
 									"query": [
 										{
-											"key": "map_type",
-											"value": "<string>",
+											"key": "map_code",
+											"value": "",
 											"disabled": true
 										},
 										{
@@ -770,7 +769,7 @@
 										},
 										{
 											"key": "map_name",
-											"value": "<null,string>",
+											"value": "Hanamura",
 											"disabled": true
 										},
 										{
@@ -780,16 +779,6 @@
 										},
 										{
 											"key": "mechanics",
-											"value": "<string>",
-											"disabled": true
-										},
-										{
-											"key": "mechanics",
-											"value": "<string>",
-											"disabled": true
-										},
-										{
-											"key": "restrictions",
 											"value": "<string>",
 											"disabled": true
 										},
@@ -843,7 +832,7 @@
 							},
 							"response": [
 								{
-									"id": "21751937-4e30-44e3-a144-aa142dbb9b0f",
+									"id": "eafd51b6-9d19-42cc-a023-3b4c07e3e37f",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -948,7 +937,7 @@
 									"body": "[\n  {\n    \"archived\": \"<boolean>\",\n    \"checkpoints\": \"<integer>\",\n    \"creator_ids\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"creators\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"creators_discord_tag\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"difficulty\": \"<string>\",\n    \"map_code\": \"<string>\",\n    \"map_name\": \"<string>\",\n    \"map_type\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"mechanics\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"official\": \"<boolean>\",\n    \"restrictions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"total_results\": \"<integer>\",\n    \"desc\": \"<string>\",\n    \"guide\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"quality\": \"<number>\",\n    \"gold\": \"<number>\",\n    \"silver\": \"<number>\",\n    \"bronze\": \"<number>\",\n    \"playtest_votes\": \"<integer>\",\n    \"required_votes\": \"<integer>\",\n    \"time\": \"<number>\",\n    \"medal_type\": \"<string>\"\n  },\n  {\n    \"archived\": \"<boolean>\",\n    \"checkpoints\": \"<integer>\",\n    \"creator_ids\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"creators\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"creators_discord_tag\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"difficulty\": \"<string>\",\n    \"map_code\": \"<string>\",\n    \"map_name\": \"<string>\",\n    \"map_type\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"mechanics\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"official\": \"<boolean>\",\n    \"restrictions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"total_results\": \"<integer>\",\n    \"desc\": \"<string>\",\n    \"guide\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"quality\": \"<number>\",\n    \"gold\": \"<number>\",\n    \"silver\": \"<number>\",\n    \"bronze\": \"<number>\",\n    \"playtest_votes\": \"<integer>\",\n    \"required_votes\": \"<integer>\",\n    \"time\": \"<number>\",\n    \"medal_type\": \"<string>\"\n  }\n]"
 								},
 								{
-									"id": "4c0bc525-2764-40fc-ab5d-cc18dfb6f977",
+									"id": "1200eb30-f708-48c5-aaf2-4f2283eaddb1",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -1050,13 +1039,13 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
 						{
 							"name": "SubmitMap",
-							"id": "02713c13-0b7b-46ba-b847-b9aa1d28935f",
+							"id": "fc596daa-e9a4-4191-9cd3-ef8077f7b19d",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -1095,7 +1084,7 @@
 							},
 							"response": [
 								{
-									"id": "210bcbb3-8551-4507-b1cb-f4352db896ad",
+									"id": "f051d648-0e13-4949-8bca-f9df5f5106dd",
 									"name": "Document created, URL follows",
 									"originalRequest": {
 										"method": "POST",
@@ -1139,7 +1128,7 @@
 									"body": "{\n  \"checkpoints\": \"<integer>\",\n  \"creator_id\": \"<integer>\",\n  \"difficulty\": \"<string>\",\n  \"map_code\": \"<string>\",\n  \"map_name\": \"<string>\",\n  \"map_type\": \"<string>\",\n  \"nickname\": \"<string>\",\n  \"description\": \"<string>\",\n  \"mechanics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"restrictions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"guides\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"gold\": \"<number>\",\n  \"silver\": \"<number>\",\n  \"bronze\": \"<number>\",\n  \"rabbit_data\": \"<object>\"\n}"
 								},
 								{
-									"id": "8b97e328-f7de-4452-b899-75a1c49f23eb",
+									"id": "f582fae4-40c4-48e7-9423-c53303b52a14",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "POST",
@@ -1180,12 +1169,12 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						}
 					],
-					"id": "400705a1-5350-4a57-b952-869b3b3981a8"
+					"id": "8e5ed646-feb1-4214-97d6-e730beb1efda"
 				},
 				{
 					"name": "completions",
@@ -1195,7 +1184,7 @@
 							"item": [
 								{
 									"name": "GetTimePlayedPerRank",
-									"id": "f21e6ad7-3ba5-487a-84c3-b43aa9b8e97f",
+									"id": "3467fe20-073f-4c69-8192-c1f4c15904f1",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -1231,7 +1220,7 @@
 									},
 									"response": [
 										{
-											"id": "92e05364-d54e-4e58-8860-8ccd748861dd",
+											"id": "33e2891a-af35-4af5-b395-6d475b0088b4",
 											"name": "Request fulfilled, document follows",
 											"originalRequest": {
 												"method": "GET",
@@ -1276,7 +1265,7 @@
 											"body": "\"<array>\""
 										},
 										{
-											"id": "9acd1dca-6c61-47f4-af9b-0212e70cc756",
+											"id": "79425bc6-fcff-43af-9118-f4f6066ba07a",
 											"name": "Bad request syntax or unsupported method",
 											"originalRequest": {
 												"method": "GET",
@@ -1318,13 +1307,13 @@
 												}
 											],
 											"cookie": [],
-											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 										}
 									]
 								},
 								{
 									"name": "GetTimePlayedPerUser",
-									"id": "cf342b92-1007-47a1-bccb-a80c791494b8",
+									"id": "2b1f2e45-8746-4b05-ac45-0b28ed676805",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -1360,7 +1349,7 @@
 									},
 									"response": [
 										{
-											"id": "cd5afecf-c8dc-4894-b22f-01840859229d",
+											"id": "821972cf-c80e-4e4b-ac06-713b9a406b23",
 											"name": "Request fulfilled, document follows",
 											"originalRequest": {
 												"method": "GET",
@@ -1405,7 +1394,7 @@
 											"body": "\"<object>\""
 										},
 										{
-											"id": "1a1820ea-074a-4e18-af55-1703b2f85a0d",
+											"id": "7a613414-4dbf-41c5-9cd0-349865c25024",
 											"name": "Bad request syntax or unsupported method",
 											"originalRequest": {
 												"method": "GET",
@@ -1447,16 +1436,16 @@
 												}
 											],
 											"cookie": [],
-											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 										}
 									]
 								}
 							],
-							"id": "49c2ef3e-d0db-4220-8d74-af3f8c80e676"
+							"id": "41e975db-3fd7-455a-a5ac-dc2bd8e022ce"
 						},
 						{
 							"name": "Completions",
-							"id": "ee1ceac7-c4d2-416e-bfb4-ffa415d9e19d",
+							"id": "a894884b-9d09-4b8c-a045-f362e56cf0fc",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -1504,7 +1493,7 @@
 							},
 							"response": [
 								{
-									"id": "401dac31-0fa5-4b6b-aed4-046e1934b0cf",
+									"id": "14302b56-a580-423e-ac79-69ccc3a00fb9",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -1557,7 +1546,7 @@
 									"body": "[\n  {\n    \"discord_tag\": \"<string>\",\n    \"map_code\": \"<string>\",\n    \"medal\": \"<string>\",\n    \"nickname\": \"<string>\",\n    \"time\": \"<string>\",\n    \"total_results\": \"<integer>\",\n    \"video\": \"<string>\"\n  },\n  {\n    \"discord_tag\": \"<string>\",\n    \"map_code\": \"<string>\",\n    \"medal\": \"<string>\",\n    \"nickname\": \"<string>\",\n    \"time\": \"<string>\",\n    \"total_results\": \"<integer>\",\n    \"video\": \"<string>\"\n  }\n]"
 								},
 								{
-									"id": "ebdf9d0e-ec9b-4497-bd7b-e0407771044f",
+									"id": "907d314f-2303-45f5-b703-fd25e6291cd1",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -1607,13 +1596,13 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
 						{
 							"name": "GetMapRecordProgression",
-							"id": "d4fdaaea-6b1f-46c8-96bb-7c6fb01cada4",
+							"id": "86fff6dc-69af-4a8a-a2fb-bea89698c1e9",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -1653,7 +1642,7 @@
 							},
 							"response": [
 								{
-									"id": "8e173832-f1b2-4ead-86ab-48b38a2fead8",
+									"id": "9a2010e6-dadb-425a-907f-ee44e2954d89",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -1702,7 +1691,7 @@
 									"body": "[\n  {\n    \"inserted_at\": \"<dateTime>\",\n    \"time\": \"<number>\"\n  },\n  {\n    \"inserted_at\": \"<dateTime>\",\n    \"time\": \"<number>\"\n  }\n]"
 								},
 								{
-									"id": "cbc84d63-65bd-4612-ae30-4d7d718cad1a",
+									"id": "5fc251d2-3e59-4184-8cfa-93efbde1f50a",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -1748,13 +1737,13 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
 						{
 							"name": "PersonalRecords",
-							"id": "0af7307f-d7ab-411d-8780-e689d9ccbb7b",
+							"id": "7c9c46c9-2236-4604-bc16-f493ab02db96",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -1805,7 +1794,7 @@
 							},
 							"response": [
 								{
-									"id": "a45c0f46-37e7-4c3b-9bfb-e75de29f6de7",
+									"id": "130a54a1-2f97-4de5-9b2c-b03bc627d766",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -1862,7 +1851,7 @@
 									"body": "[\n  {\n    \"difficulty\": \"<string>\",\n    \"discord_tag\": \"<string>\",\n    \"map_code\": \"<string>\",\n    \"medal\": \"<string>\",\n    \"nickname\": \"<string>\",\n    \"time\": \"<number>\",\n    \"total_results\": \"<integer>\"\n  },\n  {\n    \"difficulty\": \"<string>\",\n    \"discord_tag\": \"<string>\",\n    \"map_code\": \"<string>\",\n    \"medal\": \"<string>\",\n    \"nickname\": \"<string>\",\n    \"time\": \"<number>\",\n    \"total_results\": \"<integer>\"\n  }\n]"
 								},
 								{
-									"id": "7072bb45-2ca6-49db-80a2-e7c59961516e",
+									"id": "00ca2a58-ddc1-49ba-bda2-672399042d8f",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -1916,12 +1905,12 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						}
 					],
-					"id": "7c2796d2-a564-418f-b70e-2739339cb964"
+					"id": "02416354-1aec-499a-a12d-4e37c09d477b"
 				},
 				{
 					"name": "lootbox",
@@ -1937,7 +1926,7 @@
 											"item": [
 												{
 													"name": "ViewUserKeys",
-													"id": "64416e83-66d4-43ca-97dc-a554fae0e411",
+													"id": "c6157f65-8bbb-4a79-a011-705361dee62c",
 													"protocolProfileBehavior": {
 														"disableBodyPruning": true
 													},
@@ -1979,7 +1968,7 @@
 													},
 													"response": [
 														{
-															"id": "a143a9ee-6f35-4d76-9391-b34d1ac51c00",
+															"id": "1f1ef981-2710-4d38-9b82-29a70b9bd47f",
 															"name": "Request fulfilled, document follows",
 															"originalRequest": {
 																"method": "GET",
@@ -2029,7 +2018,7 @@
 															"body": "[\n  {\n    \"amount\": \"<integer>\",\n    \"key_type\": \"<string>\"\n  },\n  {\n    \"amount\": \"<integer>\",\n    \"key_type\": \"<string>\"\n  }\n]"
 														},
 														{
-															"id": "e411e3e5-7a2d-4736-9212-784c4dc7fad4",
+															"id": "7a090490-d12d-42f8-8c04-754f6e598f5b",
 															"name": "Bad request syntax or unsupported method",
 															"originalRequest": {
 																"method": "GET",
@@ -2076,13 +2065,13 @@
 																}
 															],
 															"cookie": [],
-															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 														}
 													]
 												},
 												{
 													"name": "GetRandomItems",
-													"id": "a0772825-6fbc-4832-90eb-3aa29ad69d22",
+													"id": "a700042e-4c4f-466b-a57f-35aec54e0981",
 													"protocolProfileBehavior": {
 														"disableBodyPruning": true
 													},
@@ -2130,7 +2119,7 @@
 													},
 													"response": [
 														{
-															"id": "4ae056f0-8d64-48bf-b086-2f7d059d7e46",
+															"id": "ee1467e3-58e8-46be-81b9-fa1ac50f2973",
 															"name": "Request fulfilled, document follows",
 															"originalRequest": {
 																"method": "GET",
@@ -2186,7 +2175,7 @@
 															"body": "[\n  {\n    \"key_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"rarity\": \"<string>\",\n    \"type\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  {\n    \"key_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"rarity\": \"<string>\",\n    \"type\": \"<string>\",\n    \"url\": \"<string>\"\n  }\n]"
 														},
 														{
-															"id": "ba10877a-2854-422e-8298-dfc48abc8347",
+															"id": "787dfa28-e3e0-44a9-9305-0da0a578f303",
 															"name": "Bad request syntax or unsupported method",
 															"originalRequest": {
 																"method": "GET",
@@ -2239,16 +2228,16 @@
 																}
 															],
 															"cookie": [],
-															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 														}
 													]
 												}
 											],
-											"id": "474f1c86-483c-417b-9a06-97d5d204b29a"
+											"id": "bd4cfef0-a27a-40ca-8f2d-aa8e9b0233ef"
 										},
 										{
 											"name": "GrantRewardToUser",
-											"id": "8d691974-5840-4f4f-b6ee-ae85404a01f2",
+											"id": "7f6ef9ac-cdef-48e2-a21f-3bc6dae35992",
 											"protocolProfileBehavior": {
 												"disableBodyPruning": true
 											},
@@ -2300,7 +2289,7 @@
 											},
 											"response": [
 												{
-													"id": "320a0fb1-a10e-408d-a115-82c2017def31",
+													"id": "a83750a2-de4f-4ebe-a32a-a8cfbba645fa",
 													"name": "Document created, URL follows",
 													"originalRequest": {
 														"method": "POST",
@@ -2356,7 +2345,7 @@
 													"body": ""
 												},
 												{
-													"id": "e4169c7f-fb2b-47e7-8652-7d9301baf254",
+													"id": "353a6b20-d326-4801-996d-c1b027d30e94",
 													"name": "Bad request syntax or unsupported method",
 													"originalRequest": {
 														"method": "POST",
@@ -2414,16 +2403,16 @@
 														}
 													],
 													"cookie": [],
-													"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+													"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 												}
 											]
 										}
 									],
-									"id": "71f64db4-f932-492d-834f-b452cfe97283"
+									"id": "0efd1802-9f02-401a-b2cd-57d5086e1ca0"
 								},
 								{
 									"name": "DebugGrantRewardNoKey",
-									"id": "9c44f4ac-d960-4f38-91a9-1bc312e5acbf",
+									"id": "29ec7dce-8ff6-449c-8621-32a7c2bb7412",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -2476,7 +2465,7 @@
 									},
 									"response": [
 										{
-											"id": "a0dba3e2-071f-4a60-a5ec-64c21417ddcf",
+											"id": "272a6e3e-da5a-44e5-9263-b834369e5a9b",
 											"name": "Document created, URL follows",
 											"originalRequest": {
 												"method": "POST",
@@ -2533,7 +2522,7 @@
 											"body": ""
 										},
 										{
-											"id": "cf49c1b1-9139-437b-b188-6f30f7c45199",
+											"id": "f874c6eb-72e9-440c-a80b-7093afce8500",
 											"name": "Bad request syntax or unsupported method",
 											"originalRequest": {
 												"method": "POST",
@@ -2592,19 +2581,19 @@
 												}
 											],
 											"cookie": [],
-											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 										}
 									]
 								}
 							],
-							"id": "513458ff-d193-4427-a97f-17a51fd639ab"
+							"id": "c168f5f0-75ce-4486-9187-464f3c740671"
 						},
 						{
 							"name": "user/{user_id}",
 							"item": [
 								{
 									"name": "GrantKeyToUser",
-									"id": "d30475fd-3d79-4dd6-8c7b-90fe40671446",
+									"id": "a4acd526-6a06-4b14-a08f-cf00270d2db0",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -2645,7 +2634,7 @@
 									},
 									"response": [
 										{
-											"id": "3c8aa4f9-b4d6-4051-ac37-044b919e5b71",
+											"id": "abfe34f6-bc52-4c5b-ae32-5be88ec83817",
 											"name": "Document created, URL follows",
 											"originalRequest": {
 												"method": "POST",
@@ -2690,7 +2679,7 @@
 											"body": ""
 										},
 										{
-											"id": "fc689d24-b917-43d0-95be-fd2f3000e6e0",
+											"id": "341bb690-a03e-445d-8ee0-9c1b227004ac",
 											"name": "Bad request syntax or unsupported method",
 											"originalRequest": {
 												"method": "POST",
@@ -2737,13 +2726,13 @@
 												}
 											],
 											"cookie": [],
-											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 										}
 									]
 								},
 								{
 									"name": "ViewUserRewards",
-									"id": "57fb98dd-811f-4342-a0a2-1d62d438c189",
+									"id": "3b1404f1-51b9-43a6-bb1f-f1d1807ba080",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -2795,7 +2784,7 @@
 									},
 									"response": [
 										{
-											"id": "971a24be-87ca-44d9-bde0-68ac996eecc0",
+											"id": "6b3dcc92-13dc-4cd2-9a00-26c44e105f72",
 											"name": "Request fulfilled, document follows",
 											"originalRequest": {
 												"method": "GET",
@@ -2853,7 +2842,7 @@
 											"body": "[\n  {\n    \"earned_at\": \"<dateTime>\",\n    \"name\": \"<string>\",\n    \"rarity\": \"<string>\",\n    \"type\": \"<string>\",\n    \"user_id\": \"<integer>\",\n    \"url\": \"<string>\"\n  },\n  {\n    \"earned_at\": \"<dateTime>\",\n    \"name\": \"<string>\",\n    \"rarity\": \"<string>\",\n    \"type\": \"<string>\",\n    \"user_id\": \"<integer>\",\n    \"url\": \"<string>\"\n  }\n]"
 										},
 										{
-											"id": "17063f26-42a5-46b1-8379-c5b5315bbc1c",
+											"id": "46330e7a-2c99-49c8-9ff8-f4c6342cc8a6",
 											"name": "Bad request syntax or unsupported method",
 											"originalRequest": {
 												"method": "GET",
@@ -2908,16 +2897,16 @@
 												}
 											],
 											"cookie": [],
-											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 										}
 									]
 								}
 							],
-							"id": "e445e0cd-5b0f-48f2-a61f-c0cefc983262"
+							"id": "6cb1627a-a0c5-40b4-80a5-e7ea754bbc1d"
 						},
 						{
 							"name": "ViewAllKeys",
-							"id": "1cd2ebb0-c87c-42b2-a21d-d1aba7343775",
+							"id": "a42d2bf8-417b-433e-9d8c-9df611ebc1b9",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -2950,7 +2939,7 @@
 							},
 							"response": [
 								{
-									"id": "862bb256-e1a5-4666-9345-96b27ddf1d4d",
+									"id": "563d5688-8237-4474-8566-0780fe9b1a95",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -2991,7 +2980,7 @@
 									"body": "[\n  {\n    \"name\": \"<string>\"\n  },\n  {\n    \"name\": \"<string>\"\n  }\n]"
 								},
 								{
-									"id": "e5dcc05f-e4aa-42ef-a0fc-5b9867093a30",
+									"id": "2c899e34-5c67-4928-9d53-6256a5eeedf5",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -3029,13 +3018,13 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
 						{
 							"name": "ViewAllRewards",
-							"id": "7c2d5b07-80de-4c1b-8019-20f16050e9c8",
+							"id": "1eb5043b-e3f2-4890-ace4-701673e68f98",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -3078,7 +3067,7 @@
 							},
 							"response": [
 								{
-									"id": "1dce7d85-e2e7-49c3-b2d9-65cd10e8bd4a",
+									"id": "bcfed6b7-ee2d-452d-99fa-3b28365efc24",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -3127,7 +3116,7 @@
 									"body": "[\n  {\n    \"key_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"rarity\": \"<string>\",\n    \"type\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  {\n    \"key_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"rarity\": \"<string>\",\n    \"type\": \"<string>\",\n    \"url\": \"<string>\"\n  }\n]"
 								},
 								{
-									"id": "5e8772cb-f1a3-487f-b780-fa9fe9f0574d",
+									"id": "530590b9-9c95-42b7-96e4-cf53a69d7dbe",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -3173,12 +3162,12 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						}
 					],
-					"id": "0d748c60-b766-4bcf-9acf-833018127149"
+					"id": "a144155e-652d-429a-bde5-a43127d8f93d"
 				},
 				{
 					"name": "ranks",
@@ -3188,7 +3177,7 @@
 							"item": [
 								{
 									"name": "GetPlayersPerSkillTier",
-									"id": "8a130312-d710-480e-a693-1b08dcf4ef32",
+									"id": "422b9cad-ff7d-4c17-94d8-14c9a42e16f4",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -3216,7 +3205,7 @@
 									},
 									"response": [
 										{
-											"id": "e5d6e2e8-8350-45ae-a4a5-dd0e45e037bc",
+											"id": "1f9f65f0-0dda-4f77-abfc-8eaddfddfb1a",
 											"name": "Request fulfilled, document follows",
 											"originalRequest": {
 												"method": "GET",
@@ -3256,7 +3245,7 @@
 								},
 								{
 									"name": "GetPlayersPerXpTier",
-									"id": "55f65f99-9dea-4d62-8f4a-2fe0307ef223",
+									"id": "fee3833a-3da9-4728-84e3-3c82664efc1b",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -3284,7 +3273,7 @@
 									},
 									"response": [
 										{
-											"id": "7b030052-85dd-44ea-b8c3-82824f17b0c5",
+											"id": "4a71e953-7e98-47a4-9563-e40e385aaeec",
 											"name": "Request fulfilled, document follows",
 											"originalRequest": {
 												"method": "GET",
@@ -3323,11 +3312,11 @@
 									]
 								}
 							],
-							"id": "db593cb3-820b-4ff3-82ee-1deef7fd9597"
+							"id": "fac7bf56-4084-4313-9985-2073f489d204"
 						},
 						{
 							"name": "GetFullLeaderboard",
-							"id": "76cc9012-1afe-4aac-bdc6-82cb67be73cd",
+							"id": "c61b3277-5a58-49c3-875e-900c4ca3da01",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -3391,7 +3380,7 @@
 							},
 							"response": [
 								{
-									"id": "c256e7ea-923b-4123-bda9-f32fbc50c140",
+									"id": "aa10a144-4dd3-4ed5-b9a9-e9b7479846ac",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -3457,7 +3446,7 @@
 									"body": "[\n  {\n    \"discord_tag\": \"<string>\",\n    \"map_count\": \"<integer>\",\n    \"nickname\": \"<string>\",\n    \"normalized_tier\": \"<integer>\",\n    \"playtest_count\": \"<integer>\",\n    \"prestige_level\": \"<integer>\",\n    \"raw_tier\": \"<integer>\",\n    \"skill_rank\": \"<string>\",\n    \"tier_name\": \"<string>\",\n    \"total_results\": \"<integer>\",\n    \"user_id\": \"<integer>\",\n    \"wr_count\": \"<integer>\",\n    \"xp_amount\": \"<integer>\"\n  },\n  {\n    \"discord_tag\": \"<string>\",\n    \"map_count\": \"<integer>\",\n    \"nickname\": \"<string>\",\n    \"normalized_tier\": \"<integer>\",\n    \"playtest_count\": \"<integer>\",\n    \"prestige_level\": \"<integer>\",\n    \"raw_tier\": \"<integer>\",\n    \"skill_rank\": \"<string>\",\n    \"tier_name\": \"<string>\",\n    \"total_results\": \"<integer>\",\n    \"user_id\": \"<integer>\",\n    \"wr_count\": \"<integer>\",\n    \"xp_amount\": \"<integer>\"\n  }\n]"
 								},
 								{
-									"id": "ba2337f6-f433-4ca4-9681-9d2960058615",
+									"id": "bc40faf4-dc11-4f34-a7a8-ed0da2bd9b91",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -3520,19 +3509,19 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						}
 					],
-					"id": "ec71f830-e09b-4280-9be2-d4f79aeb47f1"
+					"id": "c0d4f1cf-d38f-4b19-a1a2-e635a35d6bc6"
 				},
 				{
 					"name": "autocomplete",
 					"item": [
 						{
 							"name": "GetCreatorsAutocomplete",
-							"id": "921e94e6-d24b-4387-865f-187cb85b2ea1",
+							"id": "4875967e-a233-4358-9df7-31f92699acba",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -3570,7 +3559,7 @@
 							},
 							"response": [
 								{
-									"id": "95909ba0-cb9b-4176-aeca-d50fee8f4727",
+									"id": "b3cd88d1-5893-442f-b08c-4f76e6809d6f",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -3615,7 +3604,7 @@
 									"body": "[\n  {\n    \"name\": \"<string>\",\n    \"user_id\": \"<integer>\"\n  },\n  {\n    \"name\": \"<string>\",\n    \"user_id\": \"<integer>\"\n  }\n]"
 								},
 								{
-									"id": "7b564708-49c9-4d61-849a-ef3b52e1080c",
+									"id": "91d1aabc-5586-45c7-91c6-c9d5a021c7c4",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -3657,13 +3646,13 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
 						{
 							"name": "GetMapCodesAutocomplete",
-							"id": "7bbf61bd-0934-4c07-b701-0ca089396e65",
+							"id": "3cc88b6d-6c3c-43bc-b029-d1fe0186de0a",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -3701,7 +3690,7 @@
 							},
 							"response": [
 								{
-									"id": "8feb85b9-43df-4127-b3cb-58b40523c87a",
+									"id": "0d3eff1f-a7a5-4cd9-8774-038bae4b52fd",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -3746,7 +3735,7 @@
 									"body": "[\n  {\n    \"map_code\": \"<string>\"\n  },\n  {\n    \"map_code\": \"<string>\"\n  }\n]"
 								},
 								{
-									"id": "6e65cedb-d6f3-418f-ae65-5aa724dc09ac",
+									"id": "360577f3-9acf-46a6-bf27-001e3f32433f",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -3788,13 +3777,13 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
 						{
 							"name": "GetMapMechanicsAutocomplete",
-							"id": "a354b667-fb15-4ea5-a2aa-ac350ce9e18e",
+							"id": "4f03729e-7e24-4fae-bbca-f867c9b7341b",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -3820,7 +3809,7 @@
 							},
 							"response": [
 								{
-									"id": "1f9963c3-d184-4e62-9b9e-8a860a81cc96",
+									"id": "25ae557c-584b-45b9-b512-5a2a35bbb6b2",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -3858,7 +3847,7 @@
 						},
 						{
 							"name": "GetMapNamesAutocomplete",
-							"id": "7384ba30-fe3b-41c7-981a-88c294a3207e",
+							"id": "77f9c6b6-b1f5-4338-81a4-1038aaef7a17",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -3896,7 +3885,7 @@
 							},
 							"response": [
 								{
-									"id": "f01928dd-e80f-424c-83e4-102e9f9b03b3",
+									"id": "891b2fed-6713-4b0b-bf7a-b95881e97d9c",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -3941,7 +3930,7 @@
 									"body": "[\n  {\n    \"name\": \"<string>\"\n  },\n  {\n    \"name\": \"<string>\"\n  }\n]"
 								},
 								{
-									"id": "faf194e3-a99d-4086-a504-f90dc84784c9",
+									"id": "668e64b6-2894-41d3-afd4-25fab82becd3",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -3983,13 +3972,13 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
 						{
 							"name": "GetMapRestrictionsAutocomplete",
-							"id": "c3d39bd6-c5a2-4694-9f2b-09059d852f39",
+							"id": "3e65d1a0-786d-4120-93dc-2414d1f4d237",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -4015,7 +4004,7 @@
 							},
 							"response": [
 								{
-									"id": "45fa16e3-7392-4798-9d14-18cb2be595df",
+									"id": "102dc7d1-1797-4f59-81e6-3b3f1c4e751d",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -4053,7 +4042,7 @@
 						},
 						{
 							"name": "GetMapTypesAutocomplete",
-							"id": "785df27a-3db9-4655-a004-26c2ab57ba95",
+							"id": "7b41df9d-db92-455e-94b5-47d38ff83d0b",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -4091,7 +4080,7 @@
 							},
 							"response": [
 								{
-									"id": "864cf178-ba25-49c0-8777-dde339819068",
+									"id": "5ae1a150-a801-4882-97aa-78d8fc19aeef",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -4136,7 +4125,7 @@
 									"body": "[\n  {\n    \"name\": \"<string>\"\n  },\n  {\n    \"name\": \"<string>\"\n  }\n]"
 								},
 								{
-									"id": "95cf4b76-5f57-4545-968b-f30e9a2e2ed6",
+									"id": "9f57fd33-f8ff-42b9-8806-346a5678a5ba",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -4178,19 +4167,19 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						}
 					],
-					"id": "5ebafc08-d9c8-4e0f-9b94-5ba32f7f8843"
+					"id": "a49575fe-1370-4886-a3d6-e8af9ad76a5d"
 				},
 				{
 					"name": "newsfeed",
 					"item": [
 						{
 							"name": "GetNewsfeed",
-							"id": "ec14246c-0f5c-4943-b939-b7a71345a6a3",
+							"id": "fc75a52f-238b-4b1d-9f7e-15160bc4cd0c",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -4232,7 +4221,7 @@
 							},
 							"response": [
 								{
-									"id": "2439c138-359d-4705-90d6-db198f659106",
+									"id": "560a66a0-e3a6-454b-ae97-4d81ccf62749",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -4280,7 +4269,7 @@
 									"body": "[\n  {\n    \"data\": {\n      \"map\": {\n        \"map_name\": \"<string>\",\n        \"map_type\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"map_code\": \"<string>\",\n        \"new_map_code\": \"<string>\",\n        \"desc\": \"<string>\",\n        \"official\": \"<boolean>\",\n        \"archived\": \"<boolean>\",\n        \"guide\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"mechanics\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"restrictions\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"checkpoints\": \"<integer>\",\n        \"creators\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"difficulty\": \"<string>\",\n        \"quality\": \"<number>\",\n        \"creator_ids\": [\n          \"<integer>\",\n          \"<integer>\"\n        ],\n        \"gold\": \"<number>\",\n        \"silver\": \"<number>\",\n        \"bronze\": \"<number>\"\n      },\n      \"user\": {\n        \"user_id\": \"<integer>\",\n        \"nickname\": \"<string>\",\n        \"roles\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"record\": {\n        \"record\": \"<number>\",\n        \"video\": \"<string>\"\n      },\n      \"message\": {\n        \"content\": \"<string>\"\n      }\n    },\n    \"timestamp\": \"<dateTime>\",\n    \"total_results\": \"<integer>\",\n    \"type\": \"<string>\"\n  },\n  {\n    \"data\": {\n      \"map\": {\n        \"map_name\": \"<string>\",\n        \"map_type\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"map_code\": \"<string>\",\n        \"new_map_code\": \"<string>\",\n        \"desc\": \"<string>\",\n        \"official\": \"<boolean>\",\n        \"archived\": \"<boolean>\",\n        \"guide\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"mechanics\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"restrictions\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"checkpoints\": \"<integer>\",\n        \"creators\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"difficulty\": \"<string>\",\n        \"quality\": \"<number>\",\n        \"creator_ids\": [\n          \"<integer>\",\n          \"<integer>\"\n        ],\n        \"gold\": \"<number>\",\n        \"silver\": \"<number>\",\n        \"bronze\": \"<number>\"\n      },\n      \"user\": {\n        \"user_id\": \"<integer>\",\n        \"nickname\": \"<string>\",\n        \"roles\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"record\": {\n        \"record\": \"<number>\",\n        \"video\": \"<string>\"\n      },\n      \"message\": {\n        \"content\": \"<string>\"\n      }\n    },\n    \"timestamp\": \"<dateTime>\",\n    \"total_results\": \"<integer>\",\n    \"type\": \"<string>\"\n  }\n]"
 								},
 								{
-									"id": "8a5ca825-ecd9-43b6-a76d-5534d8e69bbf",
+									"id": "ff7627b5-fdb0-45d2-b9e8-f1431b4ada79",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -4325,13 +4314,13 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
 						{
 							"name": "Aaa",
-							"id": "1b30d909-f382-4849-9f2d-8df10373192a",
+							"id": "3eb20c7c-701a-4231-8420-a938329dbca0",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -4357,7 +4346,7 @@
 							},
 							"response": [
 								{
-									"id": "071e26f7-dfa0-49c7-a8c2-a378e0cdc4aa",
+									"id": "5ed10bb5-b15e-457f-8682-b4911a4405c8",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -4394,7 +4383,7 @@
 							]
 						}
 					],
-					"id": "905ec146-0284-4d01-bde4-f62de481fdc3"
+					"id": "45a63ed8-453c-409f-8764-2588ac9462f7"
 				},
 				{
 					"name": "rank_card",
@@ -4407,7 +4396,7 @@
 									"item": [
 										{
 											"name": "FetchBadgesSettings",
-											"id": "7cbf2db2-1774-4019-ae8b-816b03483d2f",
+											"id": "dc4d105b-2edf-4cc0-971b-1c5fdb716f60",
 											"protocolProfileBehavior": {
 												"disableBodyPruning": true
 											},
@@ -4442,7 +4431,7 @@
 											},
 											"response": [
 												{
-													"id": "03dcae83-0e7a-4a82-9b48-9748c13ad547",
+													"id": "582b67cb-4426-47b1-b7b3-5610d3da8b45",
 													"name": "Request fulfilled, document follows",
 													"originalRequest": {
 														"method": "GET",
@@ -4486,7 +4475,7 @@
 													"body": "{\n  \"user_id\": \"<integer>\",\n  \"badge_name1\": \"<string>\",\n  \"badge_type1\": \"<string>\",\n  \"badge_name2\": \"<string>\",\n  \"badge_type2\": \"<string>\",\n  \"badge_name3\": \"<string>\",\n  \"badge_type3\": \"<string>\",\n  \"badge_name4\": \"<string>\",\n  \"badge_type4\": \"<string>\",\n  \"badge_name5\": \"<string>\",\n  \"badge_type5\": \"<string>\",\n  \"badge_name6\": \"<string>\",\n  \"badge_type6\": \"<string>\",\n  \"badge_url1\": \"<string>\",\n  \"badge_url2\": \"<string>\",\n  \"badge_url3\": \"<string>\",\n  \"badge_url4\": \"<string>\",\n  \"badge_url5\": \"<string>\",\n  \"badge_url6\": \"<string>\"\n}"
 												},
 												{
-													"id": "56095051-a830-42da-b72e-9664a9843ca6",
+													"id": "3ceb8bf2-7e30-4245-bc2b-a4484b574dd3",
 													"name": "Bad request syntax or unsupported method",
 													"originalRequest": {
 														"method": "GET",
@@ -4527,13 +4516,13 @@
 														}
 													],
 													"cookie": [],
-													"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+													"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 												}
 											]
 										},
 										{
 											"name": "SetBadgesSettings",
-											"id": "56ba3f4a-fa93-4889-ad33-bd01edd4d635",
+											"id": "208a39a5-7e72-45c8-9053-99952f4961a6",
 											"protocolProfileBehavior": {
 												"disableBodyPruning": true
 											},
@@ -4581,7 +4570,7 @@
 											},
 											"response": [
 												{
-													"id": "47e717d4-af38-48eb-be24-5d1b0cbbd614",
+													"id": "4d314791-6116-4aa8-b1eb-69f0c991fbc6",
 													"name": "Document created, URL follows",
 													"originalRequest": {
 														"method": "POST",
@@ -4634,7 +4623,7 @@
 													"body": "{\n  \"user_id\": \"<integer>\",\n  \"badge_name1\": \"<string>\",\n  \"badge_type1\": \"<string>\",\n  \"badge_name2\": \"<string>\",\n  \"badge_type2\": \"<string>\",\n  \"badge_name3\": \"<string>\",\n  \"badge_type3\": \"<string>\",\n  \"badge_name4\": \"<string>\",\n  \"badge_type4\": \"<string>\",\n  \"badge_name5\": \"<string>\",\n  \"badge_type5\": \"<string>\",\n  \"badge_name6\": \"<string>\",\n  \"badge_type6\": \"<string>\",\n  \"badge_url1\": \"<string>\",\n  \"badge_url2\": \"<string>\",\n  \"badge_url3\": \"<string>\",\n  \"badge_url4\": \"<string>\",\n  \"badge_url5\": \"<string>\",\n  \"badge_url6\": \"<string>\"\n}"
 												},
 												{
-													"id": "6754f42e-5cc1-43b4-83eb-6a9dcdf45088",
+													"id": "ab27b188-0ee2-4ef6-ad04-3aa200536552",
 													"name": "Bad request syntax or unsupported method",
 													"originalRequest": {
 														"method": "POST",
@@ -4684,12 +4673,12 @@
 														}
 													],
 													"cookie": [],
-													"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+													"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 												}
 											]
 										}
 									],
-									"id": "bcabb4bd-12f1-4ac1-9acf-24a35585168a"
+									"id": "dcab2c59-13c5-423e-a814-8b62300676ea"
 								},
 								{
 									"name": "avatar",
@@ -4699,7 +4688,7 @@
 											"item": [
 												{
 													"name": "GetAvatarPose",
-													"id": "f2a67bc4-e1df-4840-8dc9-a32df5c5a1b6",
+													"id": "539d4c7f-22f7-48c9-a2e8-ebc6b98aded2",
 													"protocolProfileBehavior": {
 														"disableBodyPruning": true
 													},
@@ -4735,7 +4724,7 @@
 													},
 													"response": [
 														{
-															"id": "d7555fb2-09f6-44da-b526-8724c989a44b",
+															"id": "ebe18429-5721-400c-8f56-04cfe36638c0",
 															"name": "Request fulfilled, document follows",
 															"originalRequest": {
 																"method": "GET",
@@ -4780,7 +4769,7 @@
 															"body": "{\n  \"skin\": \"Overwatch 1\",\n  \"pose\": \"Heroic\",\n  \"url\": \"<string>\"\n}"
 														},
 														{
-															"id": "dee12b02-bd63-44a3-8934-59f25e1f3af1",
+															"id": "f7f51608-fa92-43d0-a2d3-67334321b11c",
 															"name": "Bad request syntax or unsupported method",
 															"originalRequest": {
 																"method": "GET",
@@ -4822,13 +4811,13 @@
 																}
 															],
 															"cookie": [],
-															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 														}
 													]
 												},
 												{
 													"name": "SetAvatarPose",
-													"id": "649210de-3e89-440e-99c5-e434b83b713f",
+													"id": "386fa9f6-37a2-4233-b876-03c540368faf",
 													"protocolProfileBehavior": {
 														"disableBodyPruning": true
 													},
@@ -4870,7 +4859,7 @@
 													},
 													"response": [
 														{
-															"id": "a9b42798-902f-42cf-959f-06c37f56d3fa",
+															"id": "f5433cf6-ec20-430d-be3d-91093789a4d5",
 															"name": "Document created, URL follows",
 															"originalRequest": {
 																"method": "POST",
@@ -4921,7 +4910,7 @@
 															"body": "{\n  \"skin\": \"Overwatch 1\",\n  \"pose\": \"Heroic\",\n  \"url\": \"<string>\"\n}"
 														},
 														{
-															"id": "f9d1b4ec-bff5-4c6e-8c92-fd3246b7c2c6",
+															"id": "d984b28c-c51f-4d72-9df8-22c25ccda89d",
 															"name": "Bad request syntax or unsupported method",
 															"originalRequest": {
 																"method": "POST",
@@ -4969,19 +4958,19 @@
 																}
 															],
 															"cookie": [],
-															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 														}
 													]
 												}
 											],
-											"id": "b01de593-528e-4b98-9d0f-51865549644e"
+											"id": "fd622b15-0a58-4396-a42a-90cee1190509"
 										},
 										{
 											"name": "skin/{user_id}",
 											"item": [
 												{
 													"name": "GetAvatarSkin",
-													"id": "f164133a-ad0f-4b9c-8996-9cb470a4954c",
+													"id": "45276c64-1406-43de-a7c0-9899a205e7d3",
 													"protocolProfileBehavior": {
 														"disableBodyPruning": true
 													},
@@ -5017,7 +5006,7 @@
 													},
 													"response": [
 														{
-															"id": "99c90060-c1cf-4e43-9dbe-8c41b74bee55",
+															"id": "082a5a7d-cb0a-4ab2-bc54-e69ac731e407",
 															"name": "Request fulfilled, document follows",
 															"originalRequest": {
 																"method": "GET",
@@ -5062,7 +5051,7 @@
 															"body": "{\n  \"skin\": \"Overwatch 1\",\n  \"pose\": \"Heroic\",\n  \"url\": \"<string>\"\n}"
 														},
 														{
-															"id": "cf1d7ae1-67b5-49a7-8530-8980782635f3",
+															"id": "468aea46-9457-4203-861b-4e5906738c4a",
 															"name": "Bad request syntax or unsupported method",
 															"originalRequest": {
 																"method": "GET",
@@ -5104,13 +5093,13 @@
 																}
 															],
 															"cookie": [],
-															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 														}
 													]
 												},
 												{
 													"name": "SetAvatarSkin",
-													"id": "77b7c41c-0cf7-4275-bcce-a1ac32058ee4",
+													"id": "72140cf2-fdfb-4a6f-b8d6-b1c0dcf7fc44",
 													"protocolProfileBehavior": {
 														"disableBodyPruning": true
 													},
@@ -5152,7 +5141,7 @@
 													},
 													"response": [
 														{
-															"id": "1b7f6039-e602-411d-8833-9245f1168030",
+															"id": "8bf853ee-0b4c-47db-8b22-885ccb609dde",
 															"name": "Document created, URL follows",
 															"originalRequest": {
 																"method": "POST",
@@ -5203,7 +5192,7 @@
 															"body": "{\n  \"skin\": \"Overwatch 1\",\n  \"pose\": \"Heroic\",\n  \"url\": \"<string>\"\n}"
 														},
 														{
-															"id": "a0e235b1-d6a4-4299-918d-d695bcf8ba75",
+															"id": "a962dfe2-d091-4d34-88f5-9472e2064235",
 															"name": "Bad request syntax or unsupported method",
 															"originalRequest": {
 																"method": "POST",
@@ -5251,22 +5240,22 @@
 																}
 															],
 															"cookie": [],
-															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+															"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 														}
 													]
 												}
 											],
-											"id": "376a4ae3-f39a-41d4-980d-823f0341b2e0"
+											"id": "40e79ab2-b80b-443e-8b15-55e12ec0e034"
 										}
 									],
-									"id": "93bfacf4-bc56-4480-a4d4-ae6fab2fa8e3"
+									"id": "0580b0db-851d-492c-ae1c-8a4a8c6a6135"
 								},
 								{
 									"name": "background/{user_id}",
 									"item": [
 										{
 											"name": "GetBackground",
-											"id": "093b42c3-6a3a-44c7-8f51-9ac9496a7ce8",
+											"id": "6536477e-d519-4a5f-9b9e-dcde6ac392ac",
 											"protocolProfileBehavior": {
 												"disableBodyPruning": true
 											},
@@ -5301,7 +5290,7 @@
 											},
 											"response": [
 												{
-													"id": "7bb43c16-29b6-479b-bc36-ea380df6b32f",
+													"id": "4c2eae54-cee3-4001-aa60-18568dbfc5e7",
 													"name": "Request fulfilled, document follows",
 													"originalRequest": {
 														"method": "GET",
@@ -5345,7 +5334,7 @@
 													"body": "{\n  \"name\": \"<string>\",\n  \"url\": \"<string>\"\n}"
 												},
 												{
-													"id": "24df59ca-986e-416d-8436-e3f975995f32",
+													"id": "dd08a02f-8ebe-4d5a-aeae-032b6654698a",
 													"name": "Bad request syntax or unsupported method",
 													"originalRequest": {
 														"method": "GET",
@@ -5386,13 +5375,13 @@
 														}
 													],
 													"cookie": [],
-													"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+													"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 												}
 											]
 										},
 										{
 											"name": "SetBackground",
-											"id": "0c8de753-31e3-45e4-a7e0-b67cee9739b3",
+											"id": "8a166154-ff23-4748-96dd-ffcc88d8f48a",
 											"protocolProfileBehavior": {
 												"disableBodyPruning": true
 											},
@@ -5433,7 +5422,7 @@
 											},
 											"response": [
 												{
-													"id": "793ba267-7c16-4043-bc82-81e15eb043de",
+													"id": "b95b7220-9555-43a0-8cff-3000a7074271",
 													"name": "Document created, URL follows",
 													"originalRequest": {
 														"method": "POST",
@@ -5483,7 +5472,7 @@
 													"body": "{\n  \"name\": \"<string>\",\n  \"url\": \"<string>\"\n}"
 												},
 												{
-													"id": "55ff0a5d-fbf3-4163-8e4d-2e891b0e5919",
+													"id": "4af18aa8-4f61-43b4-8069-8e861782ea47",
 													"name": "Bad request syntax or unsupported method",
 													"originalRequest": {
 														"method": "POST",
@@ -5530,19 +5519,19 @@
 														}
 													],
 													"cookie": [],
-													"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+													"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 												}
 											]
 										}
 									],
-									"id": "b9d713d4-0402-4432-a020-36c72367b45a"
+									"id": "f37070ee-f78d-4e4d-b4b7-a7b4f337e189"
 								}
 							],
-							"id": "84ffe3fb-e490-44f3-be95-ad7748cd3eb1"
+							"id": "d01e6c30-3727-45d2-93a4-2ab4937a4e8e"
 						},
 						{
 							"name": "FetchRankCard",
-							"id": "21dc2271-42f3-4225-a651-e8f54d9b7d8a",
+							"id": "2a6d2a89-4b5d-4dbf-a03c-54b6a01c06ca",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -5575,7 +5564,7 @@
 							},
 							"response": [
 								{
-									"id": "a82c72ac-97ef-469a-960e-0a1e884404a8",
+									"id": "409429eb-c6ca-4260-ac28-dd9db062679f",
 									"name": "Stream Response",
 									"originalRequest": {
 										"method": "GET",
@@ -5635,7 +5624,7 @@
 									"body": "<string>"
 								},
 								{
-									"id": "0a2e1327-3c88-48f8-ae20-57e56d5d984d",
+									"id": "9b0b0e57-0556-4eb4-9e10-3cc6e5883e50",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -5674,13 +5663,13 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						},
 						{
 							"name": "FetchRankCardTest",
-							"id": "53db43c4-7ce3-4d7f-8082-7ed08aae2b2d",
+							"id": "79f308eb-d34f-4e9e-bed2-49a24032c915",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -5714,7 +5703,7 @@
 							},
 							"response": [
 								{
-									"id": "057ded49-a99b-41c3-b288-6f99ac6ab000",
+									"id": "b06114be-b6ee-4c34-af85-9e2afa10a0ca",
 									"name": "Request fulfilled, document follows",
 									"originalRequest": {
 										"method": "GET",
@@ -5754,10 +5743,10 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"avatar_pose\": \"<string>\",\n  \"avatar_skin\": \"<string>\",\n  \"background\": \"<string>\",\n  \"badges\": {\n    \"Excepteurc8_\": {\n      \"type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  },\n  \"difficulties\": {\n    \"voluptate46\": {\n      \"bronze\": \"<integer>\",\n      \"completed\": \"<integer>\",\n      \"gold\": \"<integer>\",\n      \"silver\": \"<integer>\",\n      \"total\": \"<integer>\"\n    }\n  },\n  \"nickname\": \"<string>\",\n  \"rank_name\": \"<string>\",\n  \"total_maps_created\": \"<integer>\",\n  \"total_playtests\": \"<integer>\",\n  \"world_records\": \"<integer>\",\n  \"background_url\": \"<string>\",\n  \"rank_url\": \"<string>\",\n  \"avatar_url\": \"<string>\"\n}"
+									"body": "{\n  \"avatar_pose\": \"<string>\",\n  \"avatar_skin\": \"<string>\",\n  \"background\": \"<string>\",\n  \"badges\": {\n    \"deserunt0\": {\n      \"type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    \"occaecat_61\": {\n      \"type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    \"animfa\": {\n      \"type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  },\n  \"difficulties\": {\n    \"quis_699\": {\n      \"bronze\": \"<integer>\",\n      \"completed\": \"<integer>\",\n      \"gold\": \"<integer>\",\n      \"silver\": \"<integer>\",\n      \"total\": \"<integer>\"\n    }\n  },\n  \"nickname\": \"<string>\",\n  \"rank_name\": \"<string>\",\n  \"total_maps_created\": \"<integer>\",\n  \"total_playtests\": \"<integer>\",\n  \"world_records\": \"<integer>\",\n  \"background_url\": \"<string>\",\n  \"rank_url\": \"<string>\",\n  \"avatar_url\": \"<string>\"\n}"
 								},
 								{
-									"id": "be5ab327-53b3-44fa-a2a3-7a0e636c83aa",
+									"id": "f1738b05-725e-4b0f-a359-74d3754bea6b",
 									"name": "Bad request syntax or unsupported method",
 									"originalRequest": {
 										"method": "GET",
@@ -5797,16 +5786,16 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
 						}
 					],
-					"id": "ea2bc332-f49a-425a-b93b-f3d68ed5e441"
+					"id": "f1ffeadf-ab5f-4bc8-8a5b-c0c1ec3ac998"
 				},
 				{
 					"name": "FetchUserMastery",
-					"id": "ba87646c-cf46-4d2e-ad3f-d31c2493503a",
+					"id": "e4582ffc-38f3-4c82-8c8e-589904742418",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -5846,7 +5835,7 @@
 					},
 					"response": [
 						{
-							"id": "7abe4213-0e77-48bc-9d4f-3443d22dff54",
+							"id": "8197c6db-54c3-402d-b293-49ae8ae3dec7",
 							"name": "Request fulfilled, document follows",
 							"originalRequest": {
 								"method": "GET",
@@ -5894,7 +5883,7 @@
 							"body": "[\n  {\n    \"amount\": \"<integer>\",\n    \"map_name\": \"<string>\",\n    \"level\": \"<string>\",\n    \"icon_url\": \"<string>\"\n  },\n  {\n    \"amount\": \"<integer>\",\n    \"map_name\": \"<string>\",\n    \"level\": \"<string>\",\n    \"icon_url\": \"<string>\"\n  }\n]"
 						},
 						{
-							"id": "8b8a37ac-bfc2-4a26-a3a9-58c88362d026",
+							"id": "8abf7d20-cbf2-4b60-a43b-bc8739b0de04",
 							"name": "Bad request syntax or unsupported method",
 							"originalRequest": {
 								"method": "GET",
@@ -5939,12 +5928,12 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"magna__\": {}\n  }\n}"
+							"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 						}
 					]
 				}
 			],
-			"id": "46efa96a-f745-4160-8e92-5771919fa7bf"
+			"id": "9bb8a39b-9012-40c8-acf3-90ee0222550a"
 		}
 	],
 	"auth": {
@@ -5966,7 +5955,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "d3c2d8a3-d70d-4f1b-8989-6ffb5660f39f",
+				"id": "8be10375-0029-4dea-b939-7d7c4777f607",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -5977,7 +5966,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "ff6e067a-e2fe-4227-968b-905c819d9907",
+				"id": "cad106c0-30e4-48f3-9524-7f4a33473c09",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -5988,7 +5977,7 @@
 	],
 	"variable": [
 		{
-			"id": "191cf1b9-9887-4153-9794-2e5d563bdfbe",
+			"id": "2e795e96-d4e0-4f80-a53c-2cd68b149a30",
 			"key": "baseUrl",
 			"value": "https://api.genji.pk",
 			"type": "string"
