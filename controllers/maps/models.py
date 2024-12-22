@@ -211,13 +211,13 @@ class ArchiveMapBody(msgspec.Struct):
 map_submission_request_example = [Example(
     summary="Map submission request",
     description="Map submission request",
-    value=msgspec.json.encode(MapSubmissionBody(
-        map_code="TEST",
-        map_type="Classic",
-        map_name="Hanamura",
-        difficulty="Hell",
-        checkpoints=1,
-        creator_id=37,
-        nickname="TestUser",
-    ))
+    value={
+        "map_code": "TEST",
+        "map_type": "Classic",
+        "map_name":"Hanamura",
+        "difficulty": "Hell",
+        "checkpoints": 1,
+        "creator_id": 37,
+        "nickname": "TestUser",
+    }
 )]
