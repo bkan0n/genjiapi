@@ -65,8 +65,12 @@ RANKS = (
 )
 
 ipy.FontDB.LoadFromDir("./assets")
-font = ipy.FontDB.Query("notosans china1 china2 japanese korean")
-
+try:
+    font = ipy.FontDB.Query("notosans china1 china2 japanese korean")
+except ValueError as e:
+    print(f"Font not found: {e}")
+    # Provide a fallback or skip font-specific operations
+    font = None
 
 class RankCardBuilder:
     def __init__(self, data: dict) -> None:
