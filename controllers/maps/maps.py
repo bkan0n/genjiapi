@@ -47,8 +47,7 @@ class MapsController(BaseController):
             Parameter(
                 pattern=r"^[A-Z0-9]{4,6}$",
             ),
-        ]
-        | None = None,
+        ],
     ) -> list[MapCompletionStatisticsResponse]:
         """Get the min, max, avg completion time for a particular map code."""
         query = """

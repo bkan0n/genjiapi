@@ -156,7 +156,7 @@ class CompletionsController(BaseController):
         self,
         db_connection: Connection,
         user_id: int,
-    ) -> float:
+    ) -> dict:
         """Get the time played per user."""
         query = """
             SELECT sum(r.record)
@@ -164,7 +164,7 @@ class CompletionsController(BaseController):
             WHERE r.user_id = $1 AND r.completion IS FALSE AND record < 99999999.99
         """
         await db_connection.fetchrow(query, user_id)
-        return 0
+        return {"value": 1.0}
 
     @get(path="/statistics/time-played/rank/{user_id:int}")
     async def get_time_played_per_rank(

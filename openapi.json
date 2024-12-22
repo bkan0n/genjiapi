@@ -177,15 +177,8 @@
             "name": "map_code",
             "in": "path",
             "schema": {
-              "oneOf": [
-                {
-                  "type": "null"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^[A-Z0-9]{4,6}$"
-                }
-              ]
+              "type": "string",
+              "pattern": "^[A-Z0-9]{4,6}$"
             },
             "required": true,
             "deprecated": false,
@@ -1234,7 +1227,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "number"
+                  "type": "object"
                 }
               }
             }
