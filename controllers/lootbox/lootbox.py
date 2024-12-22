@@ -174,3 +174,18 @@ class LootboxController(BaseController):
                     INSERT INTO lootbox_user_keys (user_id, key_type) VALUES ($1, $2)
                 """
         await db_connection.execute(query, user_id, key_type)
+
+    @post(path="/users/debug/{user_id:int}/{key_type:str}/{reward_type:str}/{reward_name:str}")
+    async def debug_grant_reward_no_key(
+        self,
+        db_connection: Connection,
+        user_id: int,
+        key_type: str,
+        reward_type: str,
+        reward_name: str,
+    ) -> None:
+        """DEBUG ONLY: Grant reward to user without key."""
+        query = """
+            INSERT INTO lootbox_user_rewards (user_id, reward_type, key_type, reward_name) VALUES ($1, $2, $3, $4)
+        """
+        await db_connection.execute(query, user_id, reward_type, key_type, reward_name)

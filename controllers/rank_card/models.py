@@ -173,20 +173,27 @@ class MultipleMapMasteryData(msgspec.Struct):
 
 
 class BackgroundResponse(msgspec.Struct):
-    name: str
+    name: str | None
     url: str = None
 
     def __post_init__(self) -> None:
         """Post init."""
+        if not self.name:
+            self.name = "placeholder"
         self.url = f"assets/rank_card/backgrounds/{sanitize_string(self.name)}.png"
 
 
 class AvatarResponse(msgspec.Struct):
-    skin: str = "Overwatch 1"
-    pose: str = "Heroic"
+    skin: str | None = "Overwatch 1"
+    pose: str | None = "Heroic"
 
     url: str = None
 
     def __post_init__(self) -> None:
+        """Post init."""
+        if not self.skin:
+            self.skin = "Overwatch 1"
+        if not self.pose:
+            self.pose = "Heroic"
         """Post init."""
         self.url = f"assets/rank_card/avatars/{sanitize_string(self.skin)}/{sanitize_string(self.pose)}.png"

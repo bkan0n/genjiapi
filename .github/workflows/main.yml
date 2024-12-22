@@ -1,6 +1,12 @@
 name: Automated API tests using Postman CLI
 
-on: push
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   automated-api-tests:
@@ -17,3 +23,36 @@ jobs:
           postman collection run "${{ github.workspace }}/postman/collections/GenjiAPI.json" -e "28335799-6ef39e9f-cdd2-4d4d-9a91-6eaa2b9feeda" --integration-id "172420-${{ github.run_id }}"
           # Lint your API using Postman CLI
           postman api lint 6f52b44d-f634-495e-bc5a-2407add8f871 --integration-id 172420
+
+  generate_openapi:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Run the OpenAPI generation script
+      - name: Generate OpenAPI Spec
+        run: python scripts/generate_openapi.py
+
+      # Commit and push the updated OpenAPI spec
+      - name: Commit and Push OpenAPI Spec
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add openapi.json
+          git commit -m "Update OpenAPI spec [skip ci]" || echo "No changes to commit"
+          git push
