@@ -256,6 +256,20 @@
 										"type": "text/javascript",
 										"packages": {}
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "61e9a8e1-f77e-4391-93b8-27d5e5415a2f",
+										"exec": [
+											"pm.request.headers.add({\r",
+											"    key: \"x-test-mode\",\r",
+											"    value: true\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
 								}
 							],
 							"id": "c297e244-3da0-4703-b49a-343deae8d7f7",
@@ -266,17 +280,17 @@
 								"method": "POST",
 								"header": [
 									{
+										"key": "x-test-mode",
+										"value": "true",
+										"disabled": true
+									},
+									{
 										"key": "Content-Type",
 										"value": "application/json"
 									},
 									{
 										"key": "Accept",
 										"value": "application/json"
-									},
-									{
-										"key": "x-test-mode",
-										"value": "true",
-										"type": "text"
 									}
 								],
 								"body": {
@@ -406,6 +420,20 @@
 										"type": "text/javascript",
 										"packages": {}
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "0c6dd9e1-29db-41ee-92f7-9861b60c2ea9",
+										"exec": [
+											"pm.request.headers.add({\r",
+											"    key: \"x-test-mode\",\r",
+											"    value: true\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
 								}
 							],
 							"id": "df79442a-52c5-4fd9-860c-6ca61c0f0043",
@@ -416,17 +444,17 @@
 								"method": "POST",
 								"header": [
 									{
+										"key": "x-test-mode",
+										"value": "true",
+										"disabled": true
+									},
+									{
 										"key": "Content-Type",
 										"value": "application/json"
 									},
 									{
 										"key": "Accept",
 										"value": "application/json"
-									},
-									{
-										"key": "x-test-mode",
-										"value": "true",
-										"type": "text"
 									}
 								],
 								"body": {
@@ -1173,6 +1201,20 @@
 										"type": "text/javascript",
 										"packages": {}
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "ee7a95a4-d078-4cca-8f90-c53415b67c19",
+										"exec": [
+											"pm.request.headers.add({\r",
+											"    key: \"x-test-mode\",\r",
+											"    value: true\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
 								}
 							],
 							"id": "fc596daa-e9a4-4191-9cd3-ef8077f7b19d",
@@ -1183,17 +1225,17 @@
 								"method": "POST",
 								"header": [
 									{
+										"key": "x-test-mode",
+										"value": "true",
+										"disabled": true
+									},
+									{
 										"key": "Content-Type",
 										"value": "application/json"
 									},
 									{
 										"key": "Accept",
 										"value": "application/json"
-									},
-									{
-										"key": "x-test-mode",
-										"value": "true",
-										"type": "text"
 									}
 								],
 								"body": {
@@ -2301,13 +2343,27 @@
 															"listen": "test",
 															"script": {
 																"id": "659c5128-eb08-4a18-8491-99948db01861",
+																"type": "text/javascript",
+																"packages": {},
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {\r",
 																	"    pm.response.to.have.status(200);\r",
 																	"});"
-																],
+																]
+															}
+														},
+														{
+															"listen": "prerequest",
+															"script": {
+																"id": "ba693ca3-2507-42fd-af10-4fee7c1420d8",
 																"type": "text/javascript",
-																"packages": {}
+																"packages": {},
+																"exec": [
+																	"pm.request.headers.add({\r",
+																	"    key: \"x-test-mode\",\r",
+																	"    value: true\r",
+																	"});"
+																]
 															}
 														}
 													],
@@ -2319,13 +2375,13 @@
 														"method": "GET",
 														"header": [
 															{
-																"key": "Accept",
-																"value": "application/json"
-															},
-															{
 																"key": "x-test-mode",
 																"value": "true",
-																"type": "text"
+																"disabled": true
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
 															}
 														],
 														"url": {
@@ -2487,13 +2543,27 @@
 													"listen": "test",
 													"script": {
 														"id": "a60a50c8-5008-4280-98ec-e55dbfbd273f",
+														"type": "text/javascript",
+														"packages": {},
 														"exec": [
 															"pm.test(\"Status code is 201\", function () {\r",
 															"    pm.response.to.have.status(201);\r",
 															"});"
-														],
+														]
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"id": "14ad9341-4f79-4462-b87a-3071652e2117",
 														"type": "text/javascript",
-														"packages": {}
+														"packages": {},
+														"exec": [
+															"pm.request.headers.add({\r",
+															"    key: \"x-test-mode\",\r",
+															"    value: true\r",
+															"});"
+														]
 													}
 												}
 											],
@@ -2505,13 +2575,13 @@
 												"method": "POST",
 												"header": [
 													{
-														"key": "Accept",
-														"value": "application/json"
-													},
-													{
 														"key": "x-test-mode",
 														"value": "",
-														"type": "text"
+														"disabled": true
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
 													}
 												],
 												"url": {
@@ -2690,6 +2760,20 @@
 												"type": "text/javascript",
 												"packages": {}
 											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "2f885c32-e907-478a-9bd8-8fe47fff3a0a",
+												"exec": [
+													"pm.request.headers.add({\r",
+													"    key: \"x-test-mode\",\r",
+													"    value: true\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
 										}
 									],
 									"id": "29ec7dce-8ff6-449c-8621-32a7c2bb7412",
@@ -2700,13 +2784,13 @@
 										"method": "POST",
 										"header": [
 											{
-												"key": "Accept",
-												"value": "application/json"
-											},
-											{
 												"key": "x-test-mode",
 												"value": "true",
-												"type": "text"
+												"disabled": true
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
 											}
 										],
 										"url": {
