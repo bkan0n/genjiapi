@@ -71,21 +71,3 @@ class NewsfeedController(BaseController):
                 row["difficulty"] = convert_num_to_difficulty(row["difficulty"])
             responses.append(self._parse_newsfeed_row(row))
         return responses
-
-    @get(path="/aaa")
-    async def aaa(self, state: State) -> str:
-        """Test."""
-        async with state.mq_channel_pool.acquire() as channel:  # type: aio_pika.Channel
-            message_body = json.dumps({"new_map": {"map_code": "123123"}}).encode("utf-8")
-
-            message = Message(
-                message_body,
-                delivery_mode=DeliveryMode.PERSISTENT,
-            )
-
-            await channel.default_exchange.publish(
-                message,
-                routing_key="genjiapi",
-            )
-
-        return "Yes!"
