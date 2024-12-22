@@ -41,13 +41,13 @@ class UserRewardsResponse(msgspec.Struct):
 def _reward_url(type_: str, name: str) -> str:
     sanitized_name = sanitize_string(name)
     if type_ == "spray":
-        url = f"assets/rank_card/sprays/{sanitized_name}.png"
+        url = f"assets/rank_card/spray/{sanitized_name}.png"
     elif type_ == "skin":
         url = f"assets/rank_card/avatar/{sanitized_name}/heroic.png"
     elif type_ == "pose":
         url = f"assets/rank_card/avatar/overwatch_1/{sanitized_name}.png"
     elif type_ == "background":
-        url = f"assets/rank_card/backgrounds/{sanitized_name}.png"
+        url = f"assets/rank_card/background/{sanitized_name}.png"
     else:
         url = ""
     return url
