@@ -719,6 +719,22 @@
 						},
 						{
 							"name": "MapSearch",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6274d26e-775c-49c0-b3ba-093c9ccc2002",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"id": "34d4329f-bc40-4814-a8eb-c140b90864d0",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -742,11 +758,6 @@
 										"search"
 									],
 									"query": [
-										{
-											"key": "map_code",
-											"value": "<string>",
-											"disabled": true
-										},
 										{
 											"key": "map_type",
 											"value": "<string>",
