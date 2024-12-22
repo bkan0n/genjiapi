@@ -1,0 +1,19 @@
+name: Automated API tests using Postman CLI
+
+on: push
+
+jobs:
+  automated-api-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      - name: Login to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+      - name: Run API tests
+        run: |
+          postman collection run "${{ github.workspace }}/postman/collections/GenjiAPI.json" -e "28335799-6ef39e9f-cdd2-4d4d-9a91-6eaa2b9feeda"
+          # Lint your API using Postman CLI
+          postman api lint 6f52b44d-f634-495e-bc5a-2407add8f871
