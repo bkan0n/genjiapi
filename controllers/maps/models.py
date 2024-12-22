@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Annotated
 
 import msgspec
 from litestar.openapi.spec import Example
@@ -69,13 +69,13 @@ class GuidesResponse(msgspec.Struct):
 
 
 class MapSubmissionBody(msgspec.Struct):
-    map_code: str
-    map_type: str
-    map_name: str
-    difficulty: str
-    checkpoints: int
-    creator_id: int
-    nickname: str
+    map_code: Annotated[str, msgspec.Meta(examples=["TEST"])]
+    map_type: Annotated[str, msgspec.Meta(examples=["Classic"])]
+    map_name: Annotated[str, msgspec.Meta(examples=["Hanamura"])]
+    difficulty: Annotated[str, msgspec.Meta(examples=["Hell"])]
+    checkpoints: Annotated[int, msgspec.Meta(examples=[1])]
+    creator_id: Annotated[int, msgspec.Meta(examples=[37])]
+    nickname: Annotated[str, msgspec.Meta(examples=["TestUser"])]
     description: str | None = None
     mechanics: list[str] | None = None
     restrictions: list[str] | None = None
@@ -206,18 +206,3 @@ class ArchiveMapBody(msgspec.Struct):
                 "map_code": self.map_code,
             }
         }
-
-
-map_submission_request_example = [Example(
-    summary="Map submission request",
-    description="Map submission request",
-    value={
-        "map_code": "TEST",
-        "map_type": "Classic",
-        "map_name":"Hanamura",
-        "difficulty": "Hell",
-        "checkpoints": 1,
-        "creator_id": 37,
-        "nickname": "TestUser",
-    }
-)]

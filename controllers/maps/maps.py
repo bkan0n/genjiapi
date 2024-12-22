@@ -28,7 +28,6 @@ from .models import (
     MapSubmissionBody,
     MostCompletionsAndQualityResponse,
     TopCreatorsResponse,
-    map_submission_request_example,
 )
 
 if TYPE_CHECKING:
@@ -453,7 +452,7 @@ class MapsController(BaseController):
 
     @post(path="/submit")
     async def submit_map(
-        self, request: Request, state: State, db_connection: asyncpg.Connection, data: Annotated[MapSubmissionBody, Body(examples=map_submission_request_example)]
+        self, request: Request, state: State, db_connection: asyncpg.Connection, data: MapSubmissionBody
     ) -> MapSubmissionBody:
         """Submit map."""
         if request.headers.get("x-test-mode"):
