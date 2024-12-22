@@ -50,10 +50,10 @@ class RankCardController(Controller):
     async def set_avatar_skin(self, db_connection: asyncpg.Connection, user_id: int, skin: str) -> AvatarResponse:
         """Set user avatar Skin."""
         query = """
-                    INSERT INTO rank_card_avatar (skin, user_id) VALUES ($1, $2)
+                    INSERT INTO rank_card_avatar (user_id, skin) VALUES ($1, $2)
                     ON CONFLICT (user_id) DO UPDATE SET skin = EXCLUDED.skin;
                 """
-        await db_connection.execute(query, user_id, user_id, skin)
+        await db_connection.execute(query, user_id, skin)
         return AvatarResponse(skin=skin)
 
     @get(path="/settings/avatar/skin/{user_id:int}")
@@ -67,10 +67,10 @@ class RankCardController(Controller):
     async def set_avatar_pose(self, db_connection: asyncpg.Connection, user_id: int, pose: str) -> AvatarResponse:
         """Set user avatar Skin."""
         query = """
-            INSERT INTO rank_card_avatar (pose, user_id) VALUES ($1, $2)
+            INSERT INTO rank_card_avatar (user_id, pose) VALUES ($1, $2)
             ON CONFLICT (user_id) DO UPDATE SET pose = EXCLUDED.pose;
         """
-        await db_connection.execute(query, user_id, user_id, pose)
+        await db_connection.execute(query, user_id, pose)
         return AvatarResponse(pose=pose)
 
     @get(path="/settings/avatar/pose/{user_id:int}")
@@ -244,7 +244,7 @@ class RankCardController(Controller):
 
         rank = find_highest_rank(rank_data)
 
-        background = await self._get_background_choice(db_connection, user_id)
+        background = 1
 
         nickname = await db_connection.fetchval("SELECT nickname FROM users WHERE user_id = $1;", user_id)
 

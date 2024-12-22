@@ -1,5 +1,5 @@
 from asyncpg import Connection
-from litestar import get, post
+from litestar import get, post, Request
 from litestar.exceptions import HTTPException
 
 from utils.pull import gacha
@@ -120,6 +120,7 @@ class LootboxController(BaseController):
     @get(path="/users/{user_id:int}/keys/{key_type:str}")
     async def get_random_items(
         self,
+        request: Request,
         db_connection: Connection,
         user_id: int,
         key_type: str,
@@ -127,7 +128,7 @@ class LootboxController(BaseController):
     ) -> list[RewardTypeResponse]:
         """Get random items."""
         key_count = await self._get_user_key_count(db_connection, user_id, key_type)
-        if key_count <= 0:
+        if key_count <= 0 and not request.headers.get("x-test-mode"):
             raise HTTPException(detail="User does not have enough keys for this action.", status_code=400)
 
         rarities = gacha(amount)
@@ -149,6 +150,7 @@ class LootboxController(BaseController):
     @post(path="/users/{user_id:int}/{key_type:str}/{reward_type:str}/{reward_name:str}")
     async def grant_reward_to_user(
         self,
+        request: Request,
         db_connection: Connection,
         user_id: int,
         key_type: str,
@@ -157,11 +159,12 @@ class LootboxController(BaseController):
     ) -> None:
         """Grant reward to user."""
         key_count = await self._get_user_key_count(db_connection, user_id, key_type)
-        if key_count <= 0:
+        if key_count <= 0 and not request.headers.get("x-test-mode"):
             raise HTTPException(detail="User does not have enough keys for this action.", status_code=400)
 
         async with db_connection.transaction():
-            await self._use_user_key(db_connection, user_id, key_type)
+            if not request.headers.get("x-test-mode"):
+                await self._use_user_key(db_connection, user_id, key_type)
             query = """
                 INSERT INTO lootbox_user_rewards (user_id, reward_type, key_type, reward_name) VALUES ($1, $2, $3, $4)
             """

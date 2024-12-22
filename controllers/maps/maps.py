@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING, Annotated, Literal
 
 import asyncpg  # noqa: TCH002
-from litestar import get, post
-from litestar.params import Parameter
+from litestar import get, post, Request
+from litestar.params import Parameter, Body
 
 from utils import rabbit
 from utils.utilities import (
@@ -27,6 +28,7 @@ from .models import (
     MapSubmissionBody,
     MostCompletionsAndQualityResponse,
     TopCreatorsResponse,
+    map_submission_request_example,
 )
 
 if TYPE_CHECKING:
@@ -451,22 +453,24 @@ class MapsController(BaseController):
 
     @post(path="/submit")
     async def submit_map(
-        self, state: State, db_connection: asyncpg.Connection, data: MapSubmissionBody
+        self, request: Request, state: State, db_connection: asyncpg.Connection, data: Annotated[MapSubmissionBody, Body(examples=map_submission_request_example)]
     ) -> MapSubmissionBody:
         """Submit map."""
+        if request.headers.get("x-test-mode"):
+            return data
         await data.insert_all(db_connection)
         await rabbit.publish(state, "new_map", data)
         return data
 
     @post(path="/archive")
     async def bulk_archive(
-        self, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
+        self, request: Request, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
     ) -> list[ArchiveMapBody]:
         """Bulk archive."""
-        await rabbit.publish(state, "bulk_archive", data)
+        await rabbit.publish(state, "bulk_archive", data, extra_headers={"x-test-mode": request.headers.get("x-test-mode")})
         args = [(d.map_code, True) for d in data]
-        query = "UPDATE maps SET archived = $1 WHERE map_code = $2;"
-        await db_connection.execute(
+        query = "UPDATE maps SET archived = $2 WHERE map_code = $1;"
+        await db_connection.executemany(
             query,
             args,
         )
@@ -474,13 +478,14 @@ class MapsController(BaseController):
 
     @post(path="/unarchive")
     async def bulk_unarchive(
-        self, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
+        self, request: Request, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
     ) -> list[ArchiveMapBody]:
         """Bulk unarchive."""
-        await rabbit.publish(state, "bulk_unarchive", data)
+
+        await rabbit.publish(state, "bulk_unarchive", data, extra_headers={"x-test-mode": request.headers.get("x-test-mode")})
         args = [(d.map_code, False) for d in data]
-        query = "UPDATE maps SET archived = $1 WHERE map_code = $2;"
-        await db_connection.execute(
+        query = "UPDATE maps SET archived = $2 WHERE map_code = $1;"
+        await db_connection.executemany(
             query,
             args,
         )

@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import msgspec
+from litestar.openapi.spec import Example
 
 from utils.utilities import ALL_DIFFICULTY_RANGES_MIDPOINT
 
@@ -115,6 +116,8 @@ class MapSubmissionBody(msgspec.Struct):
         )
 
     async def _insert_mechanics(self, db: asyncpg.Connection) -> None:
+        if not self.mechanics:
+            return
         mechanics = [(self.map_code, x) for x in self.mechanics]
         query = """
             INSERT INTO map_mechanics (map_code, mechanic)
@@ -123,6 +126,8 @@ class MapSubmissionBody(msgspec.Struct):
         await db.executemany(query, mechanics)
 
     async def _insert_restrictions(self, db: asyncpg.Connection) -> None:
+        if not self.restrictions:
+            return
         restrictions = [(self.map_code, x) for x in self.restrictions]
         query = """
             INSERT INTO map_restrictions (map_code, restriction)
@@ -155,6 +160,8 @@ class MapSubmissionBody(msgspec.Struct):
         )
 
     async def _insert_guide(self, db: asyncpg.Connection) -> None:
+        if not self.guides:
+            return
         _guides = [(self.map_code, guide) for guide in self.guides if guide]
         if _guides:
             query = "INSERT INTO guides (map_code, url) VALUES ($1, $2);"
@@ -199,3 +206,18 @@ class ArchiveMapBody(msgspec.Struct):
                 "map_code": self.map_code,
             }
         }
+
+
+map_submission_request_example = Example(
+    summary="Map submission request",
+    description="Map submission request",
+    value=MapSubmissionBody(
+        map_code="TEST",
+        map_type="Classic",
+        map_name="Hanamura",
+        difficulty="Hell",
+        checkpoints=1,
+        creator_id=37,
+        nickname="TestUser",
+    )
+)

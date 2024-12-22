@@ -4,6 +4,8 @@ FROM python:3.12-slim-bookworm
 # Set the working directory to /app
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y git
+
 COPY ./requirements.txt /app
 
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
