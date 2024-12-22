@@ -464,8 +464,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Ayutthaya",
@@ -633,8 +633,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Beginner",
@@ -2812,29 +2812,6 @@
         "deprecated": false
       }
     },
-    "/v1/newsfeed/aaa": {
-      "get": {
-        "tags": [
-          "newsfeed"
-        ],
-        "summary": "Aaa",
-        "operationId": "V1NewsfeedAaaAaa",
-        "responses": {
-          "200": {
-            "description": "Request fulfilled, document follows",
-            "headers": {},
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": false
-      }
-    },
     "/v1/newsfeed": {
       "get": {
         "tags": [
@@ -2879,8 +2856,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "map_edit",
@@ -2977,8 +2954,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Ayutthaya",
