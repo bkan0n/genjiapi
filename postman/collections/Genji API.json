@@ -2543,27 +2543,27 @@
 													"listen": "test",
 													"script": {
 														"id": "a60a50c8-5008-4280-98ec-e55dbfbd273f",
-														"type": "text/javascript",
-														"packages": {},
 														"exec": [
 															"pm.test(\"Status code is 201\", function () {\r",
 															"    pm.response.to.have.status(201);\r",
 															"});"
-														]
+														],
+														"type": "text/javascript",
+														"packages": {}
 													}
 												},
 												{
 													"listen": "prerequest",
 													"script": {
 														"id": "14ad9341-4f79-4462-b87a-3071652e2117",
-														"type": "text/javascript",
-														"packages": {},
 														"exec": [
 															"pm.request.headers.add({\r",
 															"    key: \"x-test-mode\",\r",
 															"    value: true\r",
 															"});"
-														]
+														],
+														"type": "text/javascript",
+														"packages": {}
 													}
 												}
 											],
