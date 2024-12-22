@@ -4547,7 +4547,18 @@
           "map_type",
           "nickname"
         ],
-        "title": "MapSubmissionBody"
+        "title": "MapSubmissionBody",
+        "examples": [
+          {
+            "map_code": "TEST",
+            "map_type": "Classic",
+            "map_name": "Hanamura",
+            "difficulty": "Hell",
+            "checkpoints": 1,
+            "creator_id": 37,
+            "nickname": "TestUser"
+          }
+        ]
       },
       "MostCompletionsAndQualityResponse": {
         "properties": {
