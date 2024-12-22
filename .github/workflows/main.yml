@@ -48,6 +48,12 @@ jobs:
       - name: Generate OpenAPI Spec
         run: python scripts/generate_openapi.py
 
+      - name: Debug file existence
+        run: |
+          ls -l openapi.json || echo "openapi.json not found"
+          cat openapi.json || echo "openapi.json is empty"
+
+
       # Commit and push the updated OpenAPI spec
       - name: Commit and Push OpenAPI Spec
         env:

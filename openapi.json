@@ -181,9 +181,7 @@
               "pattern": "^[A-Z0-9]{4,6}$"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -335,11 +333,11 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
-                },
-                {
                   "type": "string",
                   "pattern": "^[A-Z0-9]{4,6}$"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -420,11 +418,11 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
-                },
-                {
                   "type": "string",
                   "pattern": "^[A-Z0-9]{4,6}$"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -439,9 +437,6 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
-                },
-                {
                   "items": {
                     "type": "string",
                     "enum": [
@@ -453,6 +448,9 @@
                     ]
                   },
                   "type": "array"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -545,10 +543,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -562,9 +560,6 @@
             "in": "query",
             "schema": {
               "oneOf": [
-                {
-                  "type": "null"
-                },
                 {
                   "items": {
                     "type": "string",
@@ -591,6 +586,9 @@
                     ]
                   },
                   "type": "array"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -604,9 +602,6 @@
             "in": "query",
             "schema": {
               "oneOf": [
-                {
-                  "type": "null"
-                },
                 {
                   "items": {
                     "type": "string",
@@ -622,6 +617,9 @@
                     ]
                   },
                   "type": "array"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -660,12 +658,12 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
-                },
-                {
                   "type": "integer",
                   "maximum": 6.0,
                   "minimum": 1.0
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -680,11 +678,11 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
-                },
-                {
                   "type": "boolean",
                   "default": false
+                },
+                {
+                  "type": "null"
                 }
               ],
               "default": false
@@ -700,11 +698,11 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
-                },
-                {
                   "type": "boolean",
                   "default": false
+                },
+                {
+                  "type": "null"
                 }
               ],
               "default": false
@@ -720,10 +718,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "integer"
                 },
                 {
-                  "type": "integer"
+                  "type": "null"
                 }
               ]
             },
@@ -918,11 +916,11 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
-                },
-                {
                   "type": "string",
                   "pattern": "^[A-Z0-9]{4,6}$"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -937,10 +935,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -1053,9 +1051,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "map_code",
@@ -1064,9 +1060,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -1141,9 +1135,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -1215,9 +1207,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -1289,9 +1279,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "map_code",
@@ -1299,11 +1287,11 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
-                },
-                {
                   "type": "string",
                   "pattern": "^[A-Z0-9]{4,6}$"
+                },
+                {
+                  "type": "null"
                 }
               ]
             },
@@ -1416,9 +1404,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "key_type",
@@ -1427,9 +1413,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "reward_type",
@@ -1438,9 +1422,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "reward_name",
@@ -1449,9 +1431,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -1516,9 +1496,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "key_type",
@@ -1527,9 +1505,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "amount",
@@ -1616,9 +1592,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "key_type",
@@ -1627,9 +1601,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -1694,9 +1666,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "key_type",
@@ -1705,9 +1675,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "reward_type",
@@ -1716,9 +1684,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "reward_name",
@@ -1727,9 +1693,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -1793,10 +1757,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -1877,10 +1841,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -1895,10 +1859,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -1913,10 +1877,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -1998,9 +1962,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "key_type",
@@ -2087,9 +2049,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "reward_type",
@@ -2097,10 +2057,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -2115,10 +2075,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -2133,10 +2093,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -2217,10 +2177,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -2235,10 +2195,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -2253,10 +2213,10 @@
             "schema": {
               "oneOf": [
                 {
-                  "type": "null"
+                  "type": "string"
                 },
                 {
-                  "type": "string"
+                  "type": "null"
                 }
               ]
             },
@@ -3010,9 +2970,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "map_name",
@@ -3165,9 +3123,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -3237,9 +3193,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "requestBody": {
@@ -3321,9 +3275,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -3428,9 +3380,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -3502,9 +3452,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -3576,9 +3524,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -3650,9 +3596,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -3724,9 +3668,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "pose",
@@ -3735,9 +3677,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -3809,9 +3749,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "skin",
@@ -3820,9 +3758,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -3894,9 +3830,7 @@
               "type": "integer"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           },
           {
             "name": "background",
@@ -3905,9 +3839,7 @@
               "type": "string"
             },
             "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
+            "deprecated": false
           }
         ],
         "responses": {
@@ -3975,10 +3907,10 @@
           "rabbit_data": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "object"
               },
               {
-                "type": "object"
+                "type": "null"
               }
             ]
           }
@@ -3994,11 +3926,11 @@
           "skin": {
             "oneOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "default": "Overwatch 1"
+              },
+              {
+                "type": "null"
               }
             ],
             "default": "Overwatch 1"
@@ -4006,11 +3938,11 @@
           "pose": {
             "oneOf": [
               {
-                "type": "null"
-              },
-              {
                 "type": "string",
                 "default": "Heroic"
+              },
+              {
+                "type": "null"
               }
             ],
             "default": "Heroic"
@@ -4028,10 +3960,10 @@
           "name": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
@@ -4204,30 +4136,30 @@
           "min": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "null"
               }
             ]
           },
           "max": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "null"
               }
             ]
           },
           "avg": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "null"
               }
             ]
           }
@@ -4247,20 +4179,20 @@
           "level": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "icon_url": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           }
@@ -4379,103 +4311,103 @@
           "desc": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "guide": {
             "oneOf": [
               {
-                "type": "null"
-              },
-              {
                 "items": {
                   "type": "string"
                 },
                 "type": "array"
+              },
+              {
+                "type": "null"
               }
             ]
           },
           "quality": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "null"
               }
             ]
           },
           "gold": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "null"
               }
             ]
           },
           "silver": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "null"
               }
             ]
           },
           "bronze": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "null"
               }
             ]
           },
           "playtest_votes": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "integer"
               },
               {
-                "type": "integer"
+                "type": "null"
               }
             ]
           },
           "required_votes": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "integer"
               },
               {
-                "type": "integer"
+                "type": "null"
               }
             ]
           },
           "time": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "null"
               }
             ]
           },
           "medal_type": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           }
@@ -4524,89 +4456,89 @@
           "description": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "mechanics": {
             "oneOf": [
               {
-                "type": "null"
-              },
-              {
                 "items": {
                   "type": "string"
                 },
                 "type": "array"
+              },
+              {
+                "type": "null"
               }
             ]
           },
           "restrictions": {
             "oneOf": [
               {
-                "type": "null"
-              },
-              {
                 "items": {
                   "type": "string"
                 },
                 "type": "array"
+              },
+              {
+                "type": "null"
               }
             ]
           },
           "guides": {
             "oneOf": [
               {
-                "type": "null"
-              },
-              {
                 "items": {
                   "type": "string"
                 },
                 "type": "array"
+              },
+              {
+                "type": "null"
               }
             ]
           },
           "gold": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "null"
               }
             ]
           },
           "silver": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "null"
               }
             ]
           },
           "bronze": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "null"
               }
             ]
           },
           "rabbit_data": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "object"
               },
               {
-                "type": "object"
+                "type": "null"
               }
             ]
           }
@@ -4894,180 +4826,180 @@
           "badge_name1": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_type1": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_name2": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_type2": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_name3": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_type3": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_name4": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_type4": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_name5": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_type5": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_name6": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_type6": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_url1": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_url2": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_url3": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_url4": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_url5": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "badge_url6": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           }
@@ -5083,20 +5015,20 @@
           "type": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
           "name": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           },
@@ -5216,10 +5148,10 @@
           "url": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           }
@@ -5290,10 +5222,10 @@
           "url": {
             "oneOf": [
               {
-                "type": "null"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "null"
               }
             ]
           }

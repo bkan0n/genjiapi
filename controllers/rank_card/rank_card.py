@@ -33,7 +33,7 @@ class RankCardController(Controller):
     ) -> BackgroundResponse:
         """Set user background."""
         query = """
-            INSERT INTO rank_card_background (name, user_id) VALUES ($1, $2)
+            INSERT INTO rank_card_background (user_id, name) VALUES ($1, $2)
             ON CONFLICT (user_id) DO UPDATE SET name = EXCLUDED.name;
         """
         await db_connection.execute(query, user_id, background)
