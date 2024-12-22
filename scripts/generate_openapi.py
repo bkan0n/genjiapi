@@ -1,6 +1,11 @@
 import json
+import sys
+from pathlib import Path
 
-import app
+# Add the parent directory (repository root) to the Python module search path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+import app  # Import your app module
 
 # Generate OpenAPI schema and save it to a file
 with open("openapi.json", "w") as file:
