@@ -3288,9 +3288,7 @@
                 },
                 "description": "File size in bytes",
                 "required": false,
-                "deprecated": false,
-                "allowEmptyValue": false,
-                "allowReserved": false
+                "deprecated": false
               },
               "last-modified": {
                 "schema": {
@@ -3299,9 +3297,7 @@
                 },
                 "description": "Last modified data-time in RFC 2822 format",
                 "required": false,
-                "deprecated": false,
-                "allowEmptyValue": false,
-                "allowReserved": false
+                "deprecated": false
               },
               "etag": {
                 "schema": {
@@ -3309,9 +3305,7 @@
                 },
                 "description": "Entity tag",
                 "required": false,
-                "deprecated": false,
-                "allowEmptyValue": false,
-                "allowReserved": false
+                "deprecated": false
               }
             },
             "content": {
