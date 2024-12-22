@@ -36,7 +36,7 @@ class RankCardController(Controller):
             INSERT INTO rank_card_background (name, user_id) VALUES ($1, $2)
             ON CONFLICT (user_id) DO UPDATE SET name = EXCLUDED.name;
         """
-        await db_connection.execute(query, user_id, user_id, background)
+        await db_connection.execute(query, user_id, background)
         return BackgroundResponse(name=background)
 
     @get(path="/settings/background/{user_id:int}")
