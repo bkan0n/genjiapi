@@ -20,7 +20,7 @@ jobs:
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
       - name: Run API tests
         run: |
-          postman collection run "${{ github.workspace }}/postman/collections/GenjiAPI.json" -e "28335799-6ef39e9f-cdd2-4d4d-9a91-6eaa2b9feeda" --integration-id "172420-${{ github.run_id }}"
+          postman collection run "${{ github.workspace }}/postman/collections/Genji API.json" -e "28335799-6ef39e9f-cdd2-4d4d-9a91-6eaa2b9feeda" --integration-id "172420-${{ github.run_id }}"
           # Lint your API using Postman CLI
           postman api lint 6f52b44d-f634-495e-bc5a-2407add8f871 --integration-id 172420
 
