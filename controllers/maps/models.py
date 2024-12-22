@@ -211,7 +211,7 @@ class ArchiveMapBody(msgspec.Struct):
 map_submission_request_example = [Example(
     summary="Map submission request",
     description="Map submission request",
-    value=MapSubmissionBody(
+    value=msgspec.json.encode(MapSubmissionBody(
         map_code="TEST",
         map_type="Classic",
         map_name="Hanamura",
@@ -219,5 +219,5 @@ map_submission_request_example = [Example(
         checkpoints=1,
         creator_id=37,
         nickname="TestUser",
-    )
+    ))
 )]
