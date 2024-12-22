@@ -464,8 +464,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "Ayutthaya",
@@ -633,8 +633,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "Beginner",
@@ -2879,8 +2879,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "map_edit",
@@ -2977,8 +2977,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "Ayutthaya",
@@ -4427,25 +4427,46 @@
       "MapSubmissionBody": {
         "properties": {
           "map_code": {
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "TEST"
+            ]
           },
           "map_type": {
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "Classic"
+            ]
           },
           "map_name": {
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "Hanamura"
+            ]
           },
           "difficulty": {
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "Hell"
+            ]
           },
           "checkpoints": {
-            "type": "integer"
+            "type": "integer",
+            "examples": [
+              1
+            ]
           },
           "creator_id": {
-            "type": "integer"
+            "type": "integer",
+            "examples": [
+              37
+            ]
           },
           "nickname": {
-            "type": "string"
+            "type": "string",
+            "examples": [
+              "TestUser"
+            ]
           },
           "description": {
             "oneOf": [
@@ -4547,18 +4568,7 @@
           "map_type",
           "nickname"
         ],
-        "title": "MapSubmissionBody",
-        "examples": [
-          {
-            "map_code": "TEST",
-            "map_type": "Classic",
-            "map_name": "Hanamura",
-            "difficulty": "Hell",
-            "checkpoints": 1,
-            "creator_id": 37,
-            "nickname": "TestUser"
-          }
-        ]
+        "title": "MapSubmissionBody"
       },
       "MostCompletionsAndQualityResponse": {
         "properties": {
