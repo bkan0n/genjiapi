@@ -24,12 +24,12 @@ from controllers import (
     CompletionsController,
     LootboxController,
     MapsController,
-    MasteryController,
     RankCardController,
     RanksController,
     RootRouter,
 )
 from controllers.newsfeed.newsfeed import NewsfeedController
+from controllers.rank_card.mastery import MasteryController
 
 if TYPE_CHECKING:
     from aio_pika.abc import AbstractRobustConnection
@@ -117,7 +117,7 @@ app = Litestar(
             path="/assets",
             directories=["assets"],
             send_as_attachment=True,
-        )
+        ),
     ],
     openapi_config=OpenAPIConfig(
         title="GenjiAPI",

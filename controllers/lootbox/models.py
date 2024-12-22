@@ -4,12 +4,20 @@ import datetime  # noqa: TCH003
 
 import msgspec
 
+from utils.utilities import sanitize_string
+
 
 class RewardTypeResponse(msgspec.Struct):
     name: str
     key_type: str
     rarity: str
     type: str
+
+    url: str | None = None
+
+    def __post_init__(self) -> None:
+        """Post init."""
+        self.url = _reward_url(self.type, self.name)
 
 
 class LootboxKeyTypeResponse(msgspec.Struct):
@@ -22,6 +30,27 @@ class UserRewardsResponse(msgspec.Struct):
     name: str
     type: str
     rarity: str
+
+    url: str | None = None
+
+    def __post_init__(self) -> None:
+        """Post init."""
+        self.url = _reward_url(self.type, self.name)
+
+
+def _reward_url(type_: str, name: str) -> str:
+    sanitized_name = sanitize_string(name)
+    if type_ == "spray":
+        url = f"assets/rank_card/sprays/{sanitized_name}.png"
+    elif type_ == "skin":
+        url = f"assets/rank_card/avatar/{sanitized_name}/heroic.png"
+    elif type_ == "pose":
+        url = f"assets/rank_card/avatar/overwatch_1/{sanitized_name}.png"
+    elif type_ == "background":
+        url = f"assets/rank_card/backgrounds/{sanitized_name}.png"
+    else:
+        url = ""
+    return url
 
 
 class UserLootboxKeyAmountsResponse(msgspec.Struct):

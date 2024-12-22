@@ -10,7 +10,9 @@ class RabbitMessageBody(msgspec.Struct):
     data: typing.Any
 
 
-async def publish(state: State, message_type: str, data: msgspec.Struct, routing_key: str = "genjiapi") -> None:
+async def publish(
+    state: State, message_type: str, data: msgspec.Struct | list[msgspec.Struct], routing_key: str = "genjiapi"
+) -> None:
     """Publish message to RabbitMQ."""
     async with state.mq_channel_pool.acquire() as channel:  # type: aio_pika.Channel
         message_body = msgspec.json.encode(data)

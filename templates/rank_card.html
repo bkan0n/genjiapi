@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Rank Card</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .rank-card {
+      max-width: 600px;
+      width: 90%;
+      border-radius: 15px;
+      overflow: hidden;
+      padding: 20px;
+      color: #fff;
+      text-align: center;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      background-color: #333;
+    }
+
+    .rank-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .rank-image {
+      {#width: 80px;#}
+      {#height: 80px;#}
+      margin-bottom: 10px;
+    }
+
+    .user-name {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .user-rank {
+      font-size: 1.2rem;
+      color: #ffc107;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 15px 0;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+    }
+
+    .progress-section {
+      margin: 20px 0;
+    }
+
+    .progress-bar {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .progress-label {
+      font-size: 1rem;
+    }
+
+    .medals {
+      display: flex;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    .medal {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .medal img {
+      width: 18px;
+      height: 18px;
+    }
+
+    .bar-wrapper {
+      position: relative;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      height: 20px;
+      margin-top: 5px;
+    }
+
+    .bar-fill {
+      background: #4caf50;
+      height: 100%;
+      border-radius: 10px 0 0 10px;
+    }
+
+    .progress-text {
+      position: absolute;
+      right: 10px;
+      top: 0;
+      font-size: 0.8rem;
+      color: #fff;
+      line-height: 20px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .badge img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="rank-card" style="background-image: url('/assets/layer0/{{ background_id }}.png');">
+    <div class="rank-header">
+      <img class="rank-image" src="/assets/layer3/{{ rank_name | lower }}.png" alt="{{ rank_name }} rank icon">
+      <h1 class="user-name">{{ nickname }}</h1>
+      <h2 class="user-rank">{{ rank_name }}</h2>
+    </div>
+
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-value">{{ total_maps_created }}</span>
+        <span class="stat-label">Maps Created</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">{{ total_playtests }}</span>
+        <span class="stat-label">Playtests</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">{{ world_records }}</span>
+        <span class="stat-label">World Records</span>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      {% for category_name in ["Easy", "Medium", "Hard", "Very Hard", "Extreme", "Hell"] %}
+      <div class="progress-bar">
+        <div class="progress-header">
+          <span class="progress-label">{{ category_name }}</span>
+          <div class="medals">
+            <div class="medal">
+{#              <img src="/static/icons/gold_medal.png" alt="Gold">#}
+              <span>{{ categories[category_name].gold }}</span>
+            </div>
+            <div class="medal">
+{#              <img src="/static/icons/silver_medal.png" alt="Silver">#}
+              <span>{{ categories[category_name].silver }}</span>
+            </div>
+            <div class="medal">
+{#              <img src="/static/icons/bronze_medal.png" alt="Bronze">#}
+              <span>{{ categories[category_name].bronze }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="bar-wrapper">
+          <div class="bar-fill" style="width: {{ (categories[category_name].completed / categories[category_name].total) * 100 }}%;"></div>
+          <span class="progress-text">{{ categories[category_name].completed }}/{{ categories[category_name].total }} ({{ (categories[category_name].completed / categories[category_name].total) * 100 | round(2) }}%)</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="badges">
+      {% for badge in badges %}
+      <div class="badge" title="{{ badge.name }}">
+        <img src="{{ badge.icon_url }}" alt="{{ badge.name }}">
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

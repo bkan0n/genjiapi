@@ -1,6 +1,13 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import msgspec
+
+from utils.utilities import ALL_DIFFICULTY_RANGES_MIDPOINT
+
+if TYPE_CHECKING:
+    import asyncpg
 
 
 class MapCompletionStatisticsResponse(msgspec.Struct):
@@ -67,10 +74,128 @@ class MapSubmissionBody(msgspec.Struct):
     difficulty: str
     checkpoints: int
     creator_id: int
+    nickname: str
+    description: str | None = None
     mechanics: list[str] | None = None
     restrictions: list[str] | None = None
-    description: str | None = None
-    guide: str | None = None
+    guides: list[str] | None = None
     gold: float | None = None
     silver: float | None = None
     bronze: float | None = None
+
+    rabbit_data: dict | None = None
+
+    def __post_init__(self) -> None:
+        """Format data for RabbitMQ to easily process necessary data."""
+        self.rabbit_data = {
+            "user": {
+                "user_id": self.creator_id,
+                "nickname": self.nickname,
+            },
+            "map": {
+                "map_code": self.map_code,
+                "difficulty": self.difficulty,
+                "map_name": self.map_name,
+            },
+        }
+
+    async def _insert_maps(self, db: asyncpg.Connection) -> None:
+        query = """
+            INSERT INTO
+            maps (map_name, map_type, map_code, "desc", official, checkpoints)
+            VALUES ($1, $2, $3, $4, TRUE, $5);
+        """
+        await db.execute(
+            query,
+            self.map_name,
+            [self.map_type],
+            self.map_code,
+            self.description,
+            self.checkpoints,
+        )
+
+    async def _insert_mechanics(self, db: asyncpg.Connection) -> None:
+        mechanics = [(self.map_code, x) for x in self.mechanics]
+        query = """
+            INSERT INTO map_mechanics (map_code, mechanic)
+            VALUES ($1, $2);
+        """
+        await db.executemany(query, mechanics)
+
+    async def _insert_restrictions(self, db: asyncpg.Connection) -> None:
+        restrictions = [(self.map_code, x) for x in self.restrictions]
+        query = """
+            INSERT INTO map_restrictions (map_code, restriction)
+            VALUES ($1, $2);
+        """
+        await db.executemany(query, restrictions)
+
+    async def _insert_map_creators(self, db: asyncpg.Connection) -> None:
+        query = """
+            INSERT INTO map_creators (map_code, user_id)
+            VALUES ($1, $2);
+        """
+        await db.execute(
+            query,
+            self.map_code,
+            self.creator_id,
+        )
+
+    async def _insert_map_ratings(self, db: asyncpg.Connection) -> None:
+        query = """
+            INSERT INTO map_ratings (map_code, user_id, difficulty)
+            VALUES ($1, $2, $3);
+        """
+
+        await db.execute(
+            query,
+            self.map_code,
+            self.creator_id,
+            ALL_DIFFICULTY_RANGES_MIDPOINT[self.difficulty],
+        )
+
+    async def _insert_guide(self, db: asyncpg.Connection) -> None:
+        _guides = [(self.map_code, guide) for guide in self.guides if guide]
+        if _guides:
+            query = "INSERT INTO guides (map_code, url) VALUES ($1, $2);"
+            await db.executemany(query, _guides)
+
+    async def _insert_medals(self, db: asyncpg.Connection) -> None:
+        if all((self.gold, self.silver, self.bronze)) and self.gold < self.silver < self.bronze:
+            query = """
+                INSERT INTO map_medals (gold, silver, bronze, map_code)
+                VALUES ($1, $2, $3, $4);
+            """
+
+            await db.execute(
+                query,
+                self.gold,
+                self.silver,
+                self.bronze,
+                self.map_code,
+            )
+
+    async def insert_all(self, db: asyncpg.Connection) -> None:
+        """Insert map data into database."""
+        async with db.transaction():
+            await self._insert_maps(db)
+            await self._insert_mechanics(db)
+            await self._insert_restrictions(db)
+            await self._insert_map_creators(db)
+            await self._insert_map_ratings(db)
+            await self._insert_guide(db)
+            await self._insert_medals(db)
+
+
+class ArchiveMapBody(msgspec.Struct):
+    map_code: str
+
+    rabbit_data: dict | None = None
+
+    def __post_init__(self) -> None:
+        """Init."""
+        self.rabbit_data = {
+            "map": {
+                "map_code": self.map_code,
+            }
+        }

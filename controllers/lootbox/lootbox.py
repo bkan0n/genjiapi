@@ -27,7 +27,7 @@ class LootboxController(BaseController):
             WHERE
                 ($1::text IS NULL OR type = $1::text) AND
                 ($2::text IS NULL OR key_type = $2::text) AND
-                ($3::text IS NULL OR rarity = $3::reward_rarity)
+                ($3::text IS NULL OR rarity = $3::text)
             ORDER BY key_type, name
         """
         rows = await db_connection.fetch(query, reward_type, key_type, rarity)
@@ -61,19 +61,21 @@ class LootboxController(BaseController):
     ) -> list[UserRewardsResponse]:
         """View all rewards a particular user has."""
         query = """
-            SELECT
+            SELECT DISTINCT ON (rt.name, rt.key_type, rt.type)
                 ur.user_id,
                 ur.earned_at,
                 rt.name,
                 rt.type,
                 rt.rarity
             FROM lootbox_user_rewards ur
-            LEFT JOIN lootbox_reward_types rt ON ur.reward = rt.name
+            LEFT JOIN lootbox_reward_types rt ON ur.reward_name = rt.name
+                AND ur.reward_type = rt.type
+                AND ur.key_type = rt.key_type
             WHERE
                 ur.user_id = $1::bigint AND
-                ($2::text IS NULL OR reward = $2) AND
-                ($3::text IS NULL OR key_type = $3) AND
-                ($4::text IS NULL OR rarity = $4::reward_rarity)
+                ($2::text IS NULL OR rt.type = $2::text) AND
+                ($3::text IS NULL OR ur.key_type = $3::text) AND
+                ($4::text IS NULL OR rarity = $4::text)
         """
         rows = await db_connection.fetch(query, user_id, reward_type, key_type, rarity)
         return [UserRewardsResponse(**row) for row in rows]
@@ -134,7 +136,7 @@ class LootboxController(BaseController):
             SELECT *
             FROM lootbox_reward_types
             WHERE
-                rarity = $1::reward_rarity AND
+                rarity = $1::text AND
                 key_type = $2::text
             ORDER BY random()
             LIMIT 1;
@@ -144,13 +146,14 @@ class LootboxController(BaseController):
 
         return [RewardTypeResponse(**row) for row in items]
 
-    @post(path="/users/{user_id:int}/{key_type:str}/{reward_type:str}")
+    @post(path="/users/{user_id:int}/{key_type:str}/{reward_type:str}/{reward_name:str}")
     async def grant_reward_to_user(
         self,
         db_connection: Connection,
         user_id: int,
         key_type: str,
         reward_type: str,
+        reward_name: str,
     ) -> None:
         """Grant reward to user."""
         key_count = await self._get_user_key_count(db_connection, user_id, key_type)
@@ -160,9 +163,9 @@ class LootboxController(BaseController):
         async with db_connection.transaction():
             await self._use_user_key(db_connection, user_id, key_type)
             query = """
-                INSERT INTO lootbox_user_rewards (user_id, reward) VALUES ($1, $2)
+                INSERT INTO lootbox_user_rewards (user_id, reward_type, key_type, reward_name) VALUES ($1, $2, $3, $4)
             """
-            await db_connection.execute(query, user_id, reward_type)
+            await db_connection.execute(query, user_id, reward_type, key_type, reward_name)
 
     @post(path="/user/{user_id:int}/keys/{key_type:str}")
     async def grant_key_to_user(self, db_connection: Connection, user_id: int, key_type: str) -> None:

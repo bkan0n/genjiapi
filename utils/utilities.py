@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import Literal
 
 DIFFICULTIES_T = Literal[
@@ -174,6 +175,8 @@ def generate_difficulty_ranges(top_level: bool = False) -> dict[str, tuple[float
 TOP_DIFFICULTIES_RANGES = generate_difficulty_ranges(True)
 DIFFICULTIES_RANGES = generate_difficulty_ranges()
 
+ALL_DIFFICULTY_RANGES_MIDPOINT = {k: round((v[0] + v[1]) / 2, 2) for k, v in DIFFICULTIES_RANGES.items()}
+
 
 def convert_num_to_difficulty(value: float) -> str:
     """Convert numerical value to difficulty."""
@@ -196,3 +199,10 @@ def wrap_string_with_percent(string: str | None) -> str | None:
     if not string:
         return
     return "%" + string + "%"
+
+
+def sanitize_string(string: str) -> str:
+    """Sanitize string."""
+    string = re.sub(r"[^a-zA-Z\s0-9]", "", string)
+    string = string.strip().replace(" ", "_")
+    return string.lower()

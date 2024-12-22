@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated, Literal
 
+import asyncpg  # noqa: TCH002
 from litestar import get, post
 from litestar.params import Parameter
 
@@ -18,6 +19,7 @@ from utils.utilities import (
 
 from ..root import BaseController
 from .models import (
+    ArchiveMapBody,
     GuidesResponse,
     MapCompletionStatisticsResponse,
     MapPerDifficultyResponse,
@@ -449,7 +451,38 @@ class MapsController(BaseController):
         return [GuidesResponse(**row) for row in rows]
 
     @post(path="/submit")
-    async def submit_map(self, state: State, data: MapSubmissionBody) -> MapSubmissionBody:
+    async def submit_map(
+        self, state: State, db_connection: asyncpg.Connection, data: MapSubmissionBody
+    ) -> MapSubmissionBody:
         """Submit map."""
+        await data.insert_all(db_connection)
         await rabbit.publish(state, "new_map", data)
+        return data
+
+    @post(path="/archive")
+    async def bulk_archive(
+        self, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
+    ) -> list[ArchiveMapBody]:
+        """Bulk archive."""
+        await rabbit.publish(state, "bulk_archive", data)
+        args = [(d.map_code, True) for d in data]
+        query = "UPDATE maps SET archived = $1 WHERE map_code = $2;"
+        await db_connection.execute(
+            query,
+            args,
+        )
+        return data
+
+    @post(path="/unarchive")
+    async def bulk_unarchive(
+        self, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
+    ) -> list[ArchiveMapBody]:
+        """Bulk unarchive."""
+        await rabbit.publish(state, "bulk_unarchive", data)
+        args = [(d.map_code, False) for d in data]
+        query = "UPDATE maps SET archived = $1 WHERE map_code = $2;"
+        await db_connection.execute(
+            query,
+            args,
+        )
         return data
