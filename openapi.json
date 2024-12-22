@@ -1,0 +1,5199 @@
+{
+  "info": {
+    "title": "GenjiAPI",
+    "version": "0.1.0",
+    "description": "GenjiAPI"
+  },
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/v1/maps/archive": {
+      "post": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "BulkArchive",
+        "operationId": "V1MapsArchiveBulkArchive",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/ArchiveMapBody"
+                },
+                "type": "array"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Document created, URL follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ArchiveMapBody"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/maps/unarchive": {
+      "post": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "BulkUnarchive",
+        "operationId": "V1MapsUnarchiveBulkUnarchive",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/ArchiveMapBody"
+                },
+                "type": "array"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Document created, URL follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ArchiveMapBody"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/maps/statistics/completions/{map_code}": {
+      "get": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "GetMapCompletionStatistics",
+        "operationId": "V1MapsStatisticsCompletionsMapCodeGetMapCompletionStatistics",
+        "parameters": [
+          {
+            "name": "map_code",
+            "in": "path",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9]{4,6}$"
+                }
+              ]
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapCompletionStatisticsResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/maps/statistics/difficulty": {
+      "get": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "GetMapsPerDifficulty",
+        "operationId": "V1MapsStatisticsDifficultyGetMapsPerDifficulty",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapPerDifficultyResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/maps/popularcreators": {
+      "get": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "GetPopularCreators",
+        "operationId": "V1MapsPopularcreatorsGetPopularCreators",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TopCreatorsResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/maps/popular": {
+      "get": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "GetPopularMaps",
+        "operationId": "V1MapsPopularGetPopularMaps",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MostCompletionsAndQualityResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/maps/guides": {
+      "get": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "Guides",
+        "operationId": "V1MapsGuidesGuides",
+        "parameters": [
+          {
+            "name": "map_code",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9]{4,6}$"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/GuidesResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/maps/search": {
+      "get": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "MapSearch",
+        "operationId": "V1MapsSearchMapSearch",
+        "parameters": [
+          {
+            "name": "map_code",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9]{4,6}$"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "map_type",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "Classic",
+                      "Increasing Difficulty",
+                      "Tournament",
+                      "Aim Parkour (Hanzo)",
+                      "Practice"
+                    ]
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "map_name",
+            "in": "query",
+            "schema": {
+              "type": [
+                "null",
+                "string"
+              ],
+              "enum": [
+                "Ayutthaya",
+                "Black Forest",
+                "Blizzard World",
+                "Busan",
+                "Castillo",
+                "Chateau Guillard",
+                "Circuit Royal",
+                "Colosseo",
+                "Dorado",
+                "Ecopoint: Antarctica",
+                "Eichenwalde",
+                "Esperanca",
+                "Hanamura",
+                "Havana",
+                "Hollywood",
+                "Horizon Lunar Colony",
+                "Ilios",
+                "Junkertown",
+                "Kanezaka",
+                "King's Row",
+                "Lijiang Tower",
+                "Malevento",
+                "Midtown",
+                "Necropolis",
+                "Nepal",
+                "New Queen Street",
+                "Numbani",
+                "Oasis",
+                "Paraiso",
+                "Paris",
+                "Petra",
+                "Practice Range",
+                "Rialto",
+                "Route 66",
+                "Temple of Anubis",
+                "Volskaya Industries",
+                "Watchpoint: Gibraltar",
+                "Workshop Chamber",
+                "Workshop Expanse",
+                "Workshop Green Screen",
+                "Workshop Island",
+                "Framework",
+                "Tools",
+                "Shambali",
+                "Chateau Guillard (Halloween)",
+                "Eichenwalde (Halloween)",
+                "Hollywood (Halloween)",
+                "Black Forest (Winter)",
+                "Blizzard World (Winter)",
+                "Ecopoint: Antarctica (Winter)",
+                "Hanamura (Winter)",
+                "King's Row (Winter)",
+                "Busan (Lunar New Year)",
+                "Lijiang Tower (Lunar New Year)",
+                "Antarctic Peninsula",
+                "Suravasa",
+                "New Junk City",
+                "Samoa",
+                "Hanaoka",
+                "Runasapi",
+                "Throne of Anubis",
+                null
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "mechanics",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "Edge Climb",
+                      "Bhop",
+                      "Crouch Edge",
+                      "Save Climb",
+                      "Bhop First",
+                      "High Edge",
+                      "Distance Edge",
+                      "Quick Climb",
+                      "Slide",
+                      "Stall",
+                      "Dash",
+                      "Ultimate",
+                      "Emote Save Bhop",
+                      "Death Bhop",
+                      "Triple Jump",
+                      "Multi Climb",
+                      "Vertical Multi Climb",
+                      "Create Bhop",
+                      "Standing Create Bhop"
+                    ]
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "restrictions",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "Dash Start",
+                      "Triple Jump",
+                      "Emote Save Bhop ",
+                      "Death Bhop",
+                      "Multi Climb",
+                      "Standing Create Bhop",
+                      "Create Bhop",
+                      "Wall Climb"
+                    ]
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "difficulty",
+            "in": "query",
+            "schema": {
+              "type": [
+                "null",
+                "string"
+              ],
+              "enum": [
+                "Beginner",
+                "Easy",
+                "Medium",
+                "Hard",
+                "Very Hard",
+                "Extreme",
+                "Hell",
+                null
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "minimum_quality",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "integer",
+                  "maximum": 6,
+                  "minimum": 1
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "only_playtest",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "boolean",
+                  "default": false
+                }
+              ],
+              "default": false
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "only_maps_with_medals",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "boolean",
+                  "default": false
+                }
+              ],
+              "default": false
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "ignore_completions",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                10,
+                20,
+                25,
+                50
+              ],
+              "default": 10
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapSearchResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/maps/submit": {
+      "post": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "SubmitMap",
+        "operationId": "V1MapsSubmitSubmitMap",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MapSubmissionBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Document created, URL follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MapSubmissionBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/completions/search": {
+      "get": {
+        "tags": [
+          "Completions"
+        ],
+        "summary": "Completions",
+        "operationId": "V1CompletionsSearchCompletions",
+        "parameters": [
+          {
+            "name": "map_code",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9]{4,6}$"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                10,
+                20,
+                25,
+                50
+              ],
+              "default": 10
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CompletionsResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/completions/progression/{user_id}/{map_code}": {
+      "get": {
+        "tags": [
+          "Completions"
+        ],
+        "summary": "GetMapRecordProgression",
+        "operationId": "V1CompletionsProgressionUserIdMapCodeGetMapRecordProgression",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "map_code",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapRecordProgressionResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/completions/statistics/time-played/rank/{user_id}": {
+      "get": {
+        "tags": [
+          "Completions"
+        ],
+        "summary": "GetTimePlayedPerRank",
+        "operationId": "V1CompletionsStatisticsTimePlayedRankUserIdGetTimePlayedPerRank",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/completions/statistics/time-played/user/{user_id}": {
+      "get": {
+        "tags": [
+          "Completions"
+        ],
+        "summary": "GetTimePlayedPerUser",
+        "operationId": "V1CompletionsStatisticsTimePlayedUserUserIdGetTimePlayedPerUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/completions/personal/{user_id}": {
+      "get": {
+        "tags": [
+          "Completions"
+        ],
+        "summary": "PersonalRecords",
+        "operationId": "V1CompletionsPersonalUserIdPersonalRecords",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "map_code",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9]{4,6}$"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                10,
+                20,
+                25,
+                50
+              ],
+              "default": 10
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PersonalRecordsResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/lootbox/users/{user_id}/keys/{key_type}": {
+      "get": {
+        "tags": [
+          "Lootbox"
+        ],
+        "summary": "GetRandomItems",
+        "operationId": "V1LootboxUsersUserIdKeysKeyTypeGetRandomItems",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "key_type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "amount",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 3
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RewardTypeResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/lootbox/user/{user_id}/keys/{key_type}": {
+      "post": {
+        "tags": [
+          "Lootbox"
+        ],
+        "summary": "GrantKeyToUser",
+        "operationId": "V1LootboxUserUserIdKeysKeyTypeGrantKeyToUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "key_type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Document created, URL follows",
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/lootbox/users/{user_id}/{key_type}/{reward_type}/{reward_name}": {
+      "post": {
+        "tags": [
+          "Lootbox"
+        ],
+        "summary": "GrantRewardToUser",
+        "operationId": "V1LootboxUsersUserIdKeyTypeRewardTypeRewardNameGrantRewardToUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "key_type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "reward_type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "reward_name",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Document created, URL follows",
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/lootbox/keys": {
+      "get": {
+        "tags": [
+          "Lootbox"
+        ],
+        "summary": "ViewAllKeys",
+        "operationId": "V1LootboxKeysViewAllKeys",
+        "parameters": [
+          {
+            "name": "key_type",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/LootboxKeyTypeResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/lootbox/rewards": {
+      "get": {
+        "tags": [
+          "Lootbox"
+        ],
+        "summary": "ViewAllRewards",
+        "operationId": "V1LootboxRewardsViewAllRewards",
+        "parameters": [
+          {
+            "name": "reward_type",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "key_type",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "rarity",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RewardTypeResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/lootbox/users/{user_id}/keys": {
+      "get": {
+        "tags": [
+          "Lootbox"
+        ],
+        "summary": "ViewUserKeys",
+        "operationId": "V1LootboxUsersUserIdKeysViewUserKeys",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "key_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "Classic"
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UserLootboxKeyAmountsResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/lootbox/user/{user_id}/rewards": {
+      "get": {
+        "tags": [
+          "Lootbox"
+        ],
+        "summary": "ViewUserRewards",
+        "operationId": "V1LootboxUserUserIdRewardsViewUserRewards",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "reward_type",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "key_type",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "rarity",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UserRewardsResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/ranks/leaderboard/all": {
+      "get": {
+        "tags": [
+          "Ranks"
+        ],
+        "summary": "GetFullLeaderboard",
+        "operationId": "V1RanksLeaderboardAllGetFullLeaderboard",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "tier_name",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "skill_rank",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "sort_column",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xp_amount",
+                "nickname",
+                "prestige_level",
+                "wr_count",
+                "map_count",
+                "playtest_count",
+                "discord_tag",
+                "skill_rank"
+              ],
+              "default": "xp_amount"
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "sort_direction",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "asc"
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                10,
+                20,
+                25,
+                50
+              ],
+              "default": 10
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FullLeaderboardResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/ranks/statistics/skill/players": {
+      "get": {
+        "tags": [
+          "Ranks"
+        ],
+        "summary": "GetPlayersPerSkillTier",
+        "operationId": "V1RanksStatisticsSkillPlayersGetPlayersPerSkillTier",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PlayersPerSkillTierResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/ranks/statistics/xp/players": {
+      "get": {
+        "tags": [
+          "Ranks"
+        ],
+        "summary": "GetPlayersPerXpTier",
+        "operationId": "V1RanksStatisticsXpPlayersGetPlayersPerXpTier",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PlayersPerXPTierResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/autocomplete/creators": {
+      "get": {
+        "tags": [
+          "Autocomplete"
+        ],
+        "summary": "GetCreatorsAutocomplete",
+        "operationId": "V1AutocompleteCreatorsGetCreatorsAutocomplete",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CreatorAutocompleteResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/autocomplete/map-codes": {
+      "get": {
+        "tags": [
+          "Autocomplete"
+        ],
+        "summary": "GetMapCodesAutocomplete",
+        "operationId": "V1AutocompleteMapCodesGetMapCodesAutocomplete",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapCodeAutocompleteResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/autocomplete/map-mechanics": {
+      "get": {
+        "tags": [
+          "Autocomplete"
+        ],
+        "summary": "GetMapMechanicsAutocomplete",
+        "operationId": "V1AutocompleteMapMechanicsGetMapMechanicsAutocomplete",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapNameAutocompleteResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/autocomplete/map-names": {
+      "get": {
+        "tags": [
+          "Autocomplete"
+        ],
+        "summary": "GetMapNamesAutocomplete",
+        "operationId": "V1AutocompleteMapNamesGetMapNamesAutocomplete",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapNameAutocompleteResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/autocomplete/map-restrictions": {
+      "get": {
+        "tags": [
+          "Autocomplete"
+        ],
+        "summary": "GetMapRestrictionsAutocomplete",
+        "operationId": "V1AutocompleteMapRestrictionsGetMapRestrictionsAutocomplete",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapNameAutocompleteResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/autocomplete/map-types": {
+      "get": {
+        "tags": [
+          "Autocomplete"
+        ],
+        "summary": "GetMapTypesAutocomplete",
+        "operationId": "V1AutocompleteMapTypesGetMapTypesAutocomplete",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapNameAutocompleteResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/newsfeed/aaa": {
+      "get": {
+        "tags": [
+          "newsfeed"
+        ],
+        "summary": "Aaa",
+        "operationId": "V1NewsfeedAaaAaa",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/newsfeed": {
+      "get": {
+        "tags": [
+          "newsfeed"
+        ],
+        "summary": "GetNewsfeed",
+        "operationId": "V1NewsfeedGetNewsfeed",
+        "parameters": [
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                10,
+                20,
+                25,
+                50
+              ],
+              "default": 10
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": [
+                "null",
+                "string"
+              ],
+              "enum": [
+                "map_edit",
+                "guide",
+                "new_map",
+                "role",
+                "record",
+                "announcement",
+                null
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/NewsfeedResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/mastery/{user_id}": {
+      "get": {
+        "tags": [
+          "Mastery"
+        ],
+        "summary": "FetchUserMastery",
+        "operationId": "V1MasteryUserIdFetchUserMastery",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "map_name",
+            "in": "query",
+            "schema": {
+              "type": [
+                "null",
+                "string"
+              ],
+              "enum": [
+                "Ayutthaya",
+                "Black Forest",
+                "Blizzard World",
+                "Busan",
+                "Castillo",
+                "Chateau Guillard",
+                "Circuit Royal",
+                "Colosseo",
+                "Dorado",
+                "Ecopoint: Antarctica",
+                "Eichenwalde",
+                "Esperanca",
+                "Hanamura",
+                "Havana",
+                "Hollywood",
+                "Horizon Lunar Colony",
+                "Ilios",
+                "Junkertown",
+                "Kanezaka",
+                "King's Row",
+                "Lijiang Tower",
+                "Malevento",
+                "Midtown",
+                "Necropolis",
+                "Nepal",
+                "New Queen Street",
+                "Numbani",
+                "Oasis",
+                "Paraiso",
+                "Paris",
+                "Petra",
+                "Practice Range",
+                "Rialto",
+                "Route 66",
+                "Temple of Anubis",
+                "Volskaya Industries",
+                "Watchpoint: Gibraltar",
+                "Workshop Chamber",
+                "Workshop Expanse",
+                "Workshop Green Screen",
+                "Workshop Island",
+                "Framework",
+                "Tools",
+                "Shambali",
+                "Chateau Guillard (Halloween)",
+                "Eichenwalde (Halloween)",
+                "Hollywood (Halloween)",
+                "Black Forest (Winter)",
+                "Blizzard World (Winter)",
+                "Ecopoint: Antarctica (Winter)",
+                "Hanamura (Winter)",
+                "King's Row (Winter)",
+                "Busan (Lunar New Year)",
+                "Lijiang Tower (Lunar New Year)",
+                "Antarctic Peninsula",
+                "Suravasa",
+                "New Junk City",
+                "Samoa",
+                "Hanaoka",
+                "Runasapi",
+                "Throne of Anubis",
+                null
+              ]
+            },
+            "required": false,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapMasteryData"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/rank_card/settings/badges/{user_id}": {
+      "get": {
+        "tags": [
+          "Rank Card"
+        ],
+        "summary": "FetchBadgesSettings",
+        "operationId": "V1RankCardSettingsBadgesUserIdFetchBadgesSettings",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RankCardBadgeSettingsBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Rank Card"
+        ],
+        "summary": "SetBadgesSettings",
+        "operationId": "V1RankCardSettingsBadgesUserIdSetBadgesSettings",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RankCardBadgeSettingsBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Document created, URL follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RankCardBadgeSettingsBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/rank_card/{user_id}": {
+      "get": {
+        "tags": [
+          "Rank Card"
+        ],
+        "summary": "FetchRankCard",
+        "operationId": "V1RankCardUserIdFetchRankCard",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stream Response",
+            "headers": {
+              "content-length": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "File size in bytes",
+                "required": false,
+                "deprecated": false,
+                "allowEmptyValue": false,
+                "allowReserved": false
+              },
+              "last-modified": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "description": "Last modified data-time in RFC 2822 format",
+                "required": false,
+                "deprecated": false,
+                "allowEmptyValue": false,
+                "allowReserved": false
+              },
+              "etag": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Entity tag",
+                "required": false,
+                "deprecated": false,
+                "allowEmptyValue": false,
+                "allowReserved": false
+              }
+            },
+            "content": {
+              "": {
+                "schema": {
+                  "type": "string",
+                  "contentMediaType": "application/octet-stream"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/rank_card/test/{user_id}": {
+      "get": {
+        "tags": [
+          "Rank Card"
+        ],
+        "summary": "FetchRankCardTest",
+        "operationId": "V1RankCardTestUserIdFetchRankCardTest",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RankCardData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/rank_card/settings/avatar/pose/{user_id}": {
+      "get": {
+        "tags": [
+          "Rank Card"
+        ],
+        "summary": "GetAvatarPose",
+        "operationId": "V1RankCardSettingsAvatarPoseUserIdGetAvatarPose",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvatarResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/rank_card/settings/avatar/skin/{user_id}": {
+      "get": {
+        "tags": [
+          "Rank Card"
+        ],
+        "summary": "GetAvatarSkin",
+        "operationId": "V1RankCardSettingsAvatarSkinUserIdGetAvatarSkin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvatarResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/rank_card/settings/background/{user_id}": {
+      "get": {
+        "tags": [
+          "Rank Card"
+        ],
+        "summary": "GetBackground",
+        "operationId": "V1RankCardSettingsBackgroundUserIdGetBackground",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackgroundResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/rank_card/settings/avatar/pose/{user_id}/{pose}": {
+      "post": {
+        "tags": [
+          "Rank Card"
+        ],
+        "summary": "SetAvatarPose",
+        "operationId": "V1RankCardSettingsAvatarPoseUserIdSetAvatarPose",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "pose",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Document created, URL follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvatarResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/rank_card/settings/avatar/skin/{user_id}/{skin}": {
+      "post": {
+        "tags": [
+          "Rank Card"
+        ],
+        "summary": "SetAvatarSkin",
+        "operationId": "V1RankCardSettingsAvatarSkinUserIdSetAvatarSkin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "skin",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Document created, URL follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvatarResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/rank_card/settings/background/{user_id}/{background}": {
+      "post": {
+        "tags": [
+          "Rank Card"
+        ],
+        "summary": "SetBackground",
+        "operationId": "V1RankCardSettingsBackgroundUserIdSetBackground",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "name": "background",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Document created, URL follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackgroundResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ArchiveMapBody": {
+        "properties": {
+          "map_code": {
+            "type": "string"
+          },
+          "rabbit_data": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "map_code"
+        ],
+        "title": "ArchiveMapBody"
+      },
+      "AvatarResponse": {
+        "properties": {
+          "skin": {
+            "type": "string",
+            "default": "Overwatch 1"
+          },
+          "pose": {
+            "type": "string",
+            "default": "Heroic"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [],
+        "title": "AvatarResponse"
+      },
+      "BackgroundResponse": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "BackgroundResponse"
+      },
+      "CompletionsResponse": {
+        "properties": {
+          "map_code": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "discord_tag": {
+            "type": "string"
+          },
+          "time": {
+            "type": "string"
+          },
+          "medal": {
+            "type": "string"
+          },
+          "video": {
+            "type": "string"
+          },
+          "total_results": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "discord_tag",
+          "map_code",
+          "medal",
+          "nickname",
+          "time",
+          "total_results",
+          "video"
+        ],
+        "title": "CompletionsResponse"
+      },
+      "CreatorAutocompleteResponse": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "user_id"
+        ],
+        "title": "CreatorAutocompleteResponse"
+      },
+      "FullLeaderboardResponse": {
+        "properties": {
+          "user_id": {
+            "type": "integer"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "xp_amount": {
+            "type": "integer"
+          },
+          "raw_tier": {
+            "type": "integer"
+          },
+          "normalized_tier": {
+            "type": "integer"
+          },
+          "prestige_level": {
+            "type": "integer"
+          },
+          "tier_name": {
+            "type": "string"
+          },
+          "wr_count": {
+            "type": "integer"
+          },
+          "map_count": {
+            "type": "integer"
+          },
+          "playtest_count": {
+            "type": "integer"
+          },
+          "discord_tag": {
+            "type": "string"
+          },
+          "skill_rank": {
+            "type": "string"
+          },
+          "total_results": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "discord_tag",
+          "map_count",
+          "nickname",
+          "normalized_tier",
+          "playtest_count",
+          "prestige_level",
+          "raw_tier",
+          "skill_rank",
+          "tier_name",
+          "total_results",
+          "user_id",
+          "wr_count",
+          "xp_amount"
+        ],
+        "title": "FullLeaderboardResponse"
+      },
+      "GuidesResponse": {
+        "properties": {
+          "map_code": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "total_results": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "map_code",
+          "total_results",
+          "url"
+        ],
+        "title": "GuidesResponse"
+      },
+      "LootboxKeyTypeResponse": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "LootboxKeyTypeResponse"
+      },
+      "MapCodeAutocompleteResponse": {
+        "properties": {
+          "map_code": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "map_code"
+        ],
+        "title": "MapCodeAutocompleteResponse"
+      },
+      "MapCompletionStatisticsResponse": {
+        "properties": {
+          "min": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "max": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "avg": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [],
+        "title": "MapCompletionStatisticsResponse"
+      },
+      "MapMasteryData": {
+        "properties": {
+          "map_name": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          },
+          "level": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "icon_url": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "amount",
+          "map_name"
+        ],
+        "title": "MapMasteryData"
+      },
+      "MapNameAutocompleteResponse": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "MapNameAutocompleteResponse"
+      },
+      "MapPerDifficultyResponse": {
+        "properties": {
+          "difficulty": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "amount",
+          "difficulty"
+        ],
+        "title": "MapPerDifficultyResponse"
+      },
+      "MapRecordProgressionResponse": {
+        "properties": {
+          "time": {
+            "type": "number"
+          },
+          "inserted_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "type": "object",
+        "required": [
+          "inserted_at",
+          "time"
+        ],
+        "title": "MapRecordProgressionResponse"
+      },
+      "MapSearchResponse": {
+        "properties": {
+          "map_name": {
+            "type": "string"
+          },
+          "map_type": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "map_code": {
+            "type": "string"
+          },
+          "official": {
+            "type": "boolean"
+          },
+          "archived": {
+            "type": "boolean"
+          },
+          "mechanics": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "restrictions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "checkpoints": {
+            "type": "integer"
+          },
+          "creators": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "creators_discord_tag": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "difficulty": {
+            "type": "string"
+          },
+          "creator_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "total_results": {
+            "type": "integer"
+          },
+          "desc": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "guide": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "quality": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "gold": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "silver": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "bronze": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "playtest_votes": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "required_votes": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "time": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "medal_type": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "archived",
+          "checkpoints",
+          "creator_ids",
+          "creators",
+          "creators_discord_tag",
+          "difficulty",
+          "map_code",
+          "map_name",
+          "map_type",
+          "mechanics",
+          "official",
+          "restrictions",
+          "total_results"
+        ],
+        "title": "MapSearchResponse"
+      },
+      "MapSubmissionBody": {
+        "properties": {
+          "map_code": {
+            "type": "string"
+          },
+          "map_type": {
+            "type": "string"
+          },
+          "map_name": {
+            "type": "string"
+          },
+          "difficulty": {
+            "type": "string"
+          },
+          "checkpoints": {
+            "type": "integer"
+          },
+          "creator_id": {
+            "type": "integer"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "mechanics": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "restrictions": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "guides": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "gold": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "silver": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "bronze": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "rabbit_data": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "checkpoints",
+          "creator_id",
+          "difficulty",
+          "map_code",
+          "map_name",
+          "map_type",
+          "nickname"
+        ],
+        "title": "MapSubmissionBody"
+      },
+      "MostCompletionsAndQualityResponse": {
+        "properties": {
+          "map_code": {
+            "type": "string"
+          },
+          "completions": {
+            "type": "integer"
+          },
+          "quality": {
+            "type": "number"
+          },
+          "difficulty": {
+            "type": "string"
+          },
+          "ranking": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "completions",
+          "difficulty",
+          "map_code",
+          "quality",
+          "ranking"
+        ],
+        "title": "MostCompletionsAndQualityResponse"
+      },
+      "NewsfeedDataResponse": {
+        "properties": {
+          "map": {
+            "$ref": "#/components/schemas/NewsfeedMapResponse"
+          },
+          "user": {
+            "$ref": "#/components/schemas/NewsfeedUserResponse"
+          },
+          "record": {
+            "$ref": "#/components/schemas/NewsfeedRecordResponse"
+          },
+          "message": {
+            "$ref": "#/components/schemas/NewsfeedMessageResponse"
+          }
+        },
+        "type": "object",
+        "required": [],
+        "title": "NewsfeedDataResponse"
+      },
+      "NewsfeedMapResponse": {
+        "properties": {
+          "map_name": {
+            "type": "string"
+          },
+          "map_type": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "map_code": {
+            "type": "string"
+          },
+          "new_map_code": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "official": {
+            "type": "boolean"
+          },
+          "archived": {
+            "type": "boolean"
+          },
+          "guide": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "mechanics": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "restrictions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "checkpoints": {
+            "type": "integer"
+          },
+          "creators": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "difficulty": {
+            "type": "string"
+          },
+          "quality": {
+            "type": "number"
+          },
+          "creator_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "gold": {
+            "type": "number"
+          },
+          "silver": {
+            "type": "number"
+          },
+          "bronze": {
+            "type": "number"
+          }
+        },
+        "type": "object",
+        "required": [],
+        "title": "NewsfeedMapResponse"
+      },
+      "NewsfeedMessageResponse": {
+        "properties": {
+          "content": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "NewsfeedMessageResponse"
+      },
+      "NewsfeedRecordResponse": {
+        "properties": {
+          "record": {
+            "type": "number"
+          },
+          "video": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [],
+        "title": "NewsfeedRecordResponse"
+      },
+      "NewsfeedResponse": {
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NewsfeedDataResponse"
+          },
+          "total_results": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "timestamp",
+          "total_results",
+          "type"
+        ],
+        "title": "NewsfeedResponse"
+      },
+      "NewsfeedUserResponse": {
+        "properties": {
+          "user_id": {
+            "type": "integer"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "roles": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [],
+        "title": "NewsfeedUserResponse"
+      },
+      "PersonalRecordsResponse": {
+        "properties": {
+          "map_code": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "discord_tag": {
+            "type": "string"
+          },
+          "difficulty": {
+            "type": "string"
+          },
+          "time": {
+            "type": "number"
+          },
+          "medal": {
+            "type": "string"
+          },
+          "total_results": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "difficulty",
+          "discord_tag",
+          "map_code",
+          "medal",
+          "nickname",
+          "time",
+          "total_results"
+        ],
+        "title": "PersonalRecordsResponse"
+      },
+      "PlayersPerSkillTierResponse": {
+        "properties": {
+          "tier": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "amount",
+          "tier"
+        ],
+        "title": "PlayersPerSkillTierResponse"
+      },
+      "PlayersPerXPTierResponse": {
+        "properties": {
+          "tier": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "amount",
+          "tier"
+        ],
+        "title": "PlayersPerXPTierResponse"
+      },
+      "RankCardBadgeSettingsBody": {
+        "properties": {
+          "user_id": {
+            "type": "integer"
+          },
+          "badge_name1": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_type1": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_name2": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_type2": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_name3": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_type3": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_name4": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_type4": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_name5": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_type5": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_name6": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_type6": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_url1": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_url2": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_url3": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_url4": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_url5": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "badge_url6": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id"
+        ],
+        "title": "RankCardBadgeSettingsBody"
+      },
+      "RankCardBadgesData": {
+        "properties": {
+          "type": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "name": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [],
+        "title": "RankCardBadgesData"
+      },
+      "RankCardData": {
+        "properties": {
+          "rank_name": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "background": {
+            "type": "string"
+          },
+          "total_maps_created": {
+            "type": "integer"
+          },
+          "total_playtests": {
+            "type": "integer"
+          },
+          "world_records": {
+            "type": "integer"
+          },
+          "difficulties": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/RankCardDifficultiesData"
+            },
+            "type": "object"
+          },
+          "avatar_skin": {
+            "type": "string"
+          },
+          "avatar_pose": {
+            "type": "string"
+          },
+          "badges": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/RankCardBadgesData"
+            },
+            "type": "object"
+          },
+          "background_url": {
+            "type": "string"
+          },
+          "rank_url": {
+            "type": "string"
+          },
+          "avatar_url": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "avatar_pose",
+          "avatar_skin",
+          "background",
+          "badges",
+          "difficulties",
+          "nickname",
+          "rank_name",
+          "total_maps_created",
+          "total_playtests",
+          "world_records"
+        ],
+        "title": "RankCardData"
+      },
+      "RankCardDifficultiesData": {
+        "properties": {
+          "completed": {
+            "type": "integer"
+          },
+          "gold": {
+            "type": "integer"
+          },
+          "silver": {
+            "type": "integer"
+          },
+          "bronze": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bronze",
+          "completed",
+          "gold",
+          "silver",
+          "total"
+        ],
+        "title": "RankCardDifficultiesData"
+      },
+      "RewardTypeResponse": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "key_type": {
+            "type": "string"
+          },
+          "rarity": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "url": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "key_type",
+          "name",
+          "rarity",
+          "type"
+        ],
+        "title": "RewardTypeResponse"
+      },
+      "TopCreatorsResponse": {
+        "properties": {
+          "map_count": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "average_quality": {
+            "type": "number"
+          }
+        },
+        "type": "object",
+        "required": [
+          "average_quality",
+          "map_count",
+          "name"
+        ],
+        "title": "TopCreatorsResponse"
+      },
+      "UserLootboxKeyAmountsResponse": {
+        "properties": {
+          "key_type": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "amount",
+          "key_type"
+        ],
+        "title": "UserLootboxKeyAmountsResponse"
+      },
+      "UserRewardsResponse": {
+        "properties": {
+          "user_id": {
+            "type": "integer"
+          },
+          "earned_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "rarity": {
+            "type": "string"
+          },
+          "url": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "earned_at",
+          "name",
+          "rarity",
+          "type",
+          "user_id"
+        ],
+        "title": "UserRewardsResponse"
+      }
+    }
+  }
+}
