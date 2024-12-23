@@ -99,7 +99,7 @@ class RankCardController(Controller):
                     row_d[url_col] = cur.icon_url
             elif row_d[type_col] == "spray":
                 _sanitized = sanitize_string(row_d[name_col])
-                row_d[url_col] = f"assets/rank_card/spray/{_sanitized}.png"
+                row_d[url_col] = f"assets/rank_card/spray/{_sanitized}.webp"
 
         return RankCardBadgeSettingsBody(**row_d)
 

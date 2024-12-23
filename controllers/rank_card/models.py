@@ -74,7 +74,7 @@ class RankCardBadgesData(msgspec.Struct):
         inst = cls(type_, name)
         if type_ != "mastery":
             if name:
-                inst.url = f"assets/rank_card/spray/{sanitize_string(name)}.png"
+                inst.url = f"assets/rank_card/spray/{sanitize_string(name)}.webp"
             return inst
         rows = await fetch_map_mastery(db, user_id, name)
         if rows:
@@ -103,10 +103,10 @@ class RankCardData(msgspec.Struct):
     def __post_init__(self) -> None:
         """Post init."""
         """Post init."""
-        self.background_url = f"assets/rank_card/background/{sanitize_string(self.background)}.png"
-        self.rank_url = f"assets/ranks/{sanitize_string(self.rank_name)}.png"
+        self.background_url = f"assets/rank_card/background/{sanitize_string(self.background)}.webp"
+        self.rank_url = f"assets/ranks/{sanitize_string(self.rank_name)}.webp"
         self.avatar_url = (
-            f"assets/rank_card/avatar/{sanitize_string(self.avatar_skin)}/{sanitize_string(self.avatar_pose)}.png"
+            f"assets/rank_card/avatar/{sanitize_string(self.avatar_skin)}/{sanitize_string(self.avatar_pose)}.webp"
         )
 
 
@@ -164,7 +164,7 @@ class MapMasteryData(msgspec.Struct):
     def _icon_url(self) -> str:
         _sanitized_map_name = sanitize_string(self.map_name)
         _lowered_level = self.level.lower()
-        return f"assets/mastery/{_sanitized_map_name}_{_lowered_level}.png"
+        return f"assets/mastery/{_sanitized_map_name}_{_lowered_level}.webp"
 
 
 class MultipleMapMasteryData(msgspec.Struct):
@@ -180,7 +180,7 @@ class BackgroundResponse(msgspec.Struct):
         """Post init."""
         if not self.name:
             self.name = "placeholder"
-        self.url = f"assets/rank_card/background/{sanitize_string(self.name)}.png"
+        self.url = f"assets/rank_card/background/{sanitize_string(self.name)}.webp"
 
 
 class AvatarResponse(msgspec.Struct):
@@ -196,4 +196,4 @@ class AvatarResponse(msgspec.Struct):
         if not self.pose:
             self.pose = "Heroic"
         """Post init."""
-        self.url = f"assets/rank_card/avatar/{sanitize_string(self.skin)}/{sanitize_string(self.pose)}.png"
+        self.url = f"assets/rank_card/avatar/{sanitize_string(self.skin)}/{sanitize_string(self.pose)}.webp"
