@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-import logging
 from typing import TYPE_CHECKING, Annotated, Literal
 
 import asyncpg  # noqa: TCH002
-from litestar import get, post, Request
-from litestar.params import Parameter, Body
+from litestar import Request, get, post
+from litestar.params import Parameter
 
 from utils import rabbit
 from utils.utilities import (
@@ -23,6 +22,7 @@ from .models import (
     ArchiveMapBody,
     GuidesResponse,
     MapCompletionStatisticsResponse,
+    MapCountsResponse,
     MapPerDifficultyResponse,
     MapSearchResponse,
     MapSubmissionBody,
@@ -466,7 +466,12 @@ class MapsController(BaseController):
         self, request: Request, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
     ) -> list[ArchiveMapBody]:
         """Bulk archive."""
-        await rabbit.publish(state, "bulk_archive", data, extra_headers={"x-test-mode": request.headers.get("x-test-mode")})
+        await rabbit.publish(
+            state,
+            "bulk_archive",
+            data,
+            extra_headers={"x-test-mode": request.headers.get("x-test-mode")},
+        )
         args = [(d.map_code, True) for d in data]
         query = "UPDATE maps SET archived = $2 WHERE map_code = $1;"
         await db_connection.executemany(
@@ -480,8 +485,12 @@ class MapsController(BaseController):
         self, request: Request, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
     ) -> list[ArchiveMapBody]:
         """Bulk unarchive."""
-
-        await rabbit.publish(state, "bulk_unarchive", data, extra_headers={"x-test-mode": request.headers.get("x-test-mode")})
+        await rabbit.publish(
+            state,
+            "bulk_unarchive",
+            data,
+            extra_headers={"x-test-mode": request.headers.get("x-test-mode")},
+        )
         args = [(d.map_code, False) for d in data]
         query = "UPDATE maps SET archived = $2 WHERE map_code = $1;"
         await db_connection.executemany(
@@ -489,3 +498,34 @@ class MapsController(BaseController):
             args,
         )
         return data
+
+    @get(path="/statistics/counts/unarchived")
+    async def get_unarchived_map_count(self, db_connection: asyncpg.Connection) -> list[MapCountsResponse]:
+        """Get unarchived map counts."""
+        query = """
+            SELECT
+                name as map_name,
+                count(m.map_name) as amount
+            FROM all_map_names amn
+            LEFT JOIN maps m ON amn.name = m.map_name
+            WHERE m.archived IS FALSE
+            GROUP BY name
+            ORDER BY amount DESC
+        """
+        rows = await db_connection.fetch(query)
+        return [MapCountsResponse(**row) for row in rows]
+
+    @get(path="/statistics/counts/all")
+    async def get_total_map_count(self, db_connection: asyncpg.Connection) -> list[MapCountsResponse]:
+        """Get the total count of maps per map name regardless of archive status."""
+        query = """
+            SELECT
+                name as map_name,
+                count(m.map_name) as amount
+            FROM all_map_names amn
+            LEFT JOIN maps m ON amn.name = m.map_name
+            GROUP BY name
+            ORDER BY amount DESC
+        """
+        rows = await db_connection.fetch(query)
+        return [MapCountsResponse(**row) for row in rows]

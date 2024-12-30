@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Annotated
 
 import msgspec
-from litestar.openapi.spec import Example
 
 from utils.utilities import ALL_DIFFICULTY_RANGES_MIDPOINT
 
@@ -206,3 +205,8 @@ class ArchiveMapBody(msgspec.Struct):
                 "map_code": self.map_code,
             }
         }
+
+
+class MapCountsResponse(msgspec.Struct):
+    map_name: str
+    amount: int
