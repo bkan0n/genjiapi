@@ -7,7 +7,12 @@ from litestar.params import Parameter
 from utils.utilities import wrap_string_with_percent
 
 from ..root import BaseController
-from .models import CompletionsResponse, MapRecordProgressionResponse, PersonalRecordsResponse
+from .models import (
+    CompletionsResponse,
+    MapRecordProgressionResponse,
+    PersonalRecordsResponse,
+    TimePlayedPerRankResponse,
+)
 
 
 class CompletionsController(BaseController):
@@ -151,68 +156,60 @@ class CompletionsController(BaseController):
         rows = await db_connection.fetch(query, map_code, user_id, page_size, offset)
         return [PersonalRecordsResponse(**row) for row in rows]
 
-    @get(path="/statistics/time-played/user/{user_id:int}")
-    async def get_time_played_per_user(
-        self,
-        db_connection: Connection,
-        user_id: int,
-    ) -> dict:
-        """Get the time played per user."""
-        query = """
-            SELECT sum(r.record)
-            FROM records r
-            WHERE r.user_id = $1 AND r.completion IS FALSE AND record < 99999999.99
-        """
-        await db_connection.fetchrow(query, user_id)
-        return {"value": 1.0}
-
-    @get(path="/statistics/time-played/rank/{user_id:int}")
+    @get(path="/statistics/time-played/rank")
     async def get_time_played_per_rank(
         self,
         db_connection: Connection,
-        user_id: int,
-    ) -> list:
+    ) -> list[TimePlayedPerRankResponse]:
         """Get the time played per user."""
         query = """
-            WITH ranges ("range", "name") AS (
-            VALUES  ('[0.0,2.35)'::numrange, 'Easy'),
-                    ('[2.35,4.12)'::numrange, 'Medium'),
-                    ('[4.12,5.88)'::numrange, 'Hard'),
-                    ('[5.88,7.65)'::numrange, 'Very Hard'),
-                    ('[7.65,9.41)'::numrange, 'Extreme'),
-                    ('[9.41,10.0]'::numrange, 'Hell')
-        ),
-        map_data AS (
-            SELECT
-                m.map_code,
-                avg(mr.difficulty) AS difficulty
-            FROM maps m
-            LEFT JOIN map_ratings mr ON mr.map_code = m.map_code
-            WHERE m.official IS TRUE AND m.archived IS FALSE AND mr.verified IS TRUE
-            GROUP BY m.map_code
-        )
-        , map_data_with_difficulty AS (
-            SELECT
-                map_code,
-                name as difficulty
-            FROM ranges r
-            INNER JOIN map_data md ON r.range @> md.difficulty
-         )
-        SELECT
-            sum(record),
-            difficulty
-        FROM map_data_with_difficulty mdd
-        LEFT JOIN records rec ON rec.map_code = mdd.map_code
-        WHERE rec.completion IS FALSE AND rec.record < 99999999.99 AND rec.verified IS TRUE
-        GROUP BY difficulty
-        ORDER BY
-        CASE WHEN difficulty = 'Easy' THEN 1
-            WHEN difficulty = 'Medium' THEN 2
-            WHEN difficulty = 'Hard' THEN 3
-            WHEN difficulty = 'Very Hard' THEN 4
-            WHEN difficulty = 'Extreme' THEN 5
-            ELSE 6
-        END;
+            WITH
+                record_sum_by_map_code AS (
+                    SELECT
+                        sum(record) as total_seconds,
+                        map_code
+                    FROM records r
+                    WHERE verified
+                    GROUP BY map_code
+                ),
+                ranges AS (
+                    SELECT range, name FROM
+                    (
+                        VALUES
+                            ('[0.0,2.35)'::numrange, 'Easy'),
+                            ('[2.35,4.12)'::numrange, 'Medium'),
+                            ('[4.12,5.88)'::numrange, 'Hard'),
+                            ('[5.88,7.65)'::numrange, 'Very Hard'),
+                            ('[7.65,9.41)'::numrange, 'Extreme'),
+                            ('[9.41,10.0]'::numrange, 'Hell')
+                    ) AS ranges("range", "name")
+                ),
+                map_difficulty_number AS (
+                    SELECT
+                        map_code,
+                        avg(difficulty) AS difficulty
+                    FROM map_ratings mr
+                    WHERE verified
+                    GROUP BY map_code
+                ),
+                map_difficulty_string AS (
+                    SELECT r.name as difficulty, map_code
+                    FROM ranges r
+                    INNER JOIN map_difficulty_number mdn ON r.range @> mdn.difficulty
+                )
+            SELECT sum(total_seconds) as total_seconds, difficulty
+            FROM record_sum_by_map_code rs
+            LEFT JOIN map_difficulty_string mds ON rs.map_code = mds.map_code
+            WHERE difficulty IS NOT NULL
+            GROUP BY difficulty
+            ORDER BY CASE difficulty
+                WHEN 'Easy' THEN 1
+                WHEN 'Medium' THEN 2
+                WHEN 'Hard' THEN 3
+                WHEN 'Very Hard' THEN 4
+                WHEN 'Extreme' THEN 5
+                WHEN 'Hell' THEN 6
+            END;
         """
-        print(query)
-        return []
+        rows = await db_connection.fetch(query)
+        return [TimePlayedPerRankResponse(**row) for row in rows]

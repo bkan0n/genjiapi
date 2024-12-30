@@ -28,3 +28,8 @@ class PersonalRecordsResponse(msgspec.Struct):
     time: float
     medal: str
     total_results: int
+
+
+class TimePlayedPerRankResponse(msgspec.Struct):
+    total_seconds: float
+    difficulty: str
