@@ -319,6 +319,58 @@
         "deprecated": false
       }
     },
+    "/v1/maps/statistics/counts/all": {
+      "get": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "GetTotalMapCount",
+        "operationId": "V1MapsStatisticsCountsAllGetTotalMapCount",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapCountsResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/maps/statistics/counts/unarchived": {
+      "get": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "GetUnarchivedMapCount",
+        "operationId": "V1MapsStatisticsCountsUnarchivedGetUnarchivedMapCount",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapCountsResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v1/maps/guides": {
       "get": {
         "tags": [
@@ -464,8 +516,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "Ayutthaya",
@@ -633,8 +685,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "Beginner",
@@ -1120,24 +1172,13 @@
         "deprecated": false
       }
     },
-    "/v1/completions/statistics/time-played/rank/{user_id}": {
+    "/v1/completions/statistics/time-played/rank": {
       "get": {
         "tags": [
           "Completions"
         ],
         "summary": "GetTimePlayedPerRank",
-        "operationId": "V1CompletionsStatisticsTimePlayedRankUserIdGetTimePlayedPerRank",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "deprecated": false
-          }
-        ],
+        "operationId": "V1CompletionsStatisticsTimePlayedRankGetTimePlayedPerRank",
         "responses": {
           "200": {
             "description": "Request fulfilled, document follows",
@@ -1145,117 +1186,10 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TimePlayedPerRankResponse"
+                  },
                   "type": "array"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request syntax or unsupported method",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "status_code": {
-                      "type": "integer"
-                    },
-                    "detail": {
-                      "type": "string"
-                    },
-                    "extra": {
-                      "additionalProperties": {},
-                      "type": [
-                        "null",
-                        "object",
-                        "array"
-                      ]
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "detail",
-                    "status_code"
-                  ],
-                  "description": "Validation Exception",
-                  "examples": [
-                    {
-                      "status_code": 400,
-                      "detail": "Bad Request",
-                      "extra": {}
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "deprecated": false
-      }
-    },
-    "/v1/completions/statistics/time-played/user/{user_id}": {
-      "get": {
-        "tags": [
-          "Completions"
-        ],
-        "summary": "GetTimePlayedPerUser",
-        "operationId": "V1CompletionsStatisticsTimePlayedUserUserIdGetTimePlayedPerUser",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "deprecated": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Request fulfilled, document follows",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request syntax or unsupported method",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "status_code": {
-                      "type": "integer"
-                    },
-                    "detail": {
-                      "type": "string"
-                    },
-                    "extra": {
-                      "additionalProperties": {},
-                      "type": [
-                        "null",
-                        "object",
-                        "array"
-                      ]
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "detail",
-                    "status_code"
-                  ],
-                  "description": "Validation Exception",
-                  "examples": [
-                    {
-                      "status_code": 400,
-                      "detail": "Bad Request",
-                      "extra": {}
-                    }
-                  ]
                 }
               }
             }
@@ -2597,7 +2531,7 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "$ref": "#/components/schemas/MapNameAutocompleteResponse"
+                    "$ref": "#/components/schemas/MapBaseAutocompleteResponse"
                   },
                   "type": "array"
                 }
@@ -2608,13 +2542,13 @@
         "deprecated": false
       }
     },
-    "/v1/autocomplete/map-names": {
+    "/v1/autocomplete/map-names/{locale}": {
       "get": {
         "tags": [
           "Autocomplete"
         ],
         "summary": "GetMapNamesAutocomplete",
-        "operationId": "V1AutocompleteMapNamesGetMapNamesAutocomplete",
+        "operationId": "V1AutocompleteMapNamesLocaleGetMapNamesAutocomplete",
         "parameters": [
           {
             "name": "value",
@@ -2638,6 +2572,16 @@
             "deprecated": false,
             "allowEmptyValue": false,
             "allowReserved": false
+          },
+          {
+            "name": "locale",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "default": "en"
+            },
+            "required": true,
+            "deprecated": false
           }
         ],
         "responses": {
@@ -2712,7 +2656,7 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "$ref": "#/components/schemas/MapNameAutocompleteResponse"
+                    "$ref": "#/components/schemas/MapBaseAutocompleteResponse"
                   },
                   "type": "array"
                 }
@@ -2763,7 +2707,7 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "$ref": "#/components/schemas/MapNameAutocompleteResponse"
+                    "$ref": "#/components/schemas/MapBaseAutocompleteResponse"
                   },
                   "type": "array"
                 }
@@ -2856,8 +2800,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "map_edit",
@@ -2954,8 +2898,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "Ayutthaya",
@@ -4090,6 +4034,18 @@
         ],
         "title": "LootboxKeyTypeResponse"
       },
+      "MapBaseAutocompleteResponse": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "MapBaseAutocompleteResponse"
+      },
       "MapCodeAutocompleteResponse": {
         "properties": {
           "map_code": {
@@ -4139,6 +4095,22 @@
         "required": [],
         "title": "MapCompletionStatisticsResponse"
       },
+      "MapCountsResponse": {
+        "properties": {
+          "map_name": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "amount",
+          "map_name"
+        ],
+        "title": "MapCountsResponse"
+      },
       "MapMasteryData": {
         "properties": {
           "map_name": {
@@ -4177,13 +4149,17 @@
       },
       "MapNameAutocompleteResponse": {
         "properties": {
-          "name": {
+          "map_name": {
+            "type": "string"
+          },
+          "translated_map_name": {
             "type": "string"
           }
         },
         "type": "object",
         "required": [
-          "name"
+          "map_name",
+          "translated_map_name"
         ],
         "title": "MapNameAutocompleteResponse"
       },
@@ -5156,6 +5132,22 @@
           "type"
         ],
         "title": "RewardTypeResponse"
+      },
+      "TimePlayedPerRankResponse": {
+        "properties": {
+          "total_seconds": {
+            "type": "number"
+          },
+          "difficulty": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "difficulty",
+          "total_seconds"
+        ],
+        "title": "TimePlayedPerRankResponse"
       },
       "TopCreatorsResponse": {
         "properties": {
