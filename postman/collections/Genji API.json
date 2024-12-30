@@ -158,6 +158,74 @@
 									]
 								},
 								{
+									"name": "GetTotalMapCount",
+									"id": "2622c697-5f27-4d93-8f6d-9124a1e88429",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/maps/statistics/counts/all",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"maps",
+												"statistics",
+												"counts",
+												"all"
+											]
+										}
+									},
+									"response": [
+										{
+											"id": "7630afad-d72b-47e1-aeca-c0eedb89504e",
+											"name": "Request fulfilled, document follows",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/maps/statistics/counts/all",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"maps",
+														"statistics",
+														"counts",
+														"all"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "[\n  {\n    \"amount\": \"<integer>\",\n    \"map_name\": \"<string>\"\n  },\n  {\n    \"amount\": \"<integer>\",\n    \"map_name\": \"<string>\"\n  }\n]"
+										}
+									]
+								},
+								{
 									"name": "GetMapsPerDifficulty",
 									"event": [
 										{
@@ -235,6 +303,74 @@
 											],
 											"cookie": [],
 											"body": "[\n  {\n    \"amount\": \"<integer>\",\n    \"difficulty\": \"<string>\"\n  },\n  {\n    \"amount\": \"<integer>\",\n    \"difficulty\": \"<string>\"\n  }\n]"
+										}
+									]
+								},
+								{
+									"name": "GetUnarchivedMapCount",
+									"id": "193ab4e7-cdd6-4320-8618-46399c8171a8",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/maps/statistics/counts/unarchived",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"maps",
+												"statistics",
+												"counts",
+												"unarchived"
+											]
+										}
+									},
+									"response": [
+										{
+											"id": "b2868bb0-d0fe-4db6-8540-82367574b387",
+											"name": "Request fulfilled, document follows",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/maps/statistics/counts/unarchived",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"maps",
+														"statistics",
+														"counts",
+														"unarchived"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "[\n  {\n    \"amount\": \"<integer>\",\n    \"map_name\": \"<string>\"\n  },\n  {\n    \"amount\": \"<integer>\",\n    \"map_name\": \"<string>\"\n  }\n]"
 										}
 									]
 								}
@@ -1361,22 +1497,7 @@
 							"item": [
 								{
 									"name": "GetTimePlayedPerRank",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "94abce49-9696-458f-92ac-23da21a018ab",
-												"exec": [
-													"pm.test(\"Status code is 200\", function () {\r",
-													"    pm.response.to.have.status(200);\r",
-													"});"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"id": "3467fe20-073f-4c69-8192-c1f4c15904f1",
+									"id": "115651d8-8a77-4610-a2c6-69e2adfbc719",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -1389,7 +1510,7 @@
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/v1/completions/statistics/time-played/rank/:user_id",
+											"raw": "{{baseUrl}}/v1/completions/statistics/time-played/rank",
 											"host": [
 												"{{baseUrl}}"
 											],
@@ -1398,21 +1519,13 @@
 												"completions",
 												"statistics",
 												"time-played",
-												"rank",
-												":user_id"
-											],
-											"variable": [
-												{
-													"key": "user_id",
-													"value": "{{TEST_ID}}",
-													"description": "(Required) "
-												}
+												"rank"
 											]
 										}
 									},
 									"response": [
 										{
-											"id": "33e2891a-af35-4af5-b395-6d475b0088b4",
+											"id": "55109c17-073f-4a4e-ab03-b86fd6f9e724",
 											"name": "Request fulfilled, document follows",
 											"originalRequest": {
 												"method": "GET",
@@ -1423,7 +1536,7 @@
 													}
 												],
 												"url": {
-													"raw": "{{baseUrl}}/v1/completions/statistics/time-played/rank/:user_id",
+													"raw": "{{baseUrl}}/v1/completions/statistics/time-played/rank",
 													"host": [
 														"{{baseUrl}}"
 													],
@@ -1432,15 +1545,7 @@
 														"completions",
 														"statistics",
 														"time-played",
-														"rank",
-														":user_id"
-													],
-													"variable": [
-														{
-															"key": "user_id",
-															"value": "<integer>",
-															"description": "(Required) "
-														}
+														"rank"
 													]
 												}
 											},
@@ -1454,196 +1559,7 @@
 												}
 											],
 											"cookie": [],
-											"body": "\"<array>\""
-										},
-										{
-											"id": "79425bc6-fcff-43af-9118-f4f6066ba07a",
-											"name": "Bad request syntax or unsupported method",
-											"originalRequest": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/json"
-													}
-												],
-												"url": {
-													"raw": "{{baseUrl}}/v1/completions/statistics/time-played/rank/:user_id",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"v1",
-														"completions",
-														"statistics",
-														"time-played",
-														"rank",
-														":user_id"
-													],
-													"variable": [
-														{
-															"key": "user_id",
-															"value": "<integer>",
-															"description": "(Required) "
-														}
-													]
-												}
-											},
-											"status": "Bad Request",
-											"code": 400,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
-										}
-									]
-								},
-								{
-									"name": "GetTimePlayedPerUser",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "ef0e6da7-2c1d-45b2-a425-fd9d511b471b",
-												"exec": [
-													"pm.test(\"Status code is 200\", function () {\r",
-													"    pm.response.to.have.status(200);\r",
-													"});"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"id": "2b1f2e45-8746-4b05-ac45-0b28ed676805",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/v1/completions/statistics/time-played/user/:user_id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"v1",
-												"completions",
-												"statistics",
-												"time-played",
-												"user",
-												":user_id"
-											],
-											"variable": [
-												{
-													"key": "user_id",
-													"value": "{{TEST_ID}}",
-													"description": "(Required) "
-												}
-											]
-										}
-									},
-									"response": [
-										{
-											"id": "821972cf-c80e-4e4b-ac06-713b9a406b23",
-											"name": "Request fulfilled, document follows",
-											"originalRequest": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/json"
-													}
-												],
-												"url": {
-													"raw": "{{baseUrl}}/v1/completions/statistics/time-played/user/:user_id",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"v1",
-														"completions",
-														"statistics",
-														"time-played",
-														"user",
-														":user_id"
-													],
-													"variable": [
-														{
-															"key": "user_id",
-															"value": "<integer>",
-															"description": "(Required) "
-														}
-													]
-												}
-											},
-											"status": "OK",
-											"code": 200,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"body": "\"<object>\""
-										},
-										{
-											"id": "7a613414-4dbf-41c5-9cd0-349865c25024",
-											"name": "Bad request syntax or unsupported method",
-											"originalRequest": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/json"
-													}
-												],
-												"url": {
-													"raw": "{{baseUrl}}/v1/completions/statistics/time-played/user/:user_id",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"v1",
-														"completions",
-														"statistics",
-														"time-played",
-														"user",
-														":user_id"
-													],
-													"variable": [
-														{
-															"key": "user_id",
-															"value": "<integer>",
-															"description": "(Required) "
-														}
-													]
-												}
-											},
-											"status": "Bad Request",
-											"code": 400,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
+											"body": "[\n  {\n    \"difficulty\": \"<string>\",\n    \"total_seconds\": \"<number>\"\n  },\n  {\n    \"difficulty\": \"<string>\",\n    \"total_seconds\": \"<number>\"\n  }\n]"
 										}
 									]
 								}
@@ -4365,152 +4281,6 @@
 							]
 						},
 						{
-							"name": "GetMapNamesAutocomplete",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "3633e74c-02b3-492b-a664-7ac28a9b715c",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"id": "77f9c6b6-b1f5-4338-81a4-1038aaef7a17",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/v1/autocomplete/map-names?value= ",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"v1",
-										"autocomplete",
-										"map-names"
-									],
-									"query": [
-										{
-											"key": "value",
-											"value": " ",
-											"description": "(Required) "
-										},
-										{
-											"key": "page_size",
-											"value": "10",
-											"disabled": true
-										}
-									]
-								}
-							},
-							"response": [
-								{
-									"id": "891b2fed-6713-4b0b-bf7a-b95881e97d9c",
-									"name": "Request fulfilled, document follows",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/v1/autocomplete/map-names?value=<string>&page_size=10",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"v1",
-												"autocomplete",
-												"map-names"
-											],
-											"query": [
-												{
-													"key": "value",
-													"value": "<string>"
-												},
-												{
-													"key": "page_size",
-													"value": "10"
-												}
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"name\": \"<string>\"\n  },\n  {\n    \"name\": \"<string>\"\n  }\n]"
-								},
-								{
-									"id": "668e64b6-2894-41d3-afd4-25fab82becd3",
-									"name": "Bad request syntax or unsupported method",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/v1/autocomplete/map-names?value=<string>&page_size=10",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"v1",
-												"autocomplete",
-												"map-names"
-											],
-											"query": [
-												{
-													"key": "value",
-													"value": "<string>"
-												},
-												{
-													"key": "page_size",
-													"value": "10"
-												}
-											]
-										}
-									},
-									"status": "Bad Request",
-									"code": 400,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
-								}
-							]
-						},
-						{
 							"name": "GetMapRestrictionsAutocomplete",
 							"event": [
 								{
@@ -4734,6 +4504,161 @@
 									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": {\n    \"Lorem__e8\": {},\n    \"sunt__7\": {},\n    \"amet__\": {},\n    \"enimbc\": {}\n  }\n}"
 								}
 							]
+						},
+						{
+							"name": "GetMapNamesAutocomplete",
+							"id": "75100f1f-f424-4bcf-b17a-18c504180cb2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/autocomplete/map-names/:locale?value=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"autocomplete",
+										"map-names",
+										":locale"
+									],
+									"query": [
+										{
+											"key": "value",
+											"value": "<string>",
+											"description": "(Required) "
+										},
+										{
+											"key": "page_size",
+											"value": "10",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "locale",
+											"value": "en",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"id": "a6235541-bbd8-4114-9023-c2a842435aba",
+									"name": "Request fulfilled, document follows",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/autocomplete/map-names/:locale?value=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"autocomplete",
+												"map-names",
+												":locale"
+											],
+											"query": [
+												{
+													"description": "(Required) ",
+													"key": "value",
+													"value": "<string>"
+												},
+												{
+													"key": "page_size",
+													"value": "10",
+													"disabled": true
+												}
+											],
+											"variable": [
+												{
+													"key": "locale"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"map_name\": \"<string>\",\n    \"translated_map_name\": \"<string>\"\n  },\n  {\n    \"map_name\": \"<string>\",\n    \"translated_map_name\": \"<string>\"\n  }\n]"
+								},
+								{
+									"id": "89c97e94-a920-4e58-991e-1936fa495864",
+									"name": "Bad request syntax or unsupported method",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/autocomplete/map-names/:locale?value=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"autocomplete",
+												"map-names",
+												":locale"
+											],
+											"query": [
+												{
+													"description": "(Required) ",
+													"key": "value",
+													"value": "<string>"
+												},
+												{
+													"key": "page_size",
+													"value": "10",
+													"disabled": true
+												}
+											],
+											"variable": [
+												{
+													"key": "locale"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"detail\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"extra\": null\n}"
+								}
+							]
 						}
 					],
 					"id": "a49575fe-1370-4886-a3d6-e8af9ad76a5d"
@@ -4787,12 +4712,12 @@
 										},
 										{
 											"key": "page_number",
-											"value": "1",
+											"value": "2",
 											"disabled": true
 										},
 										{
 											"key": "type",
-											"value": "<null,string>",
+											"value": "bulk_archive",
 											"disabled": true
 										}
 									]
@@ -6659,7 +6584,7 @@
 		{
 			"id": "a7dd7079-344b-4790-b068-9d92bc8e35ff",
 			"key": "baseUrl",
-			"value": "https://api.genji.pk",
+			"value": "/",
 			"type": "string"
 		}
 	]
