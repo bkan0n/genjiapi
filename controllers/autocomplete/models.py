@@ -3,8 +3,13 @@ from __future__ import annotations
 import msgspec
 
 
-class MapNameAutocompleteResponse(msgspec.Struct):
+class MapBaseAutocompleteResponse(msgspec.Struct):
     name: str
+
+
+class MapNameAutocompleteResponse(msgspec.Struct):
+    map_name: str
+    translated_map_name: str
 
 
 class MapCodeAutocompleteResponse(msgspec.Struct):

@@ -1,5 +1,5 @@
 from asyncpg import Connection
-from litestar import get, post, Request
+from litestar import Request, get, post
 from litestar.exceptions import HTTPException
 
 from utils.pull import gacha

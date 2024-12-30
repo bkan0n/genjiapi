@@ -7,6 +7,7 @@ from litestar import get
 from ..root import BaseController
 from .models import (
     CreatorAutocompleteResponse,
+    MapBaseAutocompleteResponse,
     MapCodeAutocompleteResponse,
     MapNameAutocompleteResponse,
 )
@@ -19,16 +20,32 @@ class AutocompleteController(BaseController):
     path = "/autocomplete"
     tags = ["Autocomplete"]
 
-    @get(path="/map-names")
+    @get(path="/map-names/{locale:str}")
     async def get_map_names_autocomplete(
         self,
         db_connection: Connection,
         value: str,
         page_size: int = 10,
+        locale: str = "en",
     ) -> list[MapNameAutocompleteResponse]:
         """Get autocomplete map names."""
-        query = "SELECT name FROM all_map_names ORDER BY similarity($1::text, name) DESC LIMIT $2::int"
-        rows = await db_connection.fetch(query, value, page_size)
+        query = """
+            SELECT
+                name as map_name,
+                CASE
+                    WHEN $3::text = 'cn' THEN cn
+                    WHEN $3::text = 'jp' THEN jp
+                    ELSE name
+                END AS translated_map_name
+            FROM all_map_names
+            ORDER BY CASE
+                WHEN $3::text = 'cn' THEN similarity($1::text, cn)
+                WHEN $3::text = 'jp' THEN similarity($1::text, jp)
+                ELSE similarity($1::text, name)
+            END DESC
+            LIMIT $2::int
+         """
+        rows = await db_connection.fetch(query, value, page_size, locale)
         return [MapNameAutocompleteResponse(**row) for row in rows]
 
     @get(path="/map-types")
@@ -37,31 +54,31 @@ class AutocompleteController(BaseController):
         db_connection: Connection,
         value: str,
         page_size: int = 10,
-    ) -> list[MapNameAutocompleteResponse]:
+    ) -> list[MapBaseAutocompleteResponse]:
         """Get autocomplete map types."""
         query = "SELECT name FROM all_map_types ORDER BY similarity($1::text, name) DESC LIMIT $2::int"
         rows = await db_connection.fetch(query, value, page_size)
-        return [MapNameAutocompleteResponse(**row) for row in rows]
+        return [MapBaseAutocompleteResponse(**row) for row in rows]
 
     @get(path="/map-restrictions")
     async def get_map_restrictions_autocomplete(
         self,
         db_connection: Connection,
-    ) -> list[MapNameAutocompleteResponse]:
+    ) -> list[MapBaseAutocompleteResponse]:
         """Get autocomplete for map restrictions."""
         query = "SELECT name FROM all_map_restrictions ORDER BY order_num"
         rows = await db_connection.fetch(query)
-        return [MapNameAutocompleteResponse(**row) for row in rows]
+        return [MapBaseAutocompleteResponse(**row) for row in rows]
 
     @get(path="/map-mechanics")
     async def get_map_mechanics_autocomplete(
         self,
         db_connection: Connection,
-    ) -> list[MapNameAutocompleteResponse]:
+    ) -> list[MapBaseAutocompleteResponse]:
         """Get autocomplete for map mechanics."""
         query = "SELECT name FROM all_map_mechanics ORDER BY order_num"
         rows = await db_connection.fetch(query)
-        return [MapNameAutocompleteResponse(**row) for row in rows]
+        return [MapBaseAutocompleteResponse(**row) for row in rows]
 
     @get(path="/map-codes")
     async def get_map_codes_autocomplete(

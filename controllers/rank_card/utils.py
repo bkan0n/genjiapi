@@ -72,6 +72,7 @@ except ValueError as e:
     # Provide a fallback or skip font-specific operations
     font = None
 
+
 class RankCardBuilder:
     def __init__(self, data: dict) -> None:
         self._data = data

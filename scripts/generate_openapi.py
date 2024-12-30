@@ -15,4 +15,3 @@ with open("openapi.json", "w") as file:
     file.write(json.dumps(openapi_schema_dict, indent=2))
 
 print("OpenAPI schema successfully generated and saved to openapi.json.")
-

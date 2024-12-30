@@ -1,10 +1,8 @@
 import json
 from typing import Annotated, Literal
 
-from aio_pika import DeliveryMode, Message
 from asyncpg import Connection, Record
 from litestar import get
-from litestar.datastructures import State
 from litestar.params import Parameter
 
 from utils.utilities import convert_num_to_difficulty
