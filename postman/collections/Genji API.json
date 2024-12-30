@@ -6560,7 +6560,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "8be10375-0029-4dea-b939-7d7c4777f607",
+				"id": "0bbe28b0-bb0a-4fe8-8432-3bad752b03b2",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -6571,7 +6571,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "cad106c0-30e4-48f3-9524-7f4a33473c09",
+				"id": "9f60bc5a-c5c7-4f03-b8be-938ab5c6071b",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -6582,9 +6582,9 @@
 	],
 	"variable": [
 		{
-			"id": "a7dd7079-344b-4790-b068-9d92bc8e35ff",
+			"id": "7cd5c72d-935f-447b-b169-cd634cdbcbc3",
 			"key": "baseUrl",
-			"value": "/",
+			"value": "https://api.genji.pk",
 			"type": "string"
 		}
 	]
