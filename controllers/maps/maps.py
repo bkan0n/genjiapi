@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Annotated, Literal
 
 import asyncpg  # noqa: TCH002
 from litestar import Request, get, post
+from litestar.exceptions import HTTPException
 from litestar.params import Parameter
 
 from utils import rabbit
@@ -459,6 +460,64 @@ class MapsController(BaseController):
             return data
         await data.insert_all(db_connection)
         await rabbit.publish(state, "new_map", data)
+
+    @staticmethod
+    async def _remove_map_medal_entries(db: Connection, map_code: str) -> None:
+        query = "DELETE FROM map_medals WHERE map_code = $1;"
+        await db.execute(query, map_code)
+
+    @staticmethod
+    async def _convert_records_to_legacy_completions(db: Connection, map_code: str) -> None:
+        query = """
+            WITH all_records AS (
+                SELECT
+                    CASE
+                        WHEN verified = TRUE AND record <= gold THEN 'Gold'
+                        WHEN verified = TRUE AND record <= silver AND record > gold THEN 'Silver'
+                        WHEN verified = TRUE AND record <= bronze AND record > silver THEN 'Bronze'
+                        END AS legacy_medal,
+                    r.map_code,
+                    r.user_id,
+                    r.inserted_at
+                FROM records r
+                LEFT JOIN map_medals mm ON r.map_code = mm.map_code
+                WHERE r.map_code = $1 AND legacy IS FALSE
+                ORDER BY record
+            )
+            UPDATE records
+            SET
+                completion = CASE
+                    WHEN all_records.legacy_medal IS NULL THEN TRUE
+                    ELSE FALSE
+                END,
+                legacy = TRUE,
+                legacy_medal = all_records.legacy_medal
+            FROM all_records
+            WHERE
+                records.map_code = all_records.map_code AND
+                records.user_id = all_records.user_id AND
+                records.inserted_at = all_records.inserted_at;
+        """
+        await db.execute(query, map_code)
+
+    @post(path="/legacy")
+    async def bulk_legacy(
+        self, request: Request, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
+    ) -> list[ArchiveMapBody]:
+        """Bulk legacy records."""
+        try:
+            with db_connection.transaction():
+                for map_ in data:
+                    await self._convert_records_to_legacy_completions(db_connection, map_.map_code)
+                    await self._remove_map_medal_entries(db_connection, map_.map_code)
+        except Exception:
+            raise HTTPException(detail="Unable to convert maps to legacy.", status_code=400)
+        await rabbit.publish(
+            state,
+            "bulk_legacy",
+            data,
+            extra_headers={"x-test-mode": request.headers.get("x-test-mode")},
+        )
         return data
 
     @post(path="/archive")
@@ -466,17 +525,22 @@ class MapsController(BaseController):
         self, request: Request, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
     ) -> list[ArchiveMapBody]:
         """Bulk archive."""
+        args = [(d.map_code, True) for d in data]
+        query = "UPDATE maps SET archived = $2 WHERE map_code = $1;"
+
+        try:
+            await db_connection.executemany(
+                query,
+                args,
+            )
+        except Exception:
+            return
+
         await rabbit.publish(
             state,
             "bulk_archive",
             data,
             extra_headers={"x-test-mode": request.headers.get("x-test-mode")},
-        )
-        args = [(d.map_code, True) for d in data]
-        query = "UPDATE maps SET archived = $2 WHERE map_code = $1;"
-        await db_connection.executemany(
-            query,
-            args,
         )
         return data
 
@@ -485,17 +549,21 @@ class MapsController(BaseController):
         self, request: Request, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
     ) -> list[ArchiveMapBody]:
         """Bulk unarchive."""
+        args = [(d.map_code, False) for d in data]
+        query = "UPDATE maps SET archived = $2 WHERE map_code = $1;"
+        try:
+            await db_connection.executemany(
+                query,
+                args,
+            )
+        except Exception:
+            return
+
         await rabbit.publish(
             state,
             "bulk_unarchive",
             data,
             extra_headers={"x-test-mode": request.headers.get("x-test-mode")},
-        )
-        args = [(d.map_code, False) for d in data]
-        query = "UPDATE maps SET archived = $2 WHERE map_code = $1;"
-        await db_connection.executemany(
-            query,
-            args,
         )
         return data
 
