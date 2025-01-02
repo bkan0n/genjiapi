@@ -44,6 +44,7 @@ class NewsfeedDataResponse(msgspec.Struct, omit_defaults=True):
     user: NewsfeedUserResponse = None
     record: NewsfeedRecordResponse = None
     message: NewsfeedMessageResponse = None
+    bulk: list[NewsfeedMapResponse] = None
 
 
 class NewsfeedResponse(msgspec.Struct):
@@ -51,3 +52,7 @@ class NewsfeedResponse(msgspec.Struct):
     timestamp: datetime.datetime
     data: NewsfeedDataResponse
     total_results: int
+
+
+class GlobalNameResponse(msgspec.Struct):
+    name: str
