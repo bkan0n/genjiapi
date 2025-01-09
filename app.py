@@ -13,10 +13,12 @@ from litestar import Litestar, MediaType, Request, Response
 from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.exceptions import HTTPException
 from litestar.logging import LoggingConfig
+from litestar.middleware import DefineMiddleware
 from litestar.openapi import OpenAPIConfig
 from litestar.static_files import create_static_files_router
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 from litestar.template import TemplateConfig
+from litestar.types import Middleware
 from litestar_asyncpg import AsyncpgConfig, AsyncpgPlugin, PoolConfig
 
 from controllers import (
@@ -30,6 +32,7 @@ from controllers import (
 )
 from controllers.newsfeed.newsfeed import NewsfeedController
 from controllers.rank_card.mastery import MasteryController
+from middleware.umami import UmamiMiddleware
 
 if TYPE_CHECKING:
     from aio_pika.abc import AbstractRobustConnection
@@ -97,6 +100,9 @@ async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
     yield
 
 
+UMAMI_API_ENDPOINT = os.getenv("UMAMI_API_ENDPOINT")
+UMAMI_SITE_ID = os.getenv("UMAMI_SITE_ID")
+
 app = Litestar(
     plugins=[asyncpg, apitally_plugin],
     route_handlers=[
@@ -132,4 +138,7 @@ app = Litestar(
         directory=Path("templates"),
         engine=JinjaTemplateEngine,
     ),
+    middleware=[
+        DefineMiddleware(UmamiMiddleware, api_endpoint=UMAMI_API_ENDPOINT, website_id=UMAMI_SITE_ID),
+    ],
 )

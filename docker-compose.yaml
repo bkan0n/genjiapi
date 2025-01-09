@@ -16,6 +16,8 @@ services:
       - API_KEY=${API_KEY}
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - UMAMI_API_ENDPOINT=${UMAMI_API_ENDPOINT}
+      - UMAMI_SITE_ID=${UMAMI_SITE_ID}
     networks:
       - contabo_network
       - genji-network
