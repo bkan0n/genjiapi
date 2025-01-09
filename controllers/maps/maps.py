@@ -140,7 +140,7 @@ class MapsController(BaseController):
         """Search for maps."""
         logged_in_query = """
             WITH user_completion_data AS (
-                SELECT DISTINCT ON (user_id, map_code, record)
+                SELECT DISTINCT ON (user_id, map_code)
                     map_code,
                     record
                 FROM records
