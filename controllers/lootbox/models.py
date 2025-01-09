@@ -30,12 +30,18 @@ class UserRewardsResponse(msgspec.Struct):
     name: str
     type: str
     rarity: str
+    medal: str | None
 
     url: str | None = None
 
     def __post_init__(self) -> None:
         """Post init."""
-        self.url = _reward_url(self.type, self.name)
+        if self.type == "mastery":
+            name = sanitize_string(self.name)
+            medal = sanitize_string(self.medal)
+            self.url = f"assets/mastery/{name}_{medal}.webp"
+        else:
+            self.url = _reward_url(self.type, self.name)
 
 
 def _reward_url(type_: str, name: str) -> str:

@@ -66,6 +66,7 @@ class LootboxController(BaseController):
                 ur.earned_at,
                 rt.name,
                 rt.type,
+                NULL as medal,
                 rt.rarity
             FROM lootbox_user_rewards ur
             LEFT JOIN lootbox_reward_types rt ON ur.reward_name = rt.name
@@ -76,6 +77,18 @@ class LootboxController(BaseController):
                 ($2::text IS NULL OR rt.type = $2::text) AND
                 ($3::text IS NULL OR ur.key_type = $3::text) AND
                 ($4::text IS NULL OR rarity = $4::text)
+
+            UNION ALL
+
+            SELECT
+                user_id,
+                now() as earned_at,
+                map_name as name,
+                'mastery' as type,
+                medal,
+                'common' as rarity
+            FROM map_mastery
+            WHERE user_id = $1::bigint AND medal != 'Placeholder' AND ($2::text IS NULL OR medal = $2::text)
         """
         rows = await db_connection.fetch(query, user_id, reward_type, key_type, rarity)
         return [UserRewardsResponse(**row) for row in rows]
