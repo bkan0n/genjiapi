@@ -4,6 +4,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     container_name: "genji-api"
+    restart: unless-stopped
     ports:
       - "80"
     environment:
@@ -45,7 +46,7 @@ services:
     build:
       context: .
       dockerfile: LibreTranslate.Dockerfile
-    #restart: unless-stopped
+    restart: unless-stopped
 
     networks:
       - contabo_network
