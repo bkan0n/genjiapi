@@ -98,7 +98,7 @@ class LootboxController(BaseController):
         self,
         db_connection: Connection,
         user_id: int,
-        key_type: str = "Classic",
+        key_type: str | None = None,
     ) -> list[UserLootboxKeyAmountsResponse]:
         """View keys owned by a particular user."""
         query = """
