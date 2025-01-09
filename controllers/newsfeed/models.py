@@ -6,6 +6,7 @@ import msgspec
 class NewsfeedRecordResponse(msgspec.Struct, omit_defaults=True):
     record: float = None
     video: str = None
+    rank_num: int = None
 
 
 class NewsfeedUserResponse(msgspec.Struct, omit_defaults=True):
