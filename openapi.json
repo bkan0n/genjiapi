@@ -4835,6 +4835,9 @@
           },
           "video": {
             "type": "string"
+          },
+          "rank_num": {
+            "type": "integer"
           }
         },
         "type": "object",
@@ -5369,6 +5372,16 @@
           },
           "rarity": {
             "type": "string"
+          },
+          "medal": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "url": {
             "oneOf": [
