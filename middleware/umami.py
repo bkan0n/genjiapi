@@ -58,6 +58,8 @@ class UmamiMiddleware(MiddlewareProtocol):
         proxy_enabled: bool = False,
         trusted_proxies: Optional[List[str]] = None,
     ) -> None:
+        if not api_endpoint:
+            return  # TODO: This is for CI/CD
         self.app = app
         if not api_endpoint.endswith("/"):
             api_endpoint += "/"

@@ -7,8 +7,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 
-with contextlib.suppress(AttributeError):
-    import app  # Import your Litestar app instance
+import app  # Import your Litestar app instance
 
 # Convert the OpenAPI schema to a dictionary
 openapi_schema_dict = app.app.openapi_schema.to_schema()
