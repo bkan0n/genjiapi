@@ -169,7 +169,7 @@ class CompletionsController(BaseController):
                         sum(record) as total_seconds,
                         map_code
                     FROM records r
-                    WHERE verified
+                    WHERE verified AND record < 99999999.99
                     GROUP BY map_code
                 ),
                 ranges AS (
