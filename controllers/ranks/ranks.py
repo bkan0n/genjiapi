@@ -28,6 +28,7 @@ class RanksController(Controller):
                 FROM users u
                 LEFT JOIN xptable xp ON u.user_id = xp.user_id
                 LEFT JOIN _metadata_xp_tiers x ON ((coalesce(xp.amount, 0) / 100) % 100) / 5 = x.threshold
+                WHERE xp.amount > 500
             ),
             tier_counts AS (
                 SELECT

@@ -96,12 +96,15 @@ class RankCardData(msgspec.Struct):
     avatar_pose: str
     badges: dict[int, RankCardBadgesData]
 
+    xp: int
+    community_rank: str
+    prestige_level: int
+
     background_url: str = None
     rank_url: str = None
     avatar_url: str = None
 
     def __post_init__(self) -> None:
-        """Post init."""
         """Post init."""
         self.background_url = f"assets/rank_card/background/{sanitize_string(self.background)}.webp"
         self.rank_url = f"assets/ranks/{sanitize_string(self.rank_name)}.webp"

@@ -19,6 +19,14 @@ class CompletionsController(BaseController):
     path = "/completions"
     tags = ["Completions"]
 
+    @get(path="/test")
+    async def test(
+        self, db_connection: Connection
+    ) -> str:
+        """Test."""
+        x = 1 / 0
+        return "Boop"
+
     @get(path="/progression/{user_id:int}/{map_code:str}")
     async def get_map_record_progression(
         self, db_connection: Connection, user_id: int, map_code: str

@@ -34,20 +34,14 @@ async def send_umami_payload(
     api_endpoint: str, request_payload: UmamiRequest, headers: dict, follow_redirects: bool
 ):
     async with httpx.AsyncClient() as client:
-        log.info("10")
         try:
-            log.info("11")
             payload = asdict(request_payload)
-            log.info("12")
             await client.post(
                 api_endpoint, json=payload, headers=headers, follow_redirects=follow_redirects
             )
-            log.info("13")
         except Exception as e:
-            log.info("14")
             # Log or handle exception if necessary
             print(f"Error sending umami payload: {e}")
-    log.info("15")
 class UmamiMiddleware(MiddlewareProtocol):
     def __init__(
         self,
@@ -72,11 +66,8 @@ class UmamiMiddleware(MiddlewareProtocol):
         if scope["type"] != "http":
             await self.app(scope, receive, send)
             return
-        log.info("1")
         request = Request(scope)
-        log.info("2")
         response = Response(content=b"")
-        log.info("3")
         umami_request = UmamiRequest(
             payload=UmamiPayload(
                 hostname=request.url.hostname,
@@ -89,16 +80,13 @@ class UmamiMiddleware(MiddlewareProtocol):
                 ip=request.headers.get("X-Real-IP", request.client.host),
             )
         )
-        log.info("4")
         umami_headers = {
             "User-Agent": request.headers.get("User-Agent", ""),
             "X-Forwarded-Proto": "https",
         }
-        log.info("5")
         if self.trusted_proxies and (
             request.client.host in self.trusted_proxies or "0.0.0.0" in self.trusted_proxies
         ):
-            log.info("in 5")
             umami_headers.update(
                 {
                     "X-Real-IP": request.headers.get("X-Real-IP", request.client.host),
@@ -107,7 +95,6 @@ class UmamiMiddleware(MiddlewareProtocol):
                 }
             )
         else:
-            log.info("in 5 2")
             umami_headers.update(
                 {
                     "X-Real-IP": request.client.host,
@@ -115,9 +102,7 @@ class UmamiMiddleware(MiddlewareProtocol):
                     "X-Forwarded-Host": "",
                 }
             )
-        log.info("6")
         await send_umami_payload(
             self.api_endpoint, umami_request, umami_headers, self.follow_redirects
         )
-        log.info("7")
         await self.app(scope, receive, send)

@@ -153,6 +153,20 @@ class RankCardController(Controller):
         )
         return data
 
+    async def _fetch_community_rank_xp(self, conn: asyncpg.Connection, user_id: int) -> asyncpg.Record:
+        query = """
+            SELECT
+                coalesce(xp.amount, 0) AS xp,
+                (coalesce(xp.amount, 0) / 100) / 100 AS prestige_level,
+                x.name || ' ' || s.name AS community_rank
+            FROM users u
+            LEFT JOIN xptable xp ON u.user_id = xp.user_id
+            LEFT JOIN _metadata_xp_tiers x ON (((coalesce(xp.amount, 0) / 100) % 100)) / 5 = x.threshold
+            LEFT JOIN _metadata_xp_sub_tiers s ON (coalesce(xp.amount, 0) / 100) % 5 = s.threshold
+            WHERE u.user_id = $1
+        """
+        return await conn.fetchrow(query, user_id)
+
     @get(path="/test/{user_id:int}")
     async def fetch_rank_card_test(
         self,
@@ -169,6 +183,8 @@ class RankCardController(Controller):
         background = await self._get_background_choice(db_connection, user_id)
         nickname = await db_connection.fetchval("SELECT nickname FROM users WHERE user_id = $1;", user_id)
         avatar = await db_connection.fetchrow("SELECT * FROM rank_card_avatar WHERE user_id = $1;", user_id)
+        _xp_data =await self._fetch_community_rank_xp(db_connection, user_id)
+
         if not avatar:
             avatar = {"skin": "Overwatch 1", "pose": "Heroic"}
 
@@ -183,6 +199,9 @@ class RankCardController(Controller):
             "avatar_skin": avatar["skin"],
             "avatar_pose": avatar["pose"],
             "badges": await self._fetch_rank_card_badge_data(db_connection, user_id),
+            "xp": _xp_data["xp"],
+            "prestige_level": _xp_data["prestige_level"],
+            "community_rank": _xp_data["community_rank"],
         }
 
         for row in rank_data:

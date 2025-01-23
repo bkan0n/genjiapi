@@ -7,7 +7,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING, AsyncGenerator
 
 import aio_pika
+import sentry_sdk
 from aio_pika.pool import Pool
+from apitally.client.request_logging import RequestLoggingConfig
 from apitally.litestar import ApitallyPlugin
 from litestar import Litestar, MediaType, Request, Response
 from litestar.contrib.jinja import JinjaTemplateEngine
@@ -18,8 +20,8 @@ from litestar.openapi import OpenAPIConfig
 from litestar.static_files import create_static_files_router
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 from litestar.template import TemplateConfig
-from litestar.types import Middleware
 from litestar_asyncpg import AsyncpgConfig, AsyncpgPlugin, PoolConfig
+from sentry_sdk.integrations.litestar import LitestarIntegration
 
 from controllers import (
     AutocompleteController,
@@ -40,6 +42,20 @@ if TYPE_CHECKING:
 log = logging.getLogger(__name__)
 
 
+from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
+
+
+# sentry_sdk.init(
+#     dsn="https://f694f1df168a40f6a21ab8050aafc6f9@logging.genji.pk/1",
+#     traces_sample_rate=1.0,
+#     profiles_sample_rate=1.0,
+#     integrations=[
+#         LitestarIntegration(),
+#     ],
+# )
+
+
+
 def plain_text_exception_handler(_: Request, exc: Exception) -> Response:
     """Handle exceptions subclassed from HTTPException."""
     status_code = getattr(exc, "status_code", HTTP_500_INTERNAL_SERVER_ERROR)
@@ -52,12 +68,23 @@ def plain_text_exception_handler(_: Request, exc: Exception) -> Response:
     )
 
 
+class SuppressApitallyFilter(logging.Filter):
+    def filter(self, record):
+        if "HTTP" in record.msg:
+            print(record)
+        # Suppress logs containing the specific URL or other identifying content
+        return "hub.apitally.io" not in record.getMessage()
+
 logging_config = LoggingConfig(
     root={"level": "INFO", "handlers": ["queue_listener"]},
     formatters={"standard": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"}},
     log_exceptions="always",
+    filters={
+        "suppress_apitally": {
+            "()": SuppressApitallyFilter,  # Use this syntax to register a filter class
+        },
+    },
 )
-
 
 psql_user = os.getenv("PSQL_USER")
 psql_pass = os.getenv("PSQL_PASS")
@@ -72,6 +99,9 @@ asyncpg = AsyncpgPlugin(config=AsyncpgConfig(pool_config=PoolConfig(dsn=dsn)))
 apitally_plugin = ApitallyPlugin(
     client_id="765ee232-a48d-449a-8093-77b670e91f37",
     env="prod",  # or "dev"
+    request_logging_config=RequestLoggingConfig(
+        enabled=False
+    )
 )
 
 
@@ -142,3 +172,7 @@ app = Litestar(
         DefineMiddleware(UmamiMiddleware, api_endpoint=UMAMI_API_ENDPOINT, website_id=UMAMI_SITE_ID),
     ],
 )
+# Ignore annoying apitally and analytics INFO logs
+for logger_name in logging.Logger.manager.loggerDict:
+    if "api" in logger_name or "httpx" in logger_name:
+        logging.getLogger(logger_name).setLevel(logging.WARNING)
