@@ -1400,6 +1400,29 @@
         "deprecated": false
       }
     },
+    "/v1/completions/test": {
+      "get": {
+        "tags": [
+          "Completions"
+        ],
+        "summary": "Test",
+        "operationId": "V1CompletionsTestTest",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v1/lootbox/users/debug/{user_id}/{key_type}/{reward_type}/{reward_name}": {
       "post": {
         "tags": [
@@ -5222,6 +5245,15 @@
             },
             "type": "object"
           },
+          "xp": {
+            "type": "integer"
+          },
+          "community_rank": {
+            "type": "string"
+          },
+          "prestige_level": {
+            "type": "integer"
+          },
           "background_url": {
             "type": "string"
           },
@@ -5238,12 +5270,15 @@
           "avatar_skin",
           "background",
           "badges",
+          "community_rank",
           "difficulties",
           "nickname",
+          "prestige_level",
           "rank_name",
           "total_maps_created",
           "total_playtests",
-          "world_records"
+          "world_records",
+          "xp"
         ],
         "title": "RankCardData"
       },
