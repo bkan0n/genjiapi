@@ -21,10 +21,6 @@ services:
     networks:
       - caddy-network
       - genji-network
-    depends_on:
-      genji-rabbit:
-        condition: service_healthy
-        restart: true
 
 networks:
   caddy-network:
