@@ -593,8 +593,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "Ayutthaya",
@@ -762,8 +762,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "Beginner",
@@ -2978,8 +2978,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "map_edit",
@@ -3076,8 +3076,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ],
               "enum": [
                 "Ayutthaya",
