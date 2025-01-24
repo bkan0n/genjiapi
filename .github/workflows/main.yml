@@ -1,66 +1,13 @@
-name: Automated API tests using Postman CLI
+name: Main Deployment
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+  # push:
+  #   branches: [ main ]
+  workflow_dispatch:
+  repository_dispatch:
+    types: [init]
 
 jobs:
-  automated-api-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-      - name: Run API tests
-        run: |
-          postman collection run "${{ github.workspace }}/postman/collections/Genji API.json" -e "28335799-6ef39e9f-cdd2-4d4d-9a91-6eaa2b9feeda" --integration-id "172420-${{ github.run_id }}"
-          # Lint your API using Postman CLI
-          postman api lint 6f52b44d-f634-495e-bc5a-2407add8f871 --integration-id 172420
-
-  generate_openapi:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Checkout the code
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # Set up Python
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.12"
-
-      # Install dependencies
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      # Run the OpenAPI generation script
-      - name: Generate OpenAPI Spec
-        run: python scripts/generate_openapi.py
-
-      - name: Debug file existence
-        run: |
-          ls -l openapi.json || echo "openapi.json not found"
-          cat openapi.json || echo "openapi.json is empty"
-
-
-      # Commit and push the updated OpenAPI spec
-      - name: Commit and Push OpenAPI Spec
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
-          git add openapi.json
-          git commit -m "Update OpenAPI spec [skip ci]" || echo "No changes to commit"
-          git push
+  deploy:
+    uses: bkan0n/bkan0n-deploy-workflow/.github/workflows/main.yml@main
+    secrets: inherit
