@@ -41,16 +41,16 @@ if TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 
-# sentry_dsn = os.getenv("SENTRY_DSN")
-# sentry_sdk.init(
-#     dsn=sentry_dsn,
-#     enable_tracing=True,
-#     traces_sample_rate=1.0,
-#     profiles_sample_rate=1.0,
-#     integrations=[
-#         LitestarIntegration(),
-#     ],
-# )
+sentry_dsn = os.getenv("SENTRY_DSN")
+sentry_sdk.init(
+    dsn=sentry_dsn,
+    enable_tracing=True,
+    traces_sample_rate=1.0,
+    profiles_sample_rate=1.0,
+    integrations=[
+        LitestarIntegration(),
+    ],
+)
 
 
 
@@ -132,7 +132,10 @@ UMAMI_API_ENDPOINT = os.getenv("UMAMI_API_ENDPOINT")
 UMAMI_SITE_ID = os.getenv("UMAMI_SITE_ID")
 
 app = Litestar(
-    plugins=[asyncpg, apitally_plugin],
+    plugins=[
+        asyncpg,
+        # apitally_plugin,
+    ],
     route_handlers=[
         RootRouter(
             path="/v1",
