@@ -11,7 +11,7 @@ import sentry_sdk
 from aio_pika.pool import Pool
 from apitally.client.request_logging import RequestLoggingConfig
 from apitally.litestar import ApitallyPlugin
-from litestar import Litestar, MediaType, Request, Response
+from litestar import Litestar, MediaType, Request, Response, get
 from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.exceptions import HTTPException
 from litestar.logging import LoggingConfig
@@ -131,12 +131,18 @@ async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
 UMAMI_API_ENDPOINT = os.getenv("UMAMI_API_ENDPOINT")
 UMAMI_SITE_ID = os.getenv("UMAMI_SITE_ID")
 
+@get()
+def root_handler() -> None:
+    """Root path."""
+    return None
+
 app = Litestar(
     plugins=[
         asyncpg,
         # apitally_plugin,
     ],
     route_handlers=[
+        root_handler,
         RootRouter(
             path="/v1",
             route_handlers=[
@@ -177,3 +183,5 @@ app = Litestar(
 for logger_name in logging.Logger.manager.loggerDict:
     if "api" in logger_name or "httpx" in logger_name:
         logging.getLogger(logger_name).setLevel(logging.WARNING)
+
+
