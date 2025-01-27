@@ -22,6 +22,9 @@ services:
     networks:
       - caddy-network
       - genji-network
+    labels:
+      logging: "promtail"
+      logging_jobname: "containerlogs"
 
 networks:
   caddy-network:
