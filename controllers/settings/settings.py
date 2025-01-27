@@ -13,3 +13,8 @@ class SettingsController(BaseController):
     @get("/settings/{user_id:int}")
     async def get_settings(self, user_id: int):
         ...
+
+    @get("/test")
+    async def get_test(self) -> str:
+        1 / 0
+        return "test"
