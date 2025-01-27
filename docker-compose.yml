@@ -18,6 +18,7 @@ services:
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
       - UMAMI_API_ENDPOINT=${UMAMI_API_ENDPOINT}
       - UMAMI_SITE_ID=${UMAMI_SITE_ID}
+      - SENTRY_DSN
     networks:
       - caddy-network
       - genji-network
