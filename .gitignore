@@ -3,3 +3,6 @@
 .idea
 *.env
 .run
+.ruff_cache
+.vscode
+__pycache__
