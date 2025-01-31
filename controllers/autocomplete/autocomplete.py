@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from asyncpg import Record
 from litestar import get
+
+from litestar.exceptions.http_exceptions import NotFoundException
 
 from ..root import BaseController
 from .models import (
@@ -23,7 +26,7 @@ class AutocompleteController(BaseController):
     @get(path="/map-names/{locale:str}")
     async def get_map_names_autocomplete(
         self,
-        db_connection: Connection,
+        db_connection: Connection[Record],
         value: str,
         page_size: int = 10,
         locale: str = "en",
@@ -46,56 +49,66 @@ class AutocompleteController(BaseController):
             LIMIT $2::int
          """
         rows = await db_connection.fetch(query, value, page_size, locale)
+        if not rows:
+            raise NotFoundException(detail="No map names found with the given filters.", extra={"value": value, "locale": locale})
         return [MapNameAutocompleteResponse(**row) for row in rows]
 
     @get(path="/map-types")
     async def get_map_types_autocomplete(
         self,
-        db_connection: Connection,
+        db_connection: Connection[Record],
         value: str,
         page_size: int = 10,
     ) -> list[MapBaseAutocompleteResponse]:
         """Get autocomplete map types."""
         query = "SELECT name FROM all_map_types ORDER BY similarity($1::text, name) DESC LIMIT $2::int"
         rows = await db_connection.fetch(query, value, page_size)
+        if not rows:
+            raise NotFoundException(detail="No map types found with the given filters.", extra={"value": value})
         return [MapBaseAutocompleteResponse(**row) for row in rows]
 
     @get(path="/map-restrictions")
     async def get_map_restrictions_autocomplete(
         self,
-        db_connection: Connection,
+        db_connection: Connection[Record],
     ) -> list[MapBaseAutocompleteResponse]:
         """Get autocomplete for map restrictions."""
         query = "SELECT name FROM all_map_restrictions ORDER BY order_num"
         rows = await db_connection.fetch(query)
+        if not rows:
+            raise NotFoundException(detail="No map restrictions found.")
         return [MapBaseAutocompleteResponse(**row) for row in rows]
 
     @get(path="/map-mechanics")
     async def get_map_mechanics_autocomplete(
         self,
-        db_connection: Connection,
+        db_connection: Connection[Record],
     ) -> list[MapBaseAutocompleteResponse]:
         """Get autocomplete for map mechanics."""
         query = "SELECT name FROM all_map_mechanics ORDER BY order_num"
         rows = await db_connection.fetch(query)
+        if not rows:
+            raise NotFoundException(detail="No map mechanics found.")
         return [MapBaseAutocompleteResponse(**row) for row in rows]
 
     @get(path="/map-codes")
     async def get_map_codes_autocomplete(
         self,
-        db_connection: Connection,
+        db_connection: Connection[Record],
         value: str,
         page_size: int = 10,
     ) -> list[MapCodeAutocompleteResponse]:
         """Get autocomplete for map codes."""
         query = "SELECT map_code FROM maps ORDER BY similarity($1::text, map_code) DESC LIMIT $2::int"
         rows = await db_connection.fetch(query, value, page_size)
+        if not rows:
+            raise NotFoundException(detail="No map codes found with the given filters.", extra={"value": value})
         return [MapCodeAutocompleteResponse(**row) for row in rows]
 
     @get(path="/creators")
     async def get_creators_autocomplete(
         self,
-        db_connection: Connection,
+        db_connection: Connection[Record],
         value: str,
         page_size: int = 10,
     ) -> list[CreatorAutocompleteResponse]:
@@ -114,4 +127,6 @@ class AutocompleteController(BaseController):
             SELECT name, user_id FROM combined_names ORDER BY similarity($1::text, name) DESC LIMIT $2::int
         """
         rows = await db_connection.fetch(query, value, page_size)
+        if not rows:
+            raise NotFoundException(detail="No map codes found with the given filters.", extra={"value": value})
         return [CreatorAutocompleteResponse(**row) for row in rows]
