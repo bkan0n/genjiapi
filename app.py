@@ -9,8 +9,6 @@ from typing import TYPE_CHECKING, AsyncGenerator
 import aio_pika
 import sentry_sdk
 from aio_pika.pool import Pool
-from apitally.client.request_logging import RequestLoggingConfig
-from apitally.litestar import ApitallyPlugin
 from litestar import Litestar, MediaType, Request, Response, get
 from litestar.connection.base import (
     AuthT,
@@ -72,22 +70,10 @@ def plain_text_exception_handler(_: Request[UserT, AuthT, StateT], exc: Exceptio
     )
 
 
-class SuppressApitallyFilter(logging.Filter):
-    def filter(self, record):
-        if "HTTP" in record.msg:
-            print(record)
-        # Suppress logs containing the specific URL or other identifying content
-        return "hub.apitally.io" not in record.getMessage()
-
 logging_config = LoggingConfig(
     root={"level": "INFO", "handlers": ["queue_listener"]},
     formatters={"standard": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"}},
     log_exceptions="always",
-    filters={
-        "suppress_apitally": {
-            "()": SuppressApitallyFilter,  # Use this syntax to register a filter class
-        },
-    },
 )
 
 psql_user = os.getenv("PSQL_USER")
@@ -99,15 +85,6 @@ psql_db = os.getenv("PSQL_DB")
 dsn = f"postgresql://{psql_user}:{psql_pass}@{psql_host}:{psql_port}/{psql_db}"
 
 asyncpg = AsyncpgPlugin(config=AsyncpgConfig(pool_config=PoolConfig(dsn=dsn)))
-
-apitally_plugin = ApitallyPlugin(
-    client_id="765ee232-a48d-449a-8093-77b670e91f37",
-    env="prod",  # or "dev"
-    request_logging_config=RequestLoggingConfig(
-        enabled=False
-    )
-)
-
 
 rabbitmq_user = os.getenv("RABBITMQ_DEFAULT_USER")
 rabbitmq_pass = os.getenv("RABBITMQ_DEFAULT_PASS")
@@ -147,7 +124,6 @@ def root_handler() -> None:
 app = Litestar(
     plugins=[
         asyncpg,
-        # apitally_plugin,
         problem_details_plugin,
     ],
     route_handlers=[
