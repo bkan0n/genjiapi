@@ -67,9 +67,9 @@ class CompletionsController(BaseController):
                 record AS time,
                 video,
                 CASE
-                    WHEN record < mm.gold THEN 'Gold'
-                    WHEN record < mm.silver AND record >= mm.gold THEN 'Silver'
-                    WHEN record < mm.bronze AND record >= mm.silver THEN 'Bronze'
+                    WHEN record < mm.gold AND video IS NOT NULL THEN 'Gold'
+                    WHEN record < mm.silver AND video IS NOT NULL AND record >= mm.gold THEN 'Silver'
+                    WHEN record < mm.bronze AND video IS NOT NULL AND record >= mm.silver THEN 'Bronze'
                 END AS medal,
                 nickname,
                 global_name AS discord_tag,
