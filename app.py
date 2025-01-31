@@ -10,11 +10,6 @@ import aio_pika
 import sentry_sdk
 from aio_pika.pool import Pool
 from litestar import Litestar, MediaType, Request, Response, get
-from litestar.connection.base import (
-    AuthT,
-    StateT,
-    UserT,
-)
 from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.exceptions import HTTPException
 from litestar.logging import LoggingConfig
@@ -24,7 +19,6 @@ from litestar.plugins.problem_details import ProblemDetailsConfig, ProblemDetail
 from litestar.static_files import create_static_files_router
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 from litestar.template import TemplateConfig
-
 from litestar_asyncpg import AsyncpgConfig, AsyncpgPlugin, PoolConfig
 from sentry_sdk.integrations.litestar import LitestarIntegration
 
@@ -58,7 +52,7 @@ sentry_sdk.init(
 )
 
 
-def plain_text_exception_handler(_: Request[UserT, AuthT, StateT], exc: Exception) -> Response[str]:
+def plain_text_exception_handler(_: Request, exc: Exception) -> Response[str]:
     """Handle exceptions subclassed from HTTPException."""
     status_code = getattr(exc, "status_code", HTTP_500_INTERNAL_SERVER_ERROR)
     detail = getattr(exc, "detail", "")
