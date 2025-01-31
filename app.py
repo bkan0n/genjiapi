@@ -17,6 +17,7 @@ from litestar.exceptions import HTTPException
 from litestar.logging import LoggingConfig
 from litestar.middleware import DefineMiddleware
 from litestar.openapi import OpenAPIConfig
+from litestar.plugins.problem_details import ProblemDetailsConfig, ProblemDetailsPlugin
 from litestar.static_files import create_static_files_router
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 from litestar.template import TemplateConfig
@@ -131,6 +132,8 @@ async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
 UMAMI_API_ENDPOINT = os.getenv("UMAMI_API_ENDPOINT")
 UMAMI_SITE_ID = os.getenv("UMAMI_SITE_ID")
 
+problem_details_plugin = ProblemDetailsPlugin(ProblemDetailsConfig(enable_for_all_http_exceptions=True))
+
 @get()
 def root_handler() -> None:
     """Root path."""
@@ -140,6 +143,7 @@ app = Litestar(
     plugins=[
         asyncpg,
         # apitally_plugin,
+        problem_details_plugin,
     ],
     route_handlers=[
         root_handler,
