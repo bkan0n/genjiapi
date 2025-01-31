@@ -3,3 +3,8 @@
 .idea
 *.env
 .run
+.ruff_cache
+__pycache__
+.vscode
+.postman
+.pytest_cache
