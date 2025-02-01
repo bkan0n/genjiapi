@@ -1413,29 +1413,6 @@
         "deprecated": false
       }
     },
-    "/v1/completions/test": {
-      "get": {
-        "tags": [
-          "Completions"
-        ],
-        "summary": "Test",
-        "operationId": "V1CompletionsTestTest",
-        "responses": {
-          "200": {
-            "description": "Request fulfilled, document follows",
-            "headers": {},
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": false
-      }
-    },
     "/v1/lootbox/users/debug/{user_id}/{key_type}/{reward_type}/{reward_name}": {
       "post": {
         "tags": [
@@ -4952,12 +4929,16 @@
           },
           "total_results": {
             "type": "integer"
+          },
+          "is_world_record": {
+            "type": "boolean"
           }
         },
         "type": "object",
         "required": [
           "difficulty",
           "discord_tag",
+          "is_world_record",
           "map_code",
           "medal",
           "nickname",
