@@ -1,7 +1,16 @@
 import enum
+from typing import Literal
 
 from msgspec import Struct
 
+NOTIFICATION_TYPES = Literal[
+    "DM_ON_VERIFICATION",
+    "DM_ON_SKILL_ROLE_UPDATE",
+    "DM_ON_LOOTBOX_GAIN",
+    "PING_ON_XP_GAIN",
+    "PING_ON_MASTERY",
+    "PING_ON_COMMUNITY_RANK_UPDATE",
+]
 
 class Notification(enum.IntFlag):
     NONE = 0
@@ -14,7 +23,7 @@ class Notification(enum.IntFlag):
 
 
 class SettingsUpdate(Struct):
-    notifications: list[str]
+    notifications: list[NOTIFICATION_TYPES]
 
     def __post_init__(self) -> None:
         """Post-initialization processing to validate notification names."""
