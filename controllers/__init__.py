@@ -5,6 +5,7 @@ from .maps import MapsController
 from .rank_card import MasteryController, RankCardController
 from .ranks import RanksController
 from .root import RootRouter
+from .settings import SettingsController
 
 __all__ = [
     "AutocompleteController",
@@ -15,4 +16,5 @@ __all__ = [
     "RankCardController",
     "RanksController",
     "RootRouter",
+    "SettingsController",
 ]

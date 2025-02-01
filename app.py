@@ -9,12 +9,11 @@ from typing import TYPE_CHECKING, AsyncGenerator
 import aio_pika
 import sentry_sdk
 from aio_pika.pool import Pool
-from litestar import Litestar, MediaType, Request, Response, get
+from litestar import Litestar, MediaType, Request, Response
 from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.exceptions import HTTPException
 from litestar.middleware import DefineMiddleware
 from litestar.openapi import OpenAPIConfig
-from litestar.response import File
 from litestar.static_files import create_static_files_router
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 from litestar.template import TemplateConfig
@@ -29,6 +28,7 @@ from controllers import (
     RankCardController,
     RanksController,
     RootRouter,
+    SettingsController,
 )
 from controllers.newsfeed.newsfeed import NewsfeedController
 from controllers.rank_card.mastery import MasteryController
@@ -114,6 +114,7 @@ app = Litestar(
                 NewsfeedController,
                 MasteryController,
                 RankCardController,
+                SettingsController,
             ],
         ),
         create_static_files_router(
