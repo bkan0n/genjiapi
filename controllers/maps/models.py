@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Annotated
+from typing import TYPE_CHECKING
 
 import msgspec
 
@@ -10,21 +10,24 @@ if TYPE_CHECKING:
     import asyncpg
 
 
-class MapCompletionStatisticsResponse(msgspec.Struct):
+class BaseResponse(msgspec.Struct):
+    map_code: str
+
+
+class MapCompletionStatisticsResponse(BaseResponse):
     min: float | None = None
     max: float | None = None
     avg: float | None = None
 
 
-class MapPerDifficultyResponse(msgspec.Struct):
+class MapPerDifficultyResponse(BaseResponse):
     difficulty: str
     amount: int
 
 
-class MapSearchResponse(msgspec.Struct):
+class MapSearchResponse(BaseResponse):
     map_name: str
     map_type: list[str]
-    map_code: str
     official: bool
     archived: bool
     mechanics: list[str]
@@ -47,8 +50,7 @@ class MapSearchResponse(msgspec.Struct):
     medal_type: str | None = None
 
 
-class MostCompletionsAndQualityResponse(msgspec.Struct):
-    map_code: str
+class MostCompletionsAndQualityResponse(BaseResponse):
     completions: int
     quality: float
     difficulty: str
@@ -61,20 +63,19 @@ class TopCreatorsResponse(msgspec.Struct):
     average_quality: float
 
 
-class GuidesResponse(msgspec.Struct):
-    map_code: str
+class GuidesResponse(BaseResponse):
     url: str
     total_results: int
 
 
-class MapSubmissionBody(msgspec.Struct):
-    map_code: Annotated[str, msgspec.Meta(examples=["TEST"])]
-    map_type: Annotated[str, msgspec.Meta(examples=["Classic"])]
-    map_name: Annotated[str, msgspec.Meta(examples=["Hanamura"])]
-    difficulty: Annotated[str, msgspec.Meta(examples=["Hell"])]
-    checkpoints: Annotated[int, msgspec.Meta(examples=[1])]
-    creator_id: Annotated[int, msgspec.Meta(examples=[37])]
-    nickname: Annotated[str, msgspec.Meta(examples=["TestUser"])]
+class BaseMapBody(msgspec.Struct):
+    map_code: str
+    map_type: str
+    map_name: str
+    difficulty: str
+    checkpoints: int
+    creator_id: int
+    nickname: str
     description: str | None = None
     mechanics: list[str] | None = None
     restrictions: list[str] | None = None
@@ -167,7 +168,7 @@ class MapSubmissionBody(msgspec.Struct):
             await db.executemany(query, _guides)
 
     async def _insert_medals(self, db: asyncpg.Connection) -> None:
-        if all((self.gold, self.silver, self.bronze)) and self.gold < self.silver < self.bronze:
+        if all((self.gold, self.silver, self.bronze)) and self.gold < self.silver < self.bronze: # type: ignore
             query = """
                 INSERT INTO map_medals (gold, silver, bronze, map_code)
                 VALUES ($1, $2, $3, $4);
@@ -193,9 +194,11 @@ class MapSubmissionBody(msgspec.Struct):
             await self._insert_medals(db)
 
 
-class ArchiveMapBody(msgspec.Struct):
-    map_code: str
+class MapSubmissionBody(BaseMapBody):
+    pass
 
+
+class ArchiveMapBody(BaseResponse):
     rabbit_data: dict | None = None
 
     def __post_init__(self) -> None:
@@ -207,6 +210,6 @@ class ArchiveMapBody(msgspec.Struct):
         }
 
 
-class MapCountsResponse(msgspec.Struct):
+class MapCountsResponse(BaseResponse):
     map_name: str
     amount: int
