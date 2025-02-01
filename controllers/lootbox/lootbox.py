@@ -1,5 +1,5 @@
 from asyncpg import Connection
-from litestar import Request, get, post
+from litestar import Request, get, post, put
 from litestar.exceptions import HTTPException
 
 from utils.pull import gacha
@@ -202,6 +202,12 @@ class LootboxController(BaseController):
     ) -> None:
         """DEBUG ONLY: Grant reward to user without key."""
         query = """
-            INSERT INTO lootbox_user_rewards (user_id, reward_type, key_type, reward_name) VALUES ($1, $2, $3, $4)
+            INSERT INTO lootbox_user_rewards (user_id, reward_type, key_type, reward_name) VALUES ($1, $2, $3, $4);
         """
         await db_connection.execute(query, user_id, reward_type, key_type, reward_name)
+
+    @put(path="/keys/{key_type:str}")
+    async def set_active_key(self, db_connection: Connection, key_type: str) -> None:
+        """Set active key."""
+        query = "UPDATE lootbox_active_key SET name = $1;"
+        await db_connection.execute(query, key_type)
