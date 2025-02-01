@@ -19,14 +19,6 @@ class CompletionsController(BaseController):
     path = "/completions"
     tags = ["Completions"]
 
-    @get(path="/test")
-    async def test(
-        self, db_connection: Connection
-    ) -> str:
-        """Test."""
-        x = 1 / 0
-        return "Boop"
-
     @get(path="/progression/{user_id:int}/{map_code:str}")
     async def get_map_record_progression(
         self, db_connection: Connection, user_id: int, map_code: str
@@ -116,47 +108,56 @@ class CompletionsController(BaseController):
                     ('[7.65,9.41)'::numrange, 'Extreme'),
                     ('[9.41,10.0]'::numrange, 'Hell')
             ), c_data AS (
-            SELECT
-                r.map_code,
-                nickname,
-                global_name AS discord_tag,
-                record AS time,
-                avg(mr.difficulty) AS difficulty_value,
-                CASE
-                    WHEN record < mm.gold THEN 'Gold'
-                    WHEN record < mm.silver AND record >= mm.gold THEN 'Silver'
-                    WHEN record < mm.bronze AND record >= mm.silver THEN 'Bronze'
-                END AS medal,
-                count(*) OVER() AS total_results
-            FROM records r
-            LEFT JOIN users u ON r.user_id = u.user_id
-            LEFT JOIN public.user_global_names ugn ON r.user_id = ugn.user_id
-            LEFT JOIN map_medals mm ON r.map_code = mm.map_code
-            LEFT JOIN map_ratings mr ON r.map_code = mr.map_code
-            WHERE
-                ($1::text IS NULL OR r.map_code = $1) AND
-                r.user_id = $2
-            GROUP BY r.map_code, nickname, global_name, record , mm.gold, mm.silver, mm.bronze
+                SELECT
+                    r.map_code,
+                    nickname,
+                    global_name AS discord_tag,
+                    record AS time,
+                    avg(mr.difficulty) AS difficulty_value,
+                    CASE
+                        WHEN record < mm.gold THEN 'Gold'
+                        WHEN record < mm.silver AND record >= mm.gold THEN 'Silver'
+                        WHEN record < mm.bronze AND record >= mm.silver THEN 'Bronze'
+                    END AS medal,
+                    count(*) OVER() AS total_results
+                FROM records r
+                LEFT JOIN users u ON r.user_id = u.user_id
+                LEFT JOIN public.user_global_names ugn ON r.user_id = ugn.user_id
+                LEFT JOIN map_medals mm ON r.map_code = mm.map_code
+                LEFT JOIN map_ratings mr ON r.map_code = mr.map_code
+                WHERE
+                    ($1::text IS NULL OR r.map_code = $1) AND
+                    r.user_id = $2
+                GROUP BY r.map_code, nickname, global_name, record , mm.gold, mm.silver, mm.bronze
+            ), world_records AS (
+                SELECT
+                    map_code,
+                    MIN(record) AS fastest_time
+                FROM records
+                GROUP BY map_code
             )
             SELECT
-                map_code,
-                nickname,
-                discord_tag,
-                time,
-                medal,
-                total_results,
-                name AS difficulty
+                cd.map_code,
+                cd.nickname,
+                cd.discord_tag,
+                cd.time,
+                cd.medal,
+                cd.total_results,
+                r2.name AS difficulty,
+                cd.time = wr.fastest_time AS is_world_record
             FROM ranges r2
             INNER JOIN c_data cd ON r2.range @> cd.difficulty_value
+            INNER JOIN world_records wr ON cd.map_code = wr.map_code
             ORDER BY
-            CASE name
-                WHEN 'Easy' THEN 1
-                WHEN 'Medium' THEN 2
-                WHEN 'Hard' THEN 3
-                WHEN 'Very Hard' THEN 4
-                WHEN 'Extreme' THEN 5
-                WHEN 'Hell' THEN 6
-            END, map_code
+                CASE name
+                    WHEN 'Easy' THEN 1
+                    WHEN 'Medium' THEN 2
+                    WHEN 'Hard' THEN 3
+                    WHEN 'Very Hard' THEN 4
+                    WHEN 'Extreme' THEN 5
+                    WHEN 'Hell' THEN 6
+                END,
+                cd.map_code
             LIMIT $3::int
             OFFSET $4::int
         """

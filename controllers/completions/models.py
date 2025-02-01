@@ -28,6 +28,7 @@ class PersonalRecordsResponse(msgspec.Struct):
     time: float
     medal: str
     total_results: int
+    is_world_record: bool
 
 
 class TimePlayedPerRankResponse(msgspec.Struct):
