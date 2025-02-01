@@ -74,7 +74,7 @@ class SettingsController(BaseController):
         return True
 
     @patch("/users/{user_id:int}")
-    async def update_settings(self, db_connection: Connection, request: Request, user_id: int) -> Response:
+    async def update_settings(self, db_connection: Connection, request: SettingsUpdate, user_id: int) -> Response:
         """Update the settings for a specific user.
 
         Args:
@@ -87,9 +87,7 @@ class SettingsController(BaseController):
 
         """
         try:
-            raw_body = await request.body()
-            data: SettingsUpdate = msgspec.json.decode(raw_body, type=SettingsUpdate)
-            bitmask = data.to_bitmask()
+            bitmask = request.to_bitmask()
             logger.debug(f"User {user_id} notifications bitmask: {bitmask}")
 
             if await self.update_user_settings(db_connection, user_id, bitmask):
