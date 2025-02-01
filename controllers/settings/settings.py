@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import logging
+from typing import Annotated
 
-import msgspec
 from asyncpg import Connection  # noqa: TC002
-from litestar import Request, Response, get, patch
+from litestar import Response, get, patch
+from litestar.params import Body
 from litestar.status_codes import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 from ..root import BaseController
@@ -74,12 +75,17 @@ class SettingsController(BaseController):
         return True
 
     @patch("/users/{user_id:int}")
-    async def update_settings(self, db_connection: Connection, request: SettingsUpdate, user_id: int) -> Response:
+    async def update_settings(
+        self,
+        db_connection: Connection,
+        data: Annotated[SettingsUpdate, Body(title="User Notifications")],
+        user_id: int,
+    ) -> Response:
         """Update the settings for a specific user.
 
         Args:
             db_connection (Connection): The database connection.
-            request (Request): The request object.
+            data (SettingsUpdate): The SettingsUpdate object.
             user_id (int): The ID of the user.
 
         Returns:
@@ -87,7 +93,7 @@ class SettingsController(BaseController):
 
         """
         try:
-            bitmask = request.to_bitmask()
+            bitmask = data.to_bitmask()
             logger.debug(f"User {user_id} notifications bitmask: {bitmask}")
 
             if await self.update_user_settings(db_connection, user_id, bitmask):
