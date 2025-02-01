@@ -11,19 +11,6 @@
     }
   ],
   "paths": {
-    "/": {
-      "get": {
-        "summary": "RootHandler",
-        "operationId": "RootHandler",
-        "responses": {
-          "200": {
-            "description": "Request fulfilled, document follows",
-            "headers": {}
-          }
-        },
-        "deprecated": false
-      }
-    },
     "/v1/maps/archive": {
       "post": {
         "tags": [
@@ -606,8 +593,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Ayutthaya",
@@ -775,8 +762,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Beginner",
@@ -2968,8 +2955,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "map_edit",
@@ -3066,8 +3053,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Ayutthaya",
