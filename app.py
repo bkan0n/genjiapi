@@ -114,6 +114,7 @@ app = Litestar(
         asyncpg,
     ],
     route_handlers=[
+        favicon,
         RootRouter(
             path="/v1",
             route_handlers=[
