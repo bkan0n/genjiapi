@@ -4119,6 +4119,16 @@
             "deprecated": false
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsUpdate"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Request fulfilled, document follows",
@@ -5770,6 +5780,21 @@
           "type"
         ],
         "title": "RewardTypeResponse"
+      },
+      "SettingsUpdate": {
+        "properties": {
+          "notifications": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "notifications"
+        ],
+        "title": "SettingsUpdate"
       },
       "TimePlayedPerRankResponse": {
         "properties": {
