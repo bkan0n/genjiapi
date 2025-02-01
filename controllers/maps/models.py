@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class BaseResponse(msgspec.Struct):
-    map_code: str
+    map_code: str | None = None
 
 
 class MapCompletionStatisticsResponse(BaseResponse):
@@ -20,12 +20,12 @@ class MapCompletionStatisticsResponse(BaseResponse):
     avg: float | None = None
 
 
-class MapPerDifficultyResponse(BaseResponse):
+class MapPerDifficultyResponse(BaseResponse, kw_only=True):
     difficulty: str
     amount: int
 
 
-class MapSearchResponse(BaseResponse):
+class MapSearchResponse(BaseResponse, kw_only=True):
     map_name: str
     map_type: list[str]
     official: bool
@@ -50,7 +50,7 @@ class MapSearchResponse(BaseResponse):
     medal_type: str | None = None
 
 
-class MostCompletionsAndQualityResponse(BaseResponse):
+class MostCompletionsAndQualityResponse(BaseResponse, kw_only=True):
     completions: int
     quality: float
     difficulty: str
@@ -63,7 +63,7 @@ class TopCreatorsResponse(msgspec.Struct):
     average_quality: float
 
 
-class GuidesResponse(BaseResponse):
+class GuidesResponse(BaseResponse, kw_only=True):
     url: str
     total_results: int
 
@@ -210,6 +210,6 @@ class ArchiveMapBody(BaseResponse):
         }
 
 
-class MapCountsResponse(BaseResponse):
+class MapCountsResponse(BaseResponse, kw_only=True):
     map_name: str
     amount: int
