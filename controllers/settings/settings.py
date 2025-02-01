@@ -64,8 +64,8 @@ class SettingsController(BaseController):
         """
         logger.debug(f"Updating user {user_id} settings to bitmask: {notifications_bitmask}")
         query = """
-            INSERT INTO user_notification_settings (user_id, notifications) VALUES ($1, $2)
-            ON CONFLICT (user_id) DO UPDATE SET notifications = $2;
+            INSERT INTO user_notification_settings (user_id, flags) VALUES ($1, $2)
+            ON CONFLICT (user_id) DO UPDATE SET flags = $2;
         """
         try:
             await connection.execute(query, user_id, notifications_bitmask)
