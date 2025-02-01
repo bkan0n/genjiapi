@@ -4075,16 +4075,20 @@
           "medal": {
             "type": "string"
           },
-          "video": {
-            "type": "string"
-          },
           "total_results": {
             "type": "integer"
+          },
+          "is_world_record": {
+            "type": "boolean"
+          },
+          "video": {
+            "type": "string"
           }
         },
         "type": "object",
         "required": [
           "discord_tag",
+          "is_world_record",
           "map_code",
           "medal",
           "nickname",
@@ -4918,9 +4922,6 @@
           "discord_tag": {
             "type": "string"
           },
-          "difficulty": {
-            "type": "string"
-          },
           "time": {
             "type": "number"
           },
@@ -4932,6 +4933,9 @@
           },
           "is_world_record": {
             "type": "boolean"
+          },
+          "difficulty": {
+            "type": "string"
           }
         },
         "type": "object",
