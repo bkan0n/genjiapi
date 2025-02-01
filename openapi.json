@@ -4037,7 +4037,14 @@
       "ArchiveMapBody": {
         "properties": {
           "map_code": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "rabbit_data": {
             "oneOf": [
@@ -4051,9 +4058,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "map_code"
-        ],
+        "required": [],
         "title": "ArchiveMapBody"
       },
       "AvatarResponse": {
@@ -4241,7 +4246,14 @@
       "GuidesResponse": {
         "properties": {
           "map_code": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "url": {
             "type": "string"
@@ -4252,7 +4264,6 @@
         },
         "type": "object",
         "required": [
-          "map_code",
           "total_results",
           "url"
         ],
@@ -4297,7 +4308,14 @@
       "MapCompletionStatisticsResponse": {
         "properties": {
           "map_code": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "min": {
             "oneOf": [
@@ -4331,15 +4349,20 @@
           }
         },
         "type": "object",
-        "required": [
-          "map_code"
-        ],
+        "required": [],
         "title": "MapCompletionStatisticsResponse"
       },
       "MapCountsResponse": {
         "properties": {
           "map_code": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "map_name": {
             "type": "string"
@@ -4351,7 +4374,6 @@
         "type": "object",
         "required": [
           "amount",
-          "map_code",
           "map_name"
         ],
         "title": "MapCountsResponse"
@@ -4411,7 +4433,14 @@
       "MapPerDifficultyResponse": {
         "properties": {
           "map_code": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "difficulty": {
             "type": "string"
@@ -4423,8 +4452,7 @@
         "type": "object",
         "required": [
           "amount",
-          "difficulty",
-          "map_code"
+          "difficulty"
         ],
         "title": "MapPerDifficultyResponse"
       },
@@ -4448,7 +4476,14 @@
       "MapSearchResponse": {
         "properties": {
           "map_code": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "map_name": {
             "type": "string"
@@ -4616,7 +4651,6 @@
           "creators",
           "creators_discord_tag",
           "difficulty",
-          "map_code",
           "map_name",
           "map_type",
           "mechanics",
@@ -4754,7 +4788,14 @@
       "MostCompletionsAndQualityResponse": {
         "properties": {
           "map_code": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "completions": {
             "type": "integer"
@@ -4773,7 +4814,6 @@
         "required": [
           "completions",
           "difficulty",
-          "map_code",
           "quality",
           "ranking"
         ],
