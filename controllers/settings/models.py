@@ -4,6 +4,7 @@ from typing import Literal
 from msgspec import Struct
 
 NOTIFICATION_TYPES = Literal[
+    "NONE",
     "DM_ON_VERIFICATION",
     "DM_ON_SKILL_ROLE_UPDATE",
     "DM_ON_LOOTBOX_GAIN",
@@ -39,5 +40,7 @@ class SettingsUpdate(Struct):
         """Convert the list of notification names to a bitmask."""
         mask = Notification(0)
         for name in self.notifications:
+            if name == "NONE":
+                return 0
             mask |= Notification[name]
         return mask.value
