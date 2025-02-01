@@ -5,7 +5,7 @@ import logging
 import msgspec
 from asyncpg import Connection  # noqa: TC002
 from litestar import Request, Response, get, patch
-from litestar.status_codes import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from litestar.status_codes import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 from ..root import BaseController
 from .models import Notification, SettingsUpdate
@@ -46,7 +46,7 @@ class SettingsController(BaseController):
         bitmask = await self.get_user_settings(db_connection, user_id)
         if bitmask is None:
             logger.debug("User %s not found.", user_id)
-            return Response({"error": "User not found"}, status_code=HTTP_404_NOT_FOUND)
+            bitmask = 0
 
         notifications = [notif.name for notif in Notification if bitmask & notif]
 
