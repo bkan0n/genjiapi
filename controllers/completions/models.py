@@ -5,14 +5,19 @@ import datetime  # noqa: TCH003
 import msgspec
 
 
-class CompletionsResponse(msgspec.Struct):
+class BaseResponse(msgspec.Struct):
     map_code: str
     nickname: str
     discord_tag: str
-    time: str
+    time: float
     medal: str
-    video: str
     total_results: int
+    is_world_record: bool
+
+
+class CompletionsResponse(BaseResponse):
+    video: str
+    time: str  # Override the type of time to str
 
 
 class MapRecordProgressionResponse(msgspec.Struct):
@@ -20,15 +25,8 @@ class MapRecordProgressionResponse(msgspec.Struct):
     inserted_at: datetime.datetime
 
 
-class PersonalRecordsResponse(msgspec.Struct):
-    map_code: str
-    nickname: str
-    discord_tag: str
+class PersonalRecordsResponse(BaseResponse):
     difficulty: str
-    time: float
-    medal: str
-    total_results: int
-    is_world_record: bool
 
 
 class TimePlayedPerRankResponse(msgspec.Struct):

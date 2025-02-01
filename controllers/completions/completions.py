@@ -54,6 +54,14 @@ class CompletionsController(BaseController):
     ) -> list[CompletionsResponse]:
         """Get completions with map_code and user as filters."""
         query = """
+            WITH world_records AS (
+                SELECT
+                    map_code,
+                    MIN(record) AS fastest_time
+                FROM records
+                WHERE verified AND video IS NOT NULL
+                GROUP BY map_code
+            )
             SELECT
                 r.map_code,
                 record AS time,
@@ -65,11 +73,13 @@ class CompletionsController(BaseController):
                 END AS medal,
                 nickname,
                 global_name AS discord_tag,
-                count(*) OVER() AS total_results
+                count(*) OVER() AS total_results,
+                record = wr.fastest_time AS is_world_record
             FROM records r
             LEFT JOIN users u ON u.user_id = r.user_id
             LEFT JOIN user_global_names ugn ON r.user_id = ugn.user_id
             LEFT JOIN map_medals mm ON r.map_code = mm.map_code
+            LEFT JOIN world_records wr ON r.map_code = wr.map_code
             WHERE
                 ($1::text IS NULL OR r.map_code = $1) AND
                 ($2::text IS NULL OR (nickname ILIKE $2 OR global_name ILIKE $2))
