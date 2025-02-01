@@ -1754,6 +1754,71 @@
         "deprecated": false
       }
     },
+    "/v1/lootbox/keys/{key_type}": {
+      "put": {
+        "tags": [
+          "Lootbox"
+        ],
+        "summary": "SetActiveKey",
+        "operationId": "V1LootboxKeysKeyTypeSetActiveKey",
+        "parameters": [
+          {
+            "name": "key_type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {}
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v1/lootbox/keys": {
       "get": {
         "tags": [
@@ -4231,6 +4296,9 @@
       },
       "MapCompletionStatisticsResponse": {
         "properties": {
+          "map_code": {
+            "type": "string"
+          },
           "min": {
             "oneOf": [
               {
@@ -4263,11 +4331,16 @@
           }
         },
         "type": "object",
-        "required": [],
+        "required": [
+          "map_code"
+        ],
         "title": "MapCompletionStatisticsResponse"
       },
       "MapCountsResponse": {
         "properties": {
+          "map_code": {
+            "type": "string"
+          },
           "map_name": {
             "type": "string"
           },
@@ -4278,6 +4351,7 @@
         "type": "object",
         "required": [
           "amount",
+          "map_code",
           "map_name"
         ],
         "title": "MapCountsResponse"
@@ -4336,6 +4410,9 @@
       },
       "MapPerDifficultyResponse": {
         "properties": {
+          "map_code": {
+            "type": "string"
+          },
           "difficulty": {
             "type": "string"
           },
@@ -4346,7 +4423,8 @@
         "type": "object",
         "required": [
           "amount",
-          "difficulty"
+          "difficulty",
+          "map_code"
         ],
         "title": "MapPerDifficultyResponse"
       },
@@ -4369,6 +4447,9 @@
       },
       "MapSearchResponse": {
         "properties": {
+          "map_code": {
+            "type": "string"
+          },
           "map_name": {
             "type": "string"
           },
@@ -4377,9 +4458,6 @@
               "type": "string"
             },
             "type": "array"
-          },
-          "map_code": {
-            "type": "string"
           },
           "official": {
             "type": "boolean"
@@ -4551,46 +4629,25 @@
       "MapSubmissionBody": {
         "properties": {
           "map_code": {
-            "type": "string",
-            "examples": [
-              "TEST"
-            ]
+            "type": "string"
           },
           "map_type": {
-            "type": "string",
-            "examples": [
-              "Classic"
-            ]
+            "type": "string"
           },
           "map_name": {
-            "type": "string",
-            "examples": [
-              "Hanamura"
-            ]
+            "type": "string"
           },
           "difficulty": {
-            "type": "string",
-            "examples": [
-              "Hell"
-            ]
+            "type": "string"
           },
           "checkpoints": {
-            "type": "integer",
-            "examples": [
-              1
-            ]
+            "type": "integer"
           },
           "creator_id": {
-            "type": "integer",
-            "examples": [
-              37
-            ]
+            "type": "integer"
           },
           "nickname": {
-            "type": "string",
-            "examples": [
-              "TestUser"
-            ]
+            "type": "string"
           },
           "description": {
             "oneOf": [
@@ -4725,22 +4782,57 @@
       "NewsfeedDataResponse": {
         "properties": {
           "map": {
-            "$ref": "#/components/schemas/NewsfeedMapResponse"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NewsfeedMapResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "user": {
-            "$ref": "#/components/schemas/NewsfeedUserResponse"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NewsfeedUserResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "record": {
-            "$ref": "#/components/schemas/NewsfeedRecordResponse"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NewsfeedRecordResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "message": {
-            "$ref": "#/components/schemas/NewsfeedMessageResponse"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NewsfeedMessageResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "bulk": {
-            "items": {
-              "$ref": "#/components/schemas/NewsfeedMapResponse"
-            },
-            "type": "array"
+            "oneOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/NewsfeedMapResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -4750,76 +4842,202 @@
       "NewsfeedMapResponse": {
         "properties": {
           "map_name": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "map_type": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
+            "oneOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "map_code": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "new_map_code": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "desc": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "official": {
-            "type": "boolean"
+            "oneOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "archived": {
-            "type": "boolean"
+            "oneOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "guide": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
+            "oneOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "mechanics": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
+            "oneOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "restrictions": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
+            "oneOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "checkpoints": {
-            "type": "integer"
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "creators": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
+            "oneOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "difficulty": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "quality": {
-            "type": "number"
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "creator_ids": {
-            "items": {
-              "type": "integer"
-            },
-            "type": "array"
+            "oneOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "gold": {
-            "type": "number"
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "silver": {
-            "type": "number"
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "bronze": {
-            "type": "number"
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -4841,13 +5059,34 @@
       "NewsfeedRecordResponse": {
         "properties": {
           "record": {
-            "type": "number"
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "video": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "rank_num": {
-            "type": "integer"
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -4882,16 +5121,37 @@
       "NewsfeedUserResponse": {
         "properties": {
           "user_id": {
-            "type": "integer"
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "nickname": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "roles": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
+            "oneOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
