@@ -95,17 +95,6 @@ async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
         app.state.mq_channel_pool = channel_pool
     yield
 
-
-@get(path="/favicon.ico")
-async def favicon() -> File:
-    """Serve the favicon."""
-    return File(
-        path=Path("assets/favicon.ico"),
-        filename="favicon.ico",
-    )
-
-
-
 UMAMI_API_ENDPOINT = os.getenv("UMAMI_API_ENDPOINT")
 UMAMI_SITE_ID = os.getenv("UMAMI_SITE_ID")
 
@@ -114,7 +103,6 @@ app = Litestar(
         asyncpg,
     ],
     route_handlers=[
-        favicon,
         RootRouter(
             path="/v1",
             route_handlers=[
