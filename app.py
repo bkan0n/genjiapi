@@ -9,14 +9,12 @@ from typing import TYPE_CHECKING, AsyncGenerator
 import aio_pika
 import sentry_sdk
 from aio_pika.pool import Pool
-from apitally.client.request_logging import RequestLoggingConfig
-from apitally.litestar import ApitallyPlugin
 from litestar import Litestar, MediaType, Request, Response, get
 from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.exceptions import HTTPException
-from litestar.logging import LoggingConfig
 from litestar.middleware import DefineMiddleware
 from litestar.openapi import OpenAPIConfig
+from litestar.response import File
 from litestar.static_files import create_static_files_router
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 from litestar.template import TemplateConfig
@@ -52,8 +50,6 @@ sentry_sdk.init(
     ],
 )
 
-
-
 def plain_text_exception_handler(_: Request, exc: Exception) -> Response:
     """Handle exceptions subclassed from HTTPException."""
     status_code = getattr(exc, "status_code", HTTP_500_INTERNAL_SERVER_ERROR)
@@ -65,25 +61,6 @@ def plain_text_exception_handler(_: Request, exc: Exception) -> Response:
         status_code=status_code,
     )
 
-
-class SuppressApitallyFilter(logging.Filter):
-    def filter(self, record):
-        if "HTTP" in record.msg:
-            print(record)
-        # Suppress logs containing the specific URL or other identifying content
-        return "hub.apitally.io" not in record.getMessage()
-
-logging_config = LoggingConfig(
-    root={"level": "INFO", "handlers": ["queue_listener"]},
-    formatters={"standard": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"}},
-    log_exceptions="always",
-    filters={
-        "suppress_apitally": {
-            "()": SuppressApitallyFilter,  # Use this syntax to register a filter class
-        },
-    },
-)
-
 psql_user = os.getenv("PSQL_USER")
 psql_pass = os.getenv("PSQL_PASS")
 psql_host = os.getenv("PSQL_HOST")
@@ -93,15 +70,6 @@ psql_db = os.getenv("PSQL_DB")
 dsn = f"postgresql://{psql_user}:{psql_pass}@{psql_host}:{psql_port}/{psql_db}"
 
 asyncpg = AsyncpgPlugin(config=AsyncpgConfig(pool_config=PoolConfig(dsn=dsn)))
-
-apitally_plugin = ApitallyPlugin(
-    client_id="765ee232-a48d-449a-8093-77b670e91f37",
-    env="prod",  # or "dev"
-    request_logging_config=RequestLoggingConfig(
-        enabled=False
-    )
-)
-
 
 rabbitmq_user = os.getenv("RABBITMQ_DEFAULT_USER")
 rabbitmq_pass = os.getenv("RABBITMQ_DEFAULT_PASS")
@@ -128,13 +96,22 @@ async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
     yield
 
 
+@get(path="/favicon.ico")
+async def favicon() -> File:
+    """Serve the favicon."""
+    return File(
+        path=Path("assets/favicon.ico"),
+        filename="favicon.ico",
+    )
+
+
+
 UMAMI_API_ENDPOINT = os.getenv("UMAMI_API_ENDPOINT")
 UMAMI_SITE_ID = os.getenv("UMAMI_SITE_ID")
 
 app = Litestar(
     plugins=[
         asyncpg,
-        # apitally_plugin,
     ],
     route_handlers=[
         RootRouter(
@@ -163,7 +140,6 @@ app = Litestar(
         path="/",
     ),
     exception_handlers={HTTPException: plain_text_exception_handler},
-    logging_config=logging_config,
     lifespan=[rabbitmq_connection],
     template_config=TemplateConfig(
         directory=Path("templates"),
@@ -173,9 +149,3 @@ app = Litestar(
         DefineMiddleware(UmamiMiddleware, api_endpoint=UMAMI_API_ENDPOINT, website_id=UMAMI_SITE_ID),
     ],
 )
-# Ignore annoying apitally and analytics INFO logs
-for logger_name in logging.Logger.manager.loggerDict:
-    if "api" in logger_name or "httpx" in logger_name:
-        logging.getLogger(logger_name).setLevel(logging.WARNING)
-
-
