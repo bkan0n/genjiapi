@@ -209,5 +209,5 @@ class LootboxController(BaseController):
     @put(path="/keys/{key_type:str}")
     async def set_active_key(self, db_connection: Connection, key_type: str) -> None:
         """Set active key."""
-        query = "UPDATE lootbox_active_key SET name = $1;"
+        query = "UPDATE lootbox_active_key SET key = $1;"
         await db_connection.execute(query, key_type)
