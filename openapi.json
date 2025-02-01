@@ -5785,7 +5785,15 @@
         "properties": {
           "notifications": {
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "DM_ON_VERIFICATION",
+                "DM_ON_SKILL_ROLE_UPDATE",
+                "DM_ON_LOOTBOX_GAIN",
+                "PING_ON_XP_GAIN",
+                "PING_ON_MASTERY",
+                "PING_ON_COMMUNITY_RANK_UPDATE"
+              ]
             },
             "type": "array"
           }
