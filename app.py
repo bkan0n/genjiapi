@@ -131,18 +131,12 @@ async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
 UMAMI_API_ENDPOINT = os.getenv("UMAMI_API_ENDPOINT")
 UMAMI_SITE_ID = os.getenv("UMAMI_SITE_ID")
 
-@get()
-def root_handler() -> None:
-    """Root path."""
-    return None
-
 app = Litestar(
     plugins=[
         asyncpg,
         # apitally_plugin,
     ],
     route_handlers=[
-        root_handler,
         RootRouter(
             path="/v1",
             route_handlers=[
@@ -166,7 +160,7 @@ app = Litestar(
         title="GenjiAPI",
         description="GenjiAPI",
         version="0.1.0",
-        path="/docs",
+        path="/",
     ),
     exception_handlers={HTTPException: plain_text_exception_handler},
     logging_config=logging_config,
