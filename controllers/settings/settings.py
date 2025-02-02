@@ -38,7 +38,7 @@ class SettingsController(BaseController):
         query = "SELECT flags FROM user_notification_settings WHERE user_id = $1;"
         return await connection.fetchval(query, user_id)
 
-    @get("/users/{user_id:int}")
+    @get("/users/{user_id:int}/notifications")
     async def get_settings(self, db_connection: Connection, user_id: int) -> Response:
         """Retrieve the settings for a specific user.
 
@@ -81,7 +81,7 @@ class SettingsController(BaseController):
             return False
         return True
 
-    @patch("/users/{user_id:int}")
+    @patch("/users/{user_id:int}/notifications")
     async def update_settings(
         self,
         db_connection: Connection,
