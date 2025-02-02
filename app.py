@@ -139,3 +139,7 @@ app = Litestar(
         DefineMiddleware(UmamiMiddleware, api_endpoint=UMAMI_API_ENDPOINT, website_id=UMAMI_SITE_ID),
     ],
 )
+
+for logger_name in logging.Logger.manager.loggerDict:
+    if "api" in logger_name or "httpx" in logger_name:
+        logging.getLogger(logger_name).setLevel(logging.WARNING)
