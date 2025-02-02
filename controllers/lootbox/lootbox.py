@@ -176,10 +176,10 @@ class LootboxController(BaseController):
                             ur.key_type = $2::text
                     )
                     THEN CASE
-                        WHEN sr.rarity = 'common' THEN 10
-                        WHEN sr.rarity = 'rare' THEN 20
-                        WHEN sr.rarity = 'epic' THEN 50
-                        WHEN sr.rarity = 'legendary' THEN 100
+                        WHEN sr.rarity = 'common' THEN 100
+                        WHEN sr.rarity = 'rare' THEN 250
+                        WHEN sr.rarity = 'epic' THEN 500
+                        WHEN sr.rarity = 'legendary' THEN 1000
                         ELSE 0
                     END
                 ELSE 0
@@ -206,6 +206,29 @@ class LootboxController(BaseController):
         key_count = await self._get_user_key_count(db_connection, user_id, key_type)
         if key_count <= 0 and not request.headers.get("x-test-mode"):
             raise HTTPException(detail="User does not have enough keys for this action.", status_code=400)
+
+        # TODO: Remove this check once website is set up for this
+        query = """
+            SELECT rt.rarity
+            FROM lootbox_user_rewards ur
+            JOIN lootbox_reward_types rt ON ur.reward_name = rt.name
+                AND ur.reward_type = rt.type
+                AND ur.key_type = rt.key_type
+            WHERE ur.user_id = $1::bigint AND
+              ur.reward_type = $2::text AND
+              ur.key_type = $3::text AND
+              ur.reward_name = $4::text
+        """
+        is_duplicate = await db_connection.fetchval(query, user_id, reward_type, key_type, reward_name)
+        if is_duplicate:
+            reward_type = "coins"
+            coin_convert = {
+                "common": 100,
+                "rare": 250,
+                "epic": 500,
+                "legendary": 1000,
+            }
+            reward_name = str(coin_convert[is_duplicate])
 
         async with db_connection.transaction():
             if not request.headers.get("x-test-mode"):
