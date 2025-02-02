@@ -56,6 +56,8 @@ def _reward_url(type_: str, name: str) -> str:
         url = f"assets/rank_card/avatar/overwatch_1/{sanitized_name}.webp"
     elif type_ == "background":
         url = f"assets/rank_card/background/{sanitized_name}.webp"
+    elif type_ == "coin":
+        url = f"assets/rank_card/coins/{sanitized_name}.webp"
     else:
         url = ""
     return url
