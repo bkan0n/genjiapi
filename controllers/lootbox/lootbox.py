@@ -147,16 +147,41 @@ class LootboxController(BaseController):
         rarities = gacha(amount)
         items = []
         query = """
+            WITH selected_rewards AS (
             SELECT *
             FROM lootbox_reward_types
             WHERE
                 rarity = $1::text AND
                 key_type = $2::text
             ORDER BY random()
-            LIMIT 1;
+            LIMIT 1
+            )
+            SELECT sr.*,
+            EXISTS(
+                SELECT 1
+                FROM lootbox_user_rewards ur
+                WHERE ur.user_id = $3::bigint AND ur.reward_name = sr.name AND ur.reward_type = sr.type AND ur.key_type = $2::text
+            ) AS duplicate,
+            CASE
+                WHEN EXISTS(
+                SELECT 1
+                FROM lootbox_user_rewards ur
+                WHERE ur.user_id = $3::bigint AND ur.reward_name = sr.name AND ur.reward_type = sr.type AND ur.key_type = $2::text
+                )
+                THEN CASE
+                WHEN sr.rarity = 'common' THEN 10
+                WHEN sr.rarity = 'rare' THEN 20
+                WHEN sr.rarity = 'epic' THEN 50
+                WHEN sr.rarity = 'legendary' THEN 100
+                ELSE 0
+                END
+                ELSE 0
+            END AS coin_amount
+            FROM selected_rewards sr;
         """
         for rarity in rarities:
-            items.append(await db_connection.fetchrow(query, rarity.lower(), key_type))
+            reward = await db_connection.fetchrow(query, rarity.lower(), key_type, user_id)
+            items.append(reward)
 
         return [RewardTypeResponse(**row) for row in items]
 
@@ -178,17 +203,25 @@ class LootboxController(BaseController):
         async with db_connection.transaction():
             if not request.headers.get("x-test-mode"):
                 await self._use_user_key(db_connection, user_id, key_type)
-            query = """
-                INSERT INTO lootbox_user_rewards (user_id, reward_type, key_type, reward_name) VALUES ($1, $2, $3, $4)
-            """
-            await db_connection.execute(query, user_id, reward_type, key_type, reward_name)
+            if reward_type != "coin":
+                query = """
+                    INSERT INTO lootbox_user_rewards (user_id, reward_type, key_type, reward_name)
+                    VALUES ($1, $2, $3, $4)
+                """
+                await db_connection.execute(query, user_id, reward_type, key_type, reward_name)
+            else:
+                query = """
+                    INSERT INTO users (user_id, coins) VALUES ($1, $2)
+                    ON CONFLICT (user_id) DO UPDATE SET coins = coins + excluded.coins
+                """
+                await db_connection.execute(query, user_id, reward_name)
 
     @post(path="/user/{user_id:int}/keys/{key_type:str}")
     async def grant_key_to_user(self, db_connection: Connection, user_id: int, key_type: str) -> None:
         """Grant key to user."""
         query = """
-                    INSERT INTO lootbox_user_keys (user_id, key_type) VALUES ($1, $2)
-                """
+            INSERT INTO lootbox_user_keys (user_id, key_type) VALUES ($1, $2)
+        """
         await db_connection.execute(query, user_id, key_type)
 
     @post(path="/users/debug/{user_id:int}/{key_type:str}/{reward_type:str}/{reward_name:str}")

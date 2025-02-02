@@ -12,6 +12,8 @@ class RewardTypeResponse(msgspec.Struct):
     key_type: str
     rarity: str
     type: str
+    duplicate: bool = False
+    coin_amount: int = 0
 
     url: str | None = None
 
