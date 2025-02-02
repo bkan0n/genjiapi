@@ -201,8 +201,10 @@ def wrap_string_with_percent(string: str | None) -> str | None:
     return "%" + string + "%"
 
 
-def sanitize_string(string: str) -> str:
+def sanitize_string(string: str | None) -> str:
     """Sanitize string."""
+    if not string:
+        return ""
     string = re.sub(r"[^a-zA-Z\s0-9]", "", string)
     string = string.strip().replace(" ", "_")
     return string.lower()
