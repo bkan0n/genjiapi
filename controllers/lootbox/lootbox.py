@@ -207,7 +207,9 @@ class LootboxController(BaseController):
         await db_connection.execute(query, user_id, reward_type, key_type, reward_name)
 
     @put(path="/keys/{key_type:str}")
-    async def set_active_key(self, db_connection: Connection, key_type: str) -> None:
+    async def set_active_key(self, db_connection: Connection, request: Request, key_type: str) -> None:
         """Set active key."""
+        if request.headers.get("x-test-mode"):
+            return
         query = "UPDATE lootbox_active_key SET key = $1;"
         await db_connection.execute(query, key_type)

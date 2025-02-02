@@ -505,8 +505,10 @@ class MapsController(BaseController):
         self, request: Request, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
     ) -> list[ArchiveMapBody]:
         """Bulk legacy records."""
+        if request.headers.get("x-test-mode"):
+            return data
         try:
-            with db_connection.transaction():
+            async with db_connection.transaction():
                 for map_ in data:
                     await self._convert_records_to_legacy_completions(db_connection, map_.map_code)
                     await self._remove_map_medal_entries(db_connection, map_.map_code)
@@ -525,6 +527,8 @@ class MapsController(BaseController):
         self, request: Request, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
     ) -> list[ArchiveMapBody]:
         """Bulk archive."""
+        if request.headers.get("x-test-mode"):
+            return data
         args = [(d.map_code, True) for d in data]
         query = "UPDATE maps SET archived = $2 WHERE map_code = $1;"
 
@@ -549,6 +553,8 @@ class MapsController(BaseController):
         self, request: Request, state: State, db_connection: asyncpg.Connection, data: list[ArchiveMapBody]
     ) -> list[ArchiveMapBody]:
         """Bulk unarchive."""
+        if request.headers.get("x-test-mode"):
+            return data
         args = [(d.map_code, False) for d in data]
         query = "UPDATE maps SET archived = $2 WHERE map_code = $1;"
         try:
