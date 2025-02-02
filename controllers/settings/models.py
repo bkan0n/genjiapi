@@ -1,4 +1,5 @@
 import enum
+import re
 from typing import Literal
 
 from msgspec import Struct
@@ -12,6 +13,8 @@ NOTIFICATION_TYPES = Literal[
     "PING_ON_MASTERY",
     "PING_ON_COMMUNITY_RANK_UPDATE",
 ]
+
+USERNAME_REGEX = re.compile(r'^(?P<name>[^#]+)(?:#(?P<tag>\d+))?$')
 
 class Notification(enum.IntFlag):
     NONE = 0
@@ -44,3 +47,33 @@ class SettingsUpdate(Struct):
                 return 0
             mask |= Notification[name]
         return mask.value
+
+
+
+class OverwatchUsernameItem(Struct):
+    username: str
+    primary: bool = False
+
+    def __post_init__(self) -> None:
+        """Post-initialization processing to validate the username format."""
+        if not USERNAME_REGEX.match(self.username):
+            raise ValueError(
+                f"Invalid Overwatch username format: '{self.username}'. "
+                "Expected format like 'nebula#11571' or 'nebula'."
+            )
+
+class OverwatchUsernamesUpdate(Struct):
+    usernames: list[OverwatchUsernameItem]
+
+    def __post_init__(self) -> None:
+        """Post-initialization processing to enforce primary username constraints."""
+        primary_count = sum(1 for item in self.usernames if item.primary)
+        if primary_count > 1:
+            raise ValueError("Only one Overwatch username can be primary.")
+        if primary_count == 0 and self.usernames:
+            raise ValueError("One Overwatch username must be designated as primary.")
+
+
+class OverwatchUsernamesResponse(OverwatchUsernamesUpdate):
+    user_id: int
+
