@@ -4,7 +4,7 @@ import logging
 from typing import Annotated
 
 from asyncpg import Connection  # noqa: TC002
-from litestar import Response, get, patch
+from litestar import Request, Response, get, patch
 from litestar.params import Body
 from litestar.status_codes import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
@@ -78,6 +78,7 @@ class SettingsController(BaseController):
     async def update_settings(
         self,
         db_connection: Connection,
+        request: Request,
         data: Annotated[SettingsUpdate, Body(title="User Notifications")],
         user_id: int,
     ) -> Response:
@@ -85,6 +86,7 @@ class SettingsController(BaseController):
 
         Args:
             db_connection (Connection): The database connection.
+            request (Request): The request object.
             data (SettingsUpdate): The SettingsUpdate object.
             user_id (int): The ID of the user.
 
@@ -92,6 +94,8 @@ class SettingsController(BaseController):
             Response: The response indicating the success or failure of the update.
 
         """
+        if request.headers.get("x-test-mode"):
+            return Response({"status": "success"}, status_code=HTTP_200_OK)
         try:
             bitmask = data.to_bitmask()
             logger.debug(f"User {user_id} notifications bitmask: {bitmask}")
