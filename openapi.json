@@ -593,8 +593,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Ayutthaya",
@@ -762,8 +762,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Beginner",
@@ -3020,8 +3020,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "map_edit",
@@ -3118,8 +3118,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Ayutthaya",
@@ -3985,6 +3985,158 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BackgroundResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/settings/users/{user_id}/overwatch": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "GetOverwatchUsernames",
+        "operationId": "V1SettingsUsersUserIdOverwatchGetOverwatchUsernames",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OverwatchUsernamesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "patch": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "UpdateOverwatchUsernames",
+        "operationId": "V1SettingsUsersUserIdOverwatchUpdateOverwatchUsernames",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OverwatchUsernamesUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
                 }
               }
             }
@@ -5349,6 +5501,56 @@
         "type": "object",
         "required": [],
         "title": "NewsfeedUserResponse"
+      },
+      "OverwatchUsernameItem": {
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "primary": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "username"
+        ],
+        "title": "OverwatchUsernameItem"
+      },
+      "OverwatchUsernamesResponse": {
+        "properties": {
+          "usernames": {
+            "items": {
+              "$ref": "#/components/schemas/OverwatchUsernameItem"
+            },
+            "type": "array"
+          },
+          "user_id": {
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "usernames"
+        ],
+        "title": "OverwatchUsernamesResponse"
+      },
+      "OverwatchUsernamesUpdate": {
+        "properties": {
+          "usernames": {
+            "items": {
+              "$ref": "#/components/schemas/OverwatchUsernameItem"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "usernames"
+        ],
+        "title": "OverwatchUsernamesUpdate"
       },
       "PersonalRecordsResponse": {
         "properties": {
