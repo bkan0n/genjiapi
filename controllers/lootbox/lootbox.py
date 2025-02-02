@@ -219,9 +219,9 @@ class LootboxController(BaseController):
             else:
                 query = """
                     INSERT INTO users (user_id, coins) VALUES ($1, $2)
-                    ON CONFLICT (user_id) DO UPDATE SET coins = coins + excluded.coins
+                    ON CONFLICT (user_id) DO UPDATE SET coins = users.coins + excluded.coins
                 """
-                await db_connection.execute(query, user_id, reward_name)
+                await db_connection.execute(query, user_id, int(reward_name))
 
     @post(path="/user/{user_id:int}/keys/{key_type:str}")
     async def grant_key_to_user(self, db_connection: Connection, user_id: int, key_type: str) -> None:
