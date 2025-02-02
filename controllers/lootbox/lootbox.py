@@ -210,7 +210,7 @@ class LootboxController(BaseController):
         async with db_connection.transaction():
             if not request.headers.get("x-test-mode"):
                 await self._use_user_key(db_connection, user_id, key_type)
-            if reward_type != "coin":
+            if reward_type != "coins":
                 query = """
                     INSERT INTO lootbox_user_rewards (user_id, reward_type, key_type, reward_name)
                     VALUES ($1, $2, $3, $4)
@@ -241,10 +241,18 @@ class LootboxController(BaseController):
         reward_name: str,
     ) -> None:
         """DEBUG ONLY: Grant reward to user without key."""
-        query = """
-            INSERT INTO lootbox_user_rewards (user_id, reward_type, key_type, reward_name) VALUES ($1, $2, $3, $4);
-        """
-        await db_connection.execute(query, user_id, reward_type, key_type, reward_name)
+        if reward_type != "coins":
+            query = """
+                INSERT INTO lootbox_user_rewards (user_id, reward_type, key_type, reward_name)
+                VALUES ($1, $2, $3, $4)
+            """
+            await db_connection.execute(query, user_id, reward_type, key_type, reward_name)
+        else:
+            query = """
+                INSERT INTO users (user_id, coins) VALUES ($1, $2)
+                ON CONFLICT (user_id) DO UPDATE SET coins = users.coins + excluded.coins
+            """
+            await db_connection.execute(query, user_id, int(reward_name))
 
     @put(path="/keys/{key_type:str}")
     async def set_active_key(self, db_connection: Connection, request: Request, key_type: str) -> None:
