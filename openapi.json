@@ -4183,13 +4183,13 @@
         "deprecated": false
       }
     },
-    "/v1/settings/users/{user_id}": {
+    "/v1/settings/users/{user_id}/notifications": {
       "get": {
         "tags": [
           "Settings"
         ],
         "summary": "GetSettings",
-        "operationId": "V1SettingsUsersUserIdGetSettings",
+        "operationId": "V1SettingsUsersUserIdNotificationsGetSettings",
         "parameters": [
           {
             "name": "user_id",
@@ -4259,7 +4259,7 @@
           "Settings"
         ],
         "summary": "UpdateSettings",
-        "operationId": "V1SettingsUsersUserIdUpdateSettings",
+        "operationId": "V1SettingsUsersUserIdNotificationsUpdateSettings",
         "parameters": [
           {
             "name": "user_id",
