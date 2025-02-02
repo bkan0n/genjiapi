@@ -183,7 +183,7 @@ class SettingsController(BaseController):
                 """,
                 user_id,
                 item.username,
-                item.primary,
+                item.is_primary,
             )
 
     @get("/users/{user_id:int}/overwatch")

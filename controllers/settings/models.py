@@ -52,7 +52,7 @@ class SettingsUpdate(Struct):
 
 class OverwatchUsernameItem(Struct):
     username: str
-    primary: bool = False
+    is_primary: bool = False
 
     def __post_init__(self) -> None:
         """Post-initialization processing to validate the username format."""
@@ -67,7 +67,7 @@ class OverwatchUsernamesUpdate(Struct):
 
     def __post_init__(self) -> None:
         """Post-initialization processing to enforce primary username constraints."""
-        primary_count = sum(1 for item in self.usernames if item.primary)
+        primary_count = sum(1 for item in self.usernames if item.is_primary)
         if primary_count > 1:
             raise ValueError("Only one Overwatch username can be primary.")
         if primary_count == 0 and self.usernames:
