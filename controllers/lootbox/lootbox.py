@@ -148,35 +148,36 @@ class LootboxController(BaseController):
         items = []
         query = """
             WITH selected_rewards AS (
-            SELECT *
-            FROM lootbox_reward_types
-            WHERE
-                rarity = $1::text AND
-                key_type = $2::text
-            ORDER BY random()
-            LIMIT 1
+                SELECT *
+                FROM lootbox_reward_types
+                WHERE
+                    rarity = $1::text AND
+                    key_type = $2::text
+                ORDER BY random()
+                LIMIT 1
             )
-            SELECT sr.*,
-            EXISTS(
-                SELECT 1
-                FROM lootbox_user_rewards ur
-                WHERE ur.user_id = $3::bigint AND ur.reward_name = sr.name AND ur.reward_type = sr.type AND ur.key_type = $2::text
-            ) AS duplicate,
-            CASE
-                WHEN EXISTS(
-                SELECT 1
-                FROM lootbox_user_rewards ur
-                WHERE ur.user_id = $3::bigint AND ur.reward_name = sr.name AND ur.reward_type = sr.type AND ur.key_type = $2::text
-                )
-                THEN CASE
-                WHEN sr.rarity = 'common' THEN 10
-                WHEN sr.rarity = 'rare' THEN 20
-                WHEN sr.rarity = 'epic' THEN 50
-                WHEN sr.rarity = 'legendary' THEN 100
+            SELECT
+                sr.*,
+                EXISTS(
+                    SELECT 1
+                    FROM lootbox_user_rewards ur
+                    WHERE ur.user_id = $3::bigint AND ur.reward_name = sr.name AND ur.reward_type = sr.type AND ur.key_type = $2::text
+                ) AS duplicate,
+                CASE
+                    WHEN EXISTS(
+                        SELECT 1
+                        FROM lootbox_user_rewards ur
+                        WHERE ur.user_id = $3::bigint AND ur.reward_name = sr.name AND ur.reward_type = sr.type AND ur.key_type = $2::text
+                    )
+                    THEN CASE
+                        WHEN sr.rarity = 'common' THEN 10
+                        WHEN sr.rarity = 'rare' THEN 20
+                        WHEN sr.rarity = 'epic' THEN 50
+                        WHEN sr.rarity = 'legendary' THEN 100
+                        ELSE 0
+                    END
                 ELSE 0
-                END
-                ELSE 0
-            END AS coin_amount
+                END AS coin_amount
             FROM selected_rewards sr;
         """
         for rarity in rarities:
