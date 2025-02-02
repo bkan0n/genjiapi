@@ -1,15 +1,14 @@
 name: Automated API tests using Postman CLI
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+  workflow_run:
+    workflows: ["Main Deployment"]
+    types:
+      - completed
 
 jobs:
   automated-api-tests:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
