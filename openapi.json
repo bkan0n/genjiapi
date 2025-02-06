@@ -593,8 +593,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Ayutthaya",
@@ -762,8 +762,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Beginner",
@@ -3092,8 +3092,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "map_edit",
@@ -3190,8 +3190,8 @@
             "in": "query",
             "schema": {
               "type": [
-                "string",
-                "null"
+                "null",
+                "string"
               ],
               "enum": [
                 "Ayutthaya",
@@ -4103,6 +4103,158 @@
         "deprecated": false
       }
     },
+    "/v1/settings/users/{user_id}/notifications": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "GetUserNotifications",
+        "operationId": "V1SettingsUsersUserIdNotificationsGetUserNotifications",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "patch": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "BulkUpdateNotifications",
+        "operationId": "V1SettingsUsersUserIdNotificationsBulkUpdateNotifications",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "deprecated": false
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v1/settings/users/{user_id}/overwatch": {
       "get": {
         "tags": [
@@ -4255,13 +4407,13 @@
         "deprecated": false
       }
     },
-    "/v1/settings/users/{user_id}/notifications": {
-      "get": {
+    "/v1/settings/users/{user_id}/notifications/{notification_type}": {
+      "patch": {
         "tags": [
           "Settings"
         ],
-        "summary": "GetSettings",
-        "operationId": "V1SettingsUsersUserIdNotificationsGetSettings",
+        "summary": "UpdateNotification",
+        "operationId": "V1SettingsUsersUserIdNotificationsNotificationTypeUpdateNotification",
         "parameters": [
           {
             "name": "user_id",
@@ -4271,73 +4423,23 @@
             },
             "required": true,
             "deprecated": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Request fulfilled, document follows",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
           },
-          "400": {
-            "description": "Bad request syntax or unsupported method",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "status_code": {
-                      "type": "integer"
-                    },
-                    "detail": {
-                      "type": "string"
-                    },
-                    "extra": {
-                      "additionalProperties": {},
-                      "type": [
-                        "null",
-                        "object",
-                        "array"
-                      ]
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "detail",
-                    "status_code"
-                  ],
-                  "description": "Validation Exception",
-                  "examples": [
-                    {
-                      "status_code": 400,
-                      "detail": "Bad Request",
-                      "extra": {}
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "deprecated": false
-      },
-      "patch": {
-        "tags": [
-          "Settings"
-        ],
-        "summary": "UpdateSettings",
-        "operationId": "V1SettingsUsersUserIdNotificationsUpdateSettings",
-        "parameters": [
           {
-            "name": "user_id",
+            "name": "notification_type",
             "in": "path",
             "schema": {
-              "type": "integer"
+              "type": "string",
+              "enum": [
+                "NONE",
+                "DM_ON_VERIFICATION",
+                "DM_ON_SKILL_ROLE_UPDATE",
+                "DM_ON_LOOTBOX_GAIN",
+                "DM_RECORDS_REMOVAL",
+                "DM_ON_PLAYTEST_ALERTS",
+                "PING_ON_XP_GAIN",
+                "PING_ON_MASTERY",
+                "PING_ON_COMMUNITY_RANK_UPDATE"
+              ]
             },
             "required": true,
             "deprecated": false
@@ -4347,7 +4449,8 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SettingsUpdate"
+                "type": "boolean",
+                "title": "Enable Notification"
               }
             }
           },
@@ -6073,6 +6176,8 @@
                 "DM_ON_VERIFICATION",
                 "DM_ON_SKILL_ROLE_UPDATE",
                 "DM_ON_LOOTBOX_GAIN",
+                "DM_RECORDS_REMOVAL",
+                "DM_ON_PLAYTEST_ALERTS",
                 "PING_ON_XP_GAIN",
                 "PING_ON_MASTERY",
                 "PING_ON_COMMUNITY_RANK_UPDATE"
