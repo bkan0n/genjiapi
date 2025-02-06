@@ -9,6 +9,8 @@ NOTIFICATION_TYPES = Literal[
     "DM_ON_VERIFICATION",
     "DM_ON_SKILL_ROLE_UPDATE",
     "DM_ON_LOOTBOX_GAIN",
+    "DM_RECORDS_REMOVAL",
+    "DM_ON_PLAYTEST_ALERTS",
     "PING_ON_XP_GAIN",
     "PING_ON_MASTERY",
     "PING_ON_COMMUNITY_RANK_UPDATE",
@@ -21,6 +23,8 @@ class Notification(enum.IntFlag):
     DM_ON_VERIFICATION = enum.auto()
     DM_ON_SKILL_ROLE_UPDATE = enum.auto()
     DM_ON_LOOTBOX_GAIN = enum.auto()
+    DM_ON_RECORDS_REMOVAL = enum.auto()
+    DM_ON_PLAYTEST_ALERTS = enum.auto()
     PING_ON_XP_GAIN = enum.auto()
     PING_ON_MASTERY = enum.auto()
     PING_ON_COMMUNITY_RANK_UPDATE = enum.auto()

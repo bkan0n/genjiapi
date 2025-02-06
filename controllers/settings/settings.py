@@ -11,6 +11,7 @@ from litestar.status_codes import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NO
 
 from ..root import BaseController
 from .models import (
+    NOTIFICATION_TYPES,
     Notification,
     OverwatchUsernameItem,
     OverwatchUsernamesResponse,
@@ -24,7 +25,7 @@ class SettingsController(BaseController):
     path = "/settings"
     tags = ["Settings"]
 
-    async def get_user_settings(self, connection: Connection, user_id: int) -> int | None:
+    async def _fetch_user_notifications(self, connection: Connection, user_id: int) -> int | None:
         """Retrieve the user's settings as a bitmask.
 
         Args:
@@ -39,7 +40,7 @@ class SettingsController(BaseController):
         return await connection.fetchval(query, user_id)
 
     @get("/users/{user_id:int}/notifications")
-    async def get_settings(self, db_connection: Connection, user_id: int) -> Response:
+    async def get_user_notifications(self, db_connection: Connection, user_id: int) -> Response:
         """Retrieve the settings for a specific user.
 
         Args:
@@ -51,7 +52,7 @@ class SettingsController(BaseController):
             Response: The response containing the user's settings or an error message.
 
         """
-        bitmask = await self.get_user_settings(db_connection, user_id)
+        bitmask = await self._fetch_user_notifications(db_connection, user_id)
         if bitmask is None:
             logger.debug("User %s not found.", user_id)
             bitmask = 0
@@ -61,7 +62,7 @@ class SettingsController(BaseController):
         logger.debug("User %s settings: %s", user_id, notifications)
         return Response({"user_id": user_id, "notifications": notifications}, status_code=HTTP_200_OK)
 
-    async def update_user_settings(self, connection: Connection, user_id: int, notifications_bitmask: int) -> bool:
+    async def _update_user_notifications(self, connection: Connection, user_id: int, notifications_bitmask: int) -> bool:
         """Update the user settings in the database.
 
         Args:
@@ -82,7 +83,7 @@ class SettingsController(BaseController):
         return True
 
     @patch("/users/{user_id:int}/notifications")
-    async def update_settings(
+    async def bulk_update_notifications(
         self,
         db_connection: Connection,
         request: Request,
@@ -107,13 +108,55 @@ class SettingsController(BaseController):
             bitmask = data.to_bitmask()
             logger.debug(f"User {user_id} notifications bitmask: {bitmask}")
 
-            if await self.update_user_settings(db_connection, user_id, bitmask):
+            if await self._update_user_notifications(db_connection, user_id, bitmask):
                 return Response({"status": "success", "bitmask": bitmask}, status_code=HTTP_200_OK)
             else:
                 return Response({"error": "Update failed"}, status_code=HTTP_400_BAD_REQUEST)
         except ValueError as ve:
             logger.error(f"Validation error: {ve}")
             return Response({"error": str(ve)}, status_code=HTTP_400_BAD_REQUEST)
+
+    @patch("/users/{user_id:int}/notifications/{notification_type:str}")
+    async def update_notification(
+        self,
+        db_connection: Connection,
+        user_id: int,
+        notification_type: NOTIFICATION_TYPES,
+        data: Annotated[bool, Body(title="Enable Notification")]
+    ) -> Response:
+        """Update a single notification flag for a user.
+
+        The endpoint URL includes the notification type (e.g. "DM_ON_VERIFICATION").
+        The request body should be a boolean: true to enable, false to disable.
+        """
+        valid_notification_names = {flag.name for flag in Notification}
+        if notification_type not in valid_notification_names:
+            return Response({"error": f"Invalid notification type: {notification_type}"}, status_code=HTTP_400_BAD_REQUEST)
+        try:
+            current_bitmask = await self._fetch_user_notifications(db_connection, user_id)
+            if current_bitmask is None:
+                current_bitmask = 0
+            current_flags = Notification(current_bitmask)
+            notification_flag = Notification[notification_type]
+
+            new_flags = current_flags | notification_flag if data else current_flags & ~notification_flag
+
+            logger.debug(
+                "User %s: updating %s to %s, bitmask: %s -> %s",
+                user_id,
+                notification_type,
+                "enabled" if data else "disabled",
+                current_flags.value,
+                new_flags.value,
+            )
+
+            if await self._update_user_notifications(db_connection, user_id, new_flags.value):
+                return Response({"status": "success", "bitmask": new_flags.value}, status_code=HTTP_200_OK)
+            else:
+                return Response({"error": "Update failed"}, status_code=HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            logger.error("Error updating single notification: %s", e)
+            return Response({"error": str(e)}, status_code=HTTP_400_BAD_REQUEST)
 
     @patch("/users/{user_id:int}/overwatch")
     async def update_overwatch_usernames(
