@@ -21,6 +21,7 @@ from .models import (
 
 logger = logging.getLogger(__name__)
 
+
 class SettingsController(BaseController):
     path = "/settings"
     tags = ["Settings"]
@@ -62,7 +63,9 @@ class SettingsController(BaseController):
         logger.debug("User %s settings: %s", user_id, notifications)
         return Response({"user_id": user_id, "notifications": notifications}, status_code=HTTP_200_OK)
 
-    async def _update_user_notifications(self, connection: Connection, user_id: int, notifications_bitmask: int) -> bool:
+    async def _update_user_notifications(
+        self, connection: Connection, user_id: int, notifications_bitmask: int
+    ) -> bool:
         """Update the user settings in the database.
 
         Args:
@@ -122,7 +125,7 @@ class SettingsController(BaseController):
         db_connection: Connection,
         user_id: int,
         notification_type: NOTIFICATION_TYPES,
-        data: Annotated[bool, Body(title="Enable Notification")]
+        data: Annotated[bool, Body(title="Enable Notification")],
     ) -> Response:
         """Update a single notification flag for a user.
 
@@ -131,7 +134,9 @@ class SettingsController(BaseController):
         """
         valid_notification_names = {flag.name for flag in Notification}
         if notification_type not in valid_notification_names:
-            return Response({"error": f"Invalid notification type: {notification_type}"}, status_code=HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": f"Invalid notification type: {notification_type}"}, status_code=HTTP_400_BAD_REQUEST
+            )
         try:
             current_bitmask = await self._fetch_user_notifications(db_connection, user_id)
             if current_bitmask is None:
@@ -185,10 +190,7 @@ class SettingsController(BaseController):
             return Response({"error": str(e)}, status_code=HTTP_400_BAD_REQUEST)
 
     async def _set_overwatch_usernames(
-        self,
-        db: Connection,
-        user_id: int,
-        new_usernames: list[OverwatchUsernameItem]
+        self, db: Connection, user_id: int, new_usernames: list[OverwatchUsernameItem]
     ) -> None:
         """Set the Overwatch usernames for a specific user.
 
@@ -200,9 +202,7 @@ class SettingsController(BaseController):
         """
         new_names = {item.username for item in new_usernames}
 
-        existing_rows = await db.fetch(
-            "SELECT username FROM user_overwatch_usernames WHERE user_id = $1", user_id
-        )
+        existing_rows = await db.fetch("SELECT username FROM user_overwatch_usernames WHERE user_id = $1", user_id)
         existing_names = {row["username"] for row in existing_rows}
 
         names_to_delete = existing_names - new_names
@@ -213,7 +213,7 @@ class SettingsController(BaseController):
                 WHERE user_id = $1 AND username = ANY($2::text[])
                 """,
                 user_id,
-                list(names_to_delete)
+                list(names_to_delete),
             )
 
         for item in new_usernames:
@@ -247,10 +247,6 @@ class SettingsController(BaseController):
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="User not found", extra={"user_id": user_id})
         return OverwatchUsernamesResponse(user_id=user_id, usernames=usernames)
 
-    async def _fetch_overwatch_usernames(
-        self, db: Connection, user_id: int
-    ) -> list[OverwatchUsernameItem]:
-        rows = await db.fetch(
-            "SELECT username, is_primary FROM user_overwatch_usernames WHERE user_id = $1", user_id
-        )
+    async def _fetch_overwatch_usernames(self, db: Connection, user_id: int) -> list[OverwatchUsernameItem]:
+        rows = await db.fetch("SELECT username, is_primary FROM user_overwatch_usernames WHERE user_id = $1", user_id)
         return [OverwatchUsernameItem(**row) for row in rows]

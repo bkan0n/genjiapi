@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from asyncpg import Connection  # noqa: TCH002
+from asyncpg import Connection  # noqa: TC002
 from litestar import get
 
-from utils.utilities import MAP_NAME_T  # noqa: TCH001
+from utils.utilities import MAP_NAME_T  # noqa: TC001
 
 from ..root import BaseController
 from .models import MapMasteryData, fetch_map_mastery

@@ -168,7 +168,7 @@ class BaseMapBody(msgspec.Struct):
             await db.executemany(query, _guides)
 
     async def _insert_medals(self, db: asyncpg.Connection) -> None:
-        if all((self.gold, self.silver, self.bronze)) and self.gold < self.silver < self.bronze: # type: ignore
+        if all((self.gold, self.silver, self.bronze)) and self.gold < self.silver < self.bronze:  # type: ignore
             query = """
                 INSERT INTO map_medals (gold, silver, bronze, map_code)
                 VALUES ($1, $2, $3, $4);

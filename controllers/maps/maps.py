@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated, Literal
 
-import asyncpg  # noqa: TCH002
+import asyncpg  # noqa: TC002
 from litestar import Request, get, post
 from litestar.exceptions import HTTPException
 from litestar.params import Parameter

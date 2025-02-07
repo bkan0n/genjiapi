@@ -50,6 +50,7 @@ sentry_sdk.init(
     ],
 )
 
+
 def plain_text_exception_handler(_: Request, exc: Exception) -> Response:
     """Handle exceptions subclassed from HTTPException."""
     status_code = getattr(exc, "status_code", HTTP_500_INTERNAL_SERVER_ERROR)
@@ -60,6 +61,7 @@ def plain_text_exception_handler(_: Request, exc: Exception) -> Response:
         content=detail,
         status_code=status_code,
     )
+
 
 psql_user = os.getenv("PSQL_USER")
 psql_pass = os.getenv("PSQL_PASS")
@@ -94,6 +96,7 @@ async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
 
         app.state.mq_channel_pool = channel_pool
     yield
+
 
 UMAMI_API_ENDPOINT = os.getenv("UMAMI_API_ENDPOINT")
 UMAMI_SITE_ID = os.getenv("UMAMI_SITE_ID")

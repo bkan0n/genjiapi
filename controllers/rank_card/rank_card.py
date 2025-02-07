@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import io
 
-import asyncpg  # noqa: TCH002
+import asyncpg  # noqa: TC002
 from litestar import Controller, get, post
 from litestar.response import Stream
 
@@ -183,7 +183,7 @@ class RankCardController(Controller):
         background = await self._get_background_choice(db_connection, user_id)
         nickname = await db_connection.fetchval("SELECT nickname FROM users WHERE user_id = $1;", user_id)
         avatar = await db_connection.fetchrow("SELECT * FROM rank_card_avatar WHERE user_id = $1;", user_id)
-        _xp_data =await self._fetch_community_rank_xp(db_connection, user_id)
+        _xp_data = await self._fetch_community_rank_xp(db_connection, user_id)
 
         if not avatar:
             avatar = {"skin": "Overwatch 1", "pose": "Heroic"}

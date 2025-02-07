@@ -16,7 +16,8 @@ NOTIFICATION_TYPES = Literal[
     "PING_ON_COMMUNITY_RANK_UPDATE",
 ]
 
-USERNAME_REGEX = re.compile(r'^(?P<name>[^#]+)(?:#(?P<tag>\d+))?$')
+USERNAME_REGEX = re.compile(r"^(?P<name>[^#]+)(?:#(?P<tag>\d+))?$")
+
 
 class Notification(enum.IntFlag):
     NONE = 0
@@ -38,10 +39,7 @@ class SettingsUpdate(Struct):
         valid_names = {flag.name for flag in Notification if flag.name is not None}
         for name in self.notifications:
             if name not in valid_names:
-                raise ValueError(
-                    f"Invalid notification type: {name}. "
-                    f"Valid types: {', '.join(valid_names)}"
-                )
+                raise ValueError(f"Invalid notification type: {name}. Valid types: {', '.join(valid_names)}")
 
     def to_bitmask(self) -> int:
         """Convert the list of notification names to a bitmask."""
@@ -51,7 +49,6 @@ class SettingsUpdate(Struct):
                 return 0
             mask |= Notification[name]
         return mask.value
-
 
 
 class OverwatchUsernameItem(Struct):
@@ -65,6 +62,7 @@ class OverwatchUsernameItem(Struct):
                 f"Invalid Overwatch username format: '{self.username}'. "
                 "Expected format like 'nebula#11571' or 'nebula'."
             )
+
 
 class OverwatchUsernamesUpdate(Struct):
     usernames: list[OverwatchUsernameItem]
@@ -80,4 +78,3 @@ class OverwatchUsernamesUpdate(Struct):
 
 class OverwatchUsernamesResponse(OverwatchUsernamesUpdate):
     user_id: int
-

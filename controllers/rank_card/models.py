@@ -64,7 +64,7 @@ class RankCardBadgesData(msgspec.Struct):
 
     @classmethod
     async def create(
-        cls,  # noqa: ANN102
+        cls,
         db: asyncpg.Connection,
         user_id: int,
         type_: str | None,
