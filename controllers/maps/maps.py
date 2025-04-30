@@ -160,8 +160,8 @@ class MapsController(BaseController):
                     m.checkpoints,
                     coalesce(avg(mr.difficulty), 0::numeric) AS difficulty,
                     coalesce(avg(mr.quality), 0::numeric) AS quality,
-                    array_agg(DISTINCT u.nickname::text) AS creators,
-                    array_agg(DISTINCT ugn.global_name::text) AS creators_discord_tag,
+                    array_agg(DISTINCT COALESCE(own.username, u.nickname)::text) AS creators,
+                    array_agg(DISTINCT u.global_name::text) AS creators_discord_tag,
                     array_agg(DISTINCT mc.user_id) AS creator_ids,
                     mm.gold,
                     mm.silver,
@@ -171,9 +171,9 @@ class MapsController(BaseController):
             LEFT JOIN map_restrictions rest ON rest.map_code::text = m.map_code::text
             LEFT JOIN map_creators mc ON m.map_code::text = mc.map_code::text
             LEFT JOIN users u ON mc.user_id = u.user_id
+            LEFT JOIN user_overwatch_usernames own ON own.user_id = u.user_id AND own.is_primary = true
             LEFT JOIN map_ratings mr ON m.map_code::text = mr.map_code::text
             LEFT JOIN map_medals mm ON m.map_code::text = mm.map_code::text
-            LEFT JOIN user_global_names ugn ON u.user_id::text = ugn.user_id::text
             GROUP BY m.checkpoints,
                 m.map_name,
                 m.map_code,
@@ -242,8 +242,8 @@ class MapsController(BaseController):
                     m.checkpoints,
                     coalesce(avg(mr.difficulty), 0::numeric) AS difficulty,
                     coalesce(avg(mr.quality), 0::numeric) AS quality,
-                    array_agg(DISTINCT u.nickname::text) AS creators,
-                    array_agg(DISTINCT ugn.global_name::text) AS creators_discord_tag,
+                    array_agg(DISTINCT COALESCE(own.username, u.nickname)::text) AS creators,
+                    array_agg(DISTINCT u.global_name::text) AS creators_discord_tag,
                     array_agg(DISTINCT mc.user_id) AS creator_ids,
                     mm.gold,
                     mm.silver,
@@ -253,9 +253,9 @@ class MapsController(BaseController):
             LEFT JOIN map_restrictions rest ON rest.map_code::text = m.map_code::text
             LEFT JOIN map_creators mc ON m.map_code::text = mc.map_code::text
             LEFT JOIN users u ON mc.user_id = u.user_id
+            LEFT JOIN user_overwatch_usernames own ON own.user_id = u.user_id AND own.is_primary = true
             LEFT JOIN map_ratings mr ON m.map_code::text = mr.map_code::text
             LEFT JOIN map_medals mm ON m.map_code::text = mm.map_code::text
-            LEFT JOIN user_global_names ugn ON u.user_id::text = ugn.user_id::text
             GROUP BY m.checkpoints,
                 m.map_name,
                 m.map_code,
@@ -413,12 +413,12 @@ class MapsController(BaseController):
             ), quality_data AS (
                 SELECT
                     count(map_code) AS map_count,
-                    coalesce(ugn.global_name, u.nickname) AS name,
+                    coalesce(own.username, u.nickname) AS name,
                     avg(quality) AS average_quality
                 FROM map_creator_data mcd
                 LEFT JOIN users u ON mcd.user_id = u.user_id
-                LEFT JOIN user_global_names ugn ON u.user_id = ugn.user_id
-                GROUP BY mcd.user_id, ugn.global_name, u.nickname
+                LEFT JOIN user_overwatch_usernames own ON u.user_id = own.user_id
+                GROUP BY mcd.user_id, own.username, u.nickname
                 ORDER BY average_quality DESC
             )
             SELECT * FROM quality_data WHERE map_count >= 3

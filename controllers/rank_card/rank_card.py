@@ -181,7 +181,7 @@ class RankCardController(Controller):
         playtests = await self._get_playtests_count(db_connection, user_id)
         rank = find_highest_rank(rank_data)
         background = await self._get_background_choice(db_connection, user_id)
-        nickname = await db_connection.fetchval("SELECT nickname FROM users WHERE user_id = $1;", user_id)
+        nickname = await self._fetch_nickname(db_connection, user_id)
         avatar = await db_connection.fetchrow("SELECT * FROM rank_card_avatar WHERE user_id = $1;", user_id)
         _xp_data = await self._fetch_community_rank_xp(db_connection, user_id)
 
@@ -264,8 +264,7 @@ class RankCardController(Controller):
         rank = find_highest_rank(rank_data)
 
         background = 1
-
-        nickname = await db_connection.fetchval("SELECT nickname FROM users WHERE user_id = $1;", user_id)
+        nickname = await self._fetch_nickname(db_connection, user_id)
 
         data = {
             "rank": rank,
@@ -304,6 +303,21 @@ class RankCardController(Controller):
             headers={"Content-Disposition": "inline"},
             media_type="image/png",
         )
+
+    @staticmethod
+    async def _fetch_nickname(db_connection, user_id):
+        nickname_query = """
+             WITH default_name AS (
+                 SELECT nickname, user_id
+                 FROM users
+             )
+             SELECT coalesce(own.username, dn.nickname) AS nickname
+             FROM default_name dn
+             LEFT JOIN user_overwatch_usernames own ON own.user_id = dn.user_id AND own.is_primary = TRUE
+             WHERE dn.user_id = $1;
+         """
+        return await db_connection.fetchval(nickname_query, user_id)
+
 
     @staticmethod
     async def _get_map_totals_no_beginner(conn: asyncpg.Connection) -> list[asyncpg.Record]:

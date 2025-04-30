@@ -353,7 +353,8 @@ class RanksController(Controller):
         xp_tiers AS (
             SELECT
                 u.user_id,
-                nickname,
+                coalesce(own.username, nickname) as nickname,
+                global_name AS discord_tag,
                 coalesce(xp.amount, 0) AS xp,
                 (coalesce(xp.amount, 0) / 100) AS raw_tier,  -- Integer division for raw tier
                 ((coalesce(xp.amount, 0) / 100) % 100) AS normalized_tier,-- Normalized tier, resetting every 100 tiers
@@ -362,9 +363,11 @@ class RanksController(Controller):
                 s.name AS sub_tier_name,
                 x.name || ' ' || s.name AS full_tier_name -- Sub-tier label
             FROM users u
+            LEFT JOIN user_overwatch_usernames own ON u.user_id = own.user_id AND own.is_primary = true
             LEFT JOIN xptable xp ON u.user_id = xp.user_id
             LEFT JOIN _metadata_xp_tiers x ON (((coalesce(xp.amount, 0) / 100) % 100)) / 5 = x.threshold
             LEFT JOIN _metadata_xp_sub_tiers s ON (coalesce(xp.amount, 0) / 100) % 5 = s.threshold
+            
             WHERE u.user_id > 100000
         )
             SELECT
@@ -378,11 +381,10 @@ class RanksController(Controller):
                 coalesce(wr.amount, 0) AS wr_count,
                 coalesce(mc.amount, 0) AS map_count,
                 coalesce(ptc.amount, 0) AS playtest_count,
-                coalesce(ugn.global_name, 'Unknown Username') AS discord_tag,
+                coalesce(u.global_name, 'Unknown Username') AS discord_tag,
                 coalesce(rank_name, 'Ninja') AS skill_rank,
                 COUNT(*) OVER () as total_results
             FROM xp_tiers u
-            LEFT JOIN user_global_names ugn ON u.user_id = ugn.user_id
             LEFT JOIN playtest_count ptc ON u.user_id = ptc.user_id
             LEFT JOIN map_counts mc ON u.user_id = mc.user_id
             LEFT JOIN world_records wr ON u.user_id = wr.user_id

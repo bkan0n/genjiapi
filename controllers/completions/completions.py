@@ -71,13 +71,13 @@ class CompletionsController(BaseController):
                     WHEN record < mm.silver AND video IS NOT NULL AND record >= mm.gold THEN 'Silver'
                     WHEN record < mm.bronze AND video IS NOT NULL AND record >= mm.silver THEN 'Bronze'
                 END AS medal,
-                nickname,
+                coalesce(own.username, nickname) as nickname,
                 global_name AS discord_tag,
                 count(*) OVER() AS total_results,
                 record = wr.fastest_time AS is_world_record
             FROM records r
             LEFT JOIN users u ON u.user_id = r.user_id
-            LEFT JOIN user_global_names ugn ON r.user_id = ugn.user_id
+            LEFT JOIN user_overwatch_usernames own ON own.user_id = r.user_id AND own.is_primary = true
             LEFT JOIN map_medals mm ON r.map_code = mm.map_code
             LEFT JOIN world_records wr ON r.map_code = wr.map_code
             WHERE
@@ -120,7 +120,7 @@ class CompletionsController(BaseController):
             ), c_data AS (
                 SELECT
                     r.map_code,
-                    nickname,
+                    coalesce(own.username, nickname) as nickname,
                     global_name AS discord_tag,
                     record AS time,
                     avg(mr.difficulty) AS difficulty_value,
@@ -132,13 +132,13 @@ class CompletionsController(BaseController):
                     count(*) OVER() AS total_results
                 FROM records r
                 LEFT JOIN users u ON r.user_id = u.user_id
-                LEFT JOIN public.user_global_names ugn ON r.user_id = ugn.user_id
+                LEFT JOIN user_overwatch_usernames own ON own.user_id = r.user_id AND own.is_primary = true
                 LEFT JOIN map_medals mm ON r.map_code = mm.map_code
                 LEFT JOIN map_ratings mr ON r.map_code = mr.map_code
                 WHERE
                     ($1::text IS NULL OR r.map_code = $1) AND
                     r.user_id = $2
-                GROUP BY r.map_code, nickname, global_name, record , mm.gold, mm.silver, mm.bronze
+                GROUP BY r.map_code, nickname, global_name, record , mm.gold, mm.silver, mm.bronze, own.username
             ), world_records AS (
                 SELECT
                     map_code,

@@ -92,7 +92,7 @@ class NewsfeedController(BaseController):
         user_id: int,
     ) -> GlobalNameResponse:
         """Get Global Name."""
-        query = "SELECT global_name as name FROM user_global_names WHERE user_id = $1;"
+        query = "SELECT global_name AS name FROM users WHERE user_id = $1;"
         row = await db_connection.fetchrow(query, user_id)
         if not row:
             if request.headers.get("x-test-mode"):
