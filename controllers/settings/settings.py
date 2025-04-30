@@ -4,7 +4,7 @@ import logging
 from typing import Annotated
 
 from asyncpg import Connection  # noqa: TC002
-from litestar import Request, Response, get, patch
+from litestar import Request, Response, get, patch, put
 from litestar.exceptions import HTTPException
 from litestar.params import Body
 from litestar.status_codes import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
@@ -85,7 +85,7 @@ class SettingsController(BaseController):
             return False
         return True
 
-    @patch("/users/{user_id:int}/notifications")
+    @put("/users/{user_id:int}/notifications")
     async def bulk_update_notifications(
         self,
         db_connection: Connection,
@@ -163,7 +163,7 @@ class SettingsController(BaseController):
             logger.error("Error updating single notification: %s", e)
             return Response({"error": str(e)}, status_code=HTTP_400_BAD_REQUEST)
 
-    @patch("/users/{user_id:int}/overwatch")
+    @put("/users/{user_id:int}/overwatch")
     async def update_overwatch_usernames(
         self,
         db_connection: Connection,
@@ -189,8 +189,9 @@ class SettingsController(BaseController):
             logger.error(f"Error updating Overwatch usernames for user {user_id}: {e}")
             return Response({"error": str(e)}, status_code=HTTP_400_BAD_REQUEST)
 
+    @staticmethod
     async def _set_overwatch_usernames(
-        self, db: Connection, user_id: int, new_usernames: list[OverwatchUsernameItem]
+        db: Connection, user_id: int, new_usernames: list[OverwatchUsernameItem]
     ) -> None:
         """Set the Overwatch usernames for a specific user.
 
@@ -200,29 +201,12 @@ class SettingsController(BaseController):
             new_usernames (list[OverwatchUsernameItem]): The list of new Overwatch usernames.
 
         """
-        new_names = {item.username for item in new_usernames}
-
-        existing_rows = await db.fetch("SELECT username FROM user_overwatch_usernames WHERE user_id = $1", user_id)
-        existing_names = {row["username"] for row in existing_rows}
-
-        names_to_delete = existing_names - new_names
-        if names_to_delete:
-            await db.execute(
-                """
-                DELETE FROM user_overwatch_usernames
-                WHERE user_id = $1 AND username = ANY($2::text[])
-                """,
-                user_id,
-                list(names_to_delete),
-            )
+        await db.execute("DELETE FROM user_overwatch_usernames WHERE user_id = $1", user_id)
 
         for item in new_usernames:
             await db.execute(
                 """
-                INSERT INTO user_overwatch_usernames (user_id, username, is_primary)
-                VALUES ($1, $2, $3)
-                ON CONFLICT (user_id, username)
-                DO UPDATE SET is_primary = EXCLUDED.is_primary
+                INSERT INTO user_overwatch_usernames (user_id, username, is_primary) VALUES ($1, $2, $3)
                 """,
                 user_id,
                 item.username,
