@@ -101,17 +101,43 @@ class AutocompleteController(BaseController):
     ) -> list[CreatorAutocompleteResponse]:
         """Get autocomplete for creators."""
         query = """
-            WITH combined_names AS (
-                SELECT
-                    nickname AS name,
-                    u.user_id
+            WITH matches AS (
+                SELECT u.user_id, name
                 FROM users u
-                UNION DISTINCT
-                SELECT global_name AS name,
-                 user_id
-                FROM user_global_names
+                CROSS JOIN LATERAL (
+                    VALUES (u.nickname), (u.global_name)
+                ) AS name_list(name)
+                WHERE name % $1
+            
+                UNION
+            
+                SELECT o.user_id, o.username AS name
+                FROM user_overwatch_usernames o
+                WHERE o.username % $1
+            ),
+            ranked_users AS (
+                SELECT user_id, MAX(similarity(name, $1)) AS sim
+                FROM matches
+                GROUP BY user_id
+                ORDER BY sim DESC
+                LIMIT 10
+            ),
+            user_names AS (
+                SELECT
+                    u.user_id,
+                    ARRAY_REMOVE(
+                        ARRAY[u.nickname, u.global_name ] || ARRAY_AGG(own_all.username),
+                        NULL
+                    ) AS all_usernames
+                FROM ranked_users ru
+                JOIN users u ON u.user_id = ru.user_id
+                LEFT JOIN user_overwatch_usernames own_all ON u.user_id = own_all.user_id
+                GROUP BY u.user_id, u.nickname, u.global_name, sim
+                ORDER BY sim DESC
             )
-            SELECT name, user_id FROM combined_names ORDER BY similarity($1::text, name) DESC LIMIT $2::int
+            SELECT user_id, ARRAY_TO_STRING(ARRAY(SELECT DISTINCT * FROM unnest(all_usernames)), ', ') AS name
+            FROM user_names LIMIT $2::int;
         """
+
         rows = await db_connection.fetch(query, value, page_size)
         return [CreatorAutocompleteResponse(**row) for row in rows]
