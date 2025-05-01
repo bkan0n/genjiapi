@@ -354,7 +354,7 @@ class RanksController(Controller):
             SELECT
                 u.user_id,
                 coalesce(own.username, nickname) as nickname,
-                global_name AS discord_tag,
+                u.global_name,
                 coalesce(xp.amount, 0) AS xp,
                 (coalesce(xp.amount, 0) / 100) AS raw_tier,  -- Integer division for raw tier
                 ((coalesce(xp.amount, 0) / 100) % 100) AS normalized_tier,-- Normalized tier, resetting every 100 tiers
@@ -390,7 +390,7 @@ class RanksController(Controller):
             LEFT JOIN world_records wr ON u.user_id = wr.user_id
             LEFT JOIN highest_ranks hr ON u.user_id = hr.user_id
             WHERE
-                ($3::text IS NULL OR (nickname ILIKE $3::text OR ugn.global_name ILIKE $3::text)) AND
+                ($3::text IS NULL OR (nickname ILIKE $3::text OR u.global_name ILIKE $3::text)) AND
                 ($4::text IS NULL OR full_tier_name = $4::text) AND
                 ($5::text IS NULL OR rank_name = $5::text)
             ORDER BY {sort_column} {sort_direction}
