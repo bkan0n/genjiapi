@@ -48,7 +48,7 @@ class CompletionsController(BaseController):
             ),
         ]
         | None = None,
-        user: str | None = None,
+        user: int | None = None,
         page_size: Literal[10, 20, 25, 50] = 10,
         page_number: Annotated[int, Parameter(ge=1)] = 1,
     ) -> list[CompletionsResponse]:
@@ -82,14 +82,13 @@ class CompletionsController(BaseController):
             LEFT JOIN world_records wr ON r.map_code = wr.map_code
             WHERE
                 ($1::text IS NULL OR r.map_code = $1) AND
-                ($2::text IS NULL OR (nickname ILIKE $2 OR global_name ILIKE $2))
+                ($2::bigint IS NULL OR $2 = u.user_id)
             ORDER BY map_code, record
             LIMIT $3::int
             OFFSET $4::int;
         """
         offset = (page_number - 1) * page_size
-        _user = wrap_string_with_percent(user)
-        rows = await db_connection.fetch(query, map_code, _user, page_size, offset)
+        rows = await db_connection.fetch(query, map_code, user, page_size, offset)
         return [CompletionsResponse(**row) for row in rows]
 
     @get(path="/personal/{user_id:int}")

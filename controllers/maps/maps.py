@@ -118,7 +118,7 @@ class MapsController(BaseController):
         | None = None,
         map_type: list[MAP_TYPE_T] | None = None,
         map_name: MAP_NAME_T | None = None,
-        creator: str | None = None,
+        creator: int | None = None,
         mechanics: list[MECHANICS_T] | None = None,
         restrictions: list[RESTRICTIONS_T] | None = None,
         difficulty: DIFFICULTIES_T | None = None,
@@ -205,7 +205,7 @@ class MapsController(BaseController):
                     AND ($5::numeric(10, 2) IS NULL OR $6::numeric(10, 2) IS NULL OR (difficulty >= $5::numeric(10, 2)
                     AND difficulty < $6::numeric(10, 2)))
                     AND ($7::int IS NULL OR quality >= $7)
-                    AND ($8::text IS NULL OR $8 ILIKE ANY(creators) OR $8 ILIKE ANY(creators_discord_tag))
+                    AND ($8::BIGINT IS NULL OR $8 = ANY(creator_ids))
                     AND ($10::bool IS FALSE OR (gold IS NOT NULL AND silver IS NOT NULL AND bronze IS NOT NULL))))
                 GROUP BY
                     am.map_name, map_type, am.map_code, am."desc", am.official, am.archived, mechanics,
@@ -288,7 +288,7 @@ class MapsController(BaseController):
                 AND ($5::numeric(10, 2) IS NULL OR $6::numeric(10, 2) IS NULL OR (difficulty >= $5::numeric(10, 2)
                 AND difficulty < $6::numeric(10, 2)))
                 AND ($7::int IS NULL OR quality >= $7)
-                AND ($8::text IS NULL OR $8 ILIKE ANY(creators) OR $8 ILIKE ANY(creators_discord_tag))
+                AND ($8::BIGINT IS NULL OR $8 = ANY(creator_ids))
                 AND ($10::bool IS FALSE OR (gold IS NOT NULL AND silver IS NOT NULL AND bronze IS NOT NULL))))
             GROUP BY
                 am.map_name, map_type, am.map_code, am."desc", am.official, am.archived, mechanics,
