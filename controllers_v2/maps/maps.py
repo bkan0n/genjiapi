@@ -74,7 +74,7 @@ class MapsControllerV2(BaseControllerV2):
                 AND ($4::bigint IS NULL OR creator_ids <@ $4)
                 AND ($5::text[] IS NULL OR mechanics <@ $5)
                 AND ($6::text[] IS NULL OR restrictions <@ $6)
-                AND ($7:text IS NULL or difficulty = $7)
+                AND ($7::text IS NULL or difficulty = $7)
                 AND ($8::int IS NULL OR quality >= $8)
                 AND ($9::bool IS FALSE OR status='playtest')
                 AND ($10::bool IS FALSE OR medals IS NOT NULL)
