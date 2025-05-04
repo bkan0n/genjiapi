@@ -213,3 +213,233 @@ class ArchiveMapBody(BaseResponse):
 class MapCountsResponse(BaseResponse, kw_only=True):
     map_name: str
     amount: int
+
+query = """
+
+WITH filtered_maps AS (
+    SELECT
+        m.id,
+        m.map_code,
+        m.name AS map_name,
+        m.map_type,
+        m.status,
+        m.archived,
+        m.description,
+        m.checkpoints
+    FROM core.maps m
+    WHERE
+        ($1::text IS NULL OR m.map_code = $1)
+        AND ($2::text IS NULL OR m.name = $2)
+        AND ($3::text[] IS NULL OR m.map_type && $3)
+        AND ($4::text[] IS NULL OR EXISTS (
+            SELECT 1 FROM maps.mechanic_links ml
+            JOIN maps.mechanics mech ON ml.mechanic_id = mech.id
+            WHERE ml.map_id = m.id AND mech.name = ANY($4)
+        ))
+        AND ($5::text[] IS NULL OR EXISTS (
+            SELECT 1 FROM maps.restriction_links rl
+            JOIN maps.restrictions re ON rl.restriction_id = re.id
+            WHERE rl.map_id = m.id AND re.name = ANY($5)
+        ))
+        AND ($6::text IS NULL OR EXISTS (
+            SELECT 1 FROM maps.creators c
+            JOIN core.users u ON c.user_id = u.id
+            WHERE c.map_id = m.id AND (u.nickname ILIKE '%' || $6 || '%' OR u.global_name ILIKE '%' || $6 || '%')
+        ))
+        AND (
+            $7::text IS NULL OR EXISTS (
+                SELECT 1 FROM playtests.meta pm
+                WHERE pm.map_id = m.id AND
+                (
+                    ($7 = 'Easy' AND pm.initial_difficulty >= 0 AND pm.initial_difficulty < 2.35) OR
+                    ($7 = 'Medium' AND pm.initial_difficulty >= 2.35 AND pm.initial_difficulty < 4.12) OR
+                    ($7 = 'Hard' AND pm.initial_difficulty >= 4.12 AND pm.initial_difficulty < 5.88) OR
+                    ($7 = 'Very Hard' AND pm.initial_difficulty >= 5.88 AND pm.initial_difficulty < 7.65) OR
+                    ($7 = 'Extreme' AND pm.initial_difficulty >= 7.65 AND pm.initial_difficulty < 9.41) OR
+                    ($7 = 'Hell' AND pm.initial_difficulty >= 9.41 AND pm.initial_difficulty < 10.0)
+                )
+            )
+        )
+        AND ($8::numeric IS NULL OR EXISTS (
+            SELECT 1 FROM maps.ratings ra
+            WHERE ra.map_id = m.id AND ra.quality >= $8
+        ))
+        AND ($9::boolean IS NULL OR (m.status = 'playtest') = $9)
+        AND ($10::boolean IS NULL OR EXISTS (
+            SELECT 1 FROM maps.medals md WHERE md.map_id = m.id
+        ))
+),
+map_details AS (
+    SELECT
+        fm.map_code,
+        fm.map_name,
+        fm.map_type,
+        fm.status = 'official' AS official,
+        fm.archived,
+        fm.description,
+        fm.checkpoints,
+        COALESCE(array_agg(DISTINCT mech.name) FILTER (WHERE mech.name IS NOT NULL), ARRAY[]::text[]) AS mechanics,
+        COALESCE(array_agg(DISTINCT re.name) FILTER (WHERE re.name IS NOT NULL), ARRAY[]::text[]) AS restrictions,
+        COALESCE(array_agg(DISTINCT u.nickname) FILTER (WHERE u.nickname IS NOT NULL), ARRAY[]::text[]) AS creators,
+        COALESCE(array_agg(DISTINCT u.global_name) FILTER (WHERE u.global_name IS NOT NULL), ARRAY[]::text[]) AS creators_discord_tag,
+        COALESCE(array_agg(DISTINCT u.id) FILTER (WHERE u.id IS NOT NULL), ARRAY[]::bigint[]) AS creator_ids,
+        ROUND(AVG(pm.initial_difficulty)::numeric, 2) AS difficulty,
+        COUNT(DISTINCT ptv.id) AS playtest_votes,
+        COUNT(DISTINCT ra.id) AS total_ratings,
+        ROUND(AVG(ra.quality)::numeric, 2) AS quality,
+        md.gold,
+        md.silver,
+        md.bronze,
+        COALESCE(array_agg(DISTINCT g.url) FILTER (WHERE g.url IS NOT NULL), ARRAY[]::text[]) AS guide
+    FROM filtered_maps fm
+    LEFT JOIN maps.mechanic_links ml ON ml.map_id = fm.id
+    LEFT JOIN maps.mechanics mech ON ml.mechanic_id = mech.id
+    LEFT JOIN maps.restriction_links rl ON rl.map_id = fm.id
+    LEFT JOIN maps.restrictions re ON rl.restriction_id = re.id
+    LEFT JOIN maps.creators c ON c.map_id = fm.id
+    LEFT JOIN core.users u ON c.user_id = u.id
+    LEFT JOIN playtests.meta pm ON pm.map_id = fm.id
+    LEFT JOIN playtests.votes ptv ON ptv.map_id = fm.id
+    LEFT JOIN maps.ratings ra ON ra.map_id = fm.id
+    LEFT JOIN maps.medals md ON md.map_id = fm.id
+    LEFT JOIN maps.guides g ON g.map_id = fm.id
+    GROUP BY fm.id, fm.map_code, fm.map_name, fm.map_type, fm.status, fm.archived, fm.description, fm.checkpoints, md.gold, md.silver, md.bronze
+)
+SELECT *
+FROM map_details
+ORDER BY map_name
+LIMIT $11 OFFSET $12;
+
+
+
+WITH filtered_maps AS (
+    SELECT
+        m.id,
+        m.map_code,
+        m.name AS map_name,
+        m.map_type,
+        m.status,
+        m.archived,
+        m.description,
+        m.checkpoints
+    FROM core.maps m
+    WHERE
+        ($1::text IS NULL OR m.map_code = $1)
+        AND ($2::text IS NULL OR m.name ILIKE '%' || $2 || '%')
+        AND ($3::text[] IS NULL OR m.map_type && $3)
+        AND ($4::text[] IS NULL OR EXISTS (
+            SELECT 1 FROM maps.mechanic_links ml
+            JOIN maps.mechanics mech ON ml.mechanic_id = mech.id
+            WHERE ml.map_id = m.id AND mech.name = ANY($4)
+        ))
+        AND ($5::text[] IS NULL OR EXISTS (
+            SELECT 1 FROM maps.restriction_links rl
+            JOIN maps.restrictions re ON rl.restriction_id = re.id
+            WHERE rl.map_id = m.id AND re.name = ANY($5)
+        ))
+        AND ($6::text IS NULL OR EXISTS (
+            SELECT 1 FROM maps.creators c
+            JOIN core.users u ON c.user_id = u.id
+            WHERE c.map_id = m.id AND (u.nickname ILIKE '%' || $6 || '%' OR u.global_name ILIKE '%' || $6 || '%')
+        ))
+        AND (
+            $7::text IS NULL OR EXISTS (
+                SELECT 1 FROM playtests.meta pm
+                WHERE pm.map_id = m.id AND
+                (
+                    ($7 = 'Easy' AND pm.initial_difficulty >= 0 AND pm.initial_difficulty < 2.35) OR
+                    ($7 = 'Medium' AND pm.initial_difficulty >= 2.35 AND pm.initial_difficulty < 4.12) OR
+                    ($7 = 'Hard' AND pm.initial_difficulty >= 4.12 AND pm.initial_difficulty < 5.88) OR
+                    ($7 = 'Very Hard' AND pm.initial_difficulty >= 5.88 AND pm.initial_difficulty < 7.65) OR
+                    ($7 = 'Extreme' AND pm.initial_difficulty >= 7.65 AND pm.initial_difficulty < 9.41) OR
+                    ($7 = 'Hell' AND pm.initial_difficulty >= 9.41 AND pm.initial_difficulty < 10.0)
+                )
+            )
+        )
+        AND ($8::numeric IS NULL OR EXISTS (
+            SELECT 1 FROM maps.ratings ra
+            WHERE ra.map_id = m.id AND ra.quality >= $8
+        ))
+        AND ($9::boolean IS NULL OR (m.status = 'playtest') = $9)
+        AND ($10::boolean IS NULL OR EXISTS (
+            SELECT 1 FROM maps.medals md WHERE md.map_id = m.id
+        ))
+),
+mechanics_agg AS (
+    SELECT ml.map_id, array_agg(DISTINCT mech.name) AS mechanics
+    FROM maps.mechanic_links ml
+    JOIN maps.mechanics mech ON mech.id = ml.mechanic_id
+    GROUP BY ml.map_id
+),
+restrictions_agg AS (
+    SELECT rl.map_id, array_agg(DISTINCT re.name) AS restrictions
+    FROM maps.restriction_links rl
+    JOIN maps.restrictions re ON re.id = rl.restriction_id
+    GROUP BY rl.map_id
+),
+creators_agg AS (
+    SELECT c.map_id,
+           array_agg(DISTINCT u.nickname) AS creators,
+           array_agg(DISTINCT u.global_name) AS creators_discord_tag,
+           array_agg(DISTINCT u.id) AS creator_ids
+    FROM maps.creators c
+    JOIN core.users u ON u.id = c.user_id
+    GROUP BY c.map_id
+),
+ratings_agg AS (
+    SELECT map_id,
+           ROUND(AVG(quality)::numeric, 2) AS quality,
+           COUNT(*) AS total_ratings
+    FROM maps.ratings
+    GROUP BY map_id
+),
+votes_agg AS (
+    SELECT map_id, COUNT(*) AS playtest_votes
+    FROM playtests.votes
+    GROUP BY map_id
+),
+meta_agg AS (
+    SELECT map_id, ROUND(AVG(initial_difficulty)::numeric, 2) AS difficulty
+    FROM playtests.meta
+    GROUP BY map_id
+),
+guides_agg AS (
+    SELECT map_id, array_agg(DISTINCT url) AS guide
+    FROM maps.guides
+    GROUP BY map_id
+)
+SELECT
+    fm.map_code,
+    fm.map_name,
+    fm.map_type,
+    fm.status = 'official' AS official,
+    fm.archived,
+    fm.description,
+    fm.checkpoints,
+    COALESCE(mech.mechanics, ARRAY[]::text[]) AS mechanics,
+    COALESCE(restr.restrictions, ARRAY[]::text[]) AS restrictions,
+    COALESCE(ca.creators, ARRAY[]::text[]) AS creators,
+    COALESCE(ca.creators_discord_tag, ARRAY[]::text[]) AS creators_discord_tag,
+    COALESCE(ca.creator_ids, ARRAY[]::bigint[]) AS creator_ids,
+    ma.difficulty,
+    va.playtest_votes,
+    ra.total_ratings,
+    ra.quality,
+    md.gold,
+    md.silver,
+    md.bronze,
+    ga.guide
+FROM filtered_maps fm
+LEFT JOIN mechanics_agg mech ON mech.map_id = fm.id
+LEFT JOIN restrictions_agg restr ON restr.map_id = fm.id
+LEFT JOIN creators_agg ca ON ca.map_id = fm.id
+LEFT JOIN ratings_agg ra ON ra.map_id = fm.id
+LEFT JOIN votes_agg va ON va.map_id = fm.id
+LEFT JOIN meta_agg ma ON ma.map_id = fm.id
+LEFT JOIN maps.medals md ON md.map_id = fm.id
+LEFT JOIN guides_agg ga ON ga.map_id = fm.id
+ORDER BY map_name
+LIMIT $11 OFFSET $12;
+
+
+"""
