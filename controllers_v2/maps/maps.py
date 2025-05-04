@@ -29,7 +29,7 @@ if TYPE_CHECKING:
 
 class MapsControllerV2(BaseControllerV2):
     path = "/maps"
-    tags = ["Maps"]
+    tags = ["v2/Maps"]
 
 
     @get(path="/")
