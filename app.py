@@ -32,6 +32,7 @@ from controllers import (
 )
 from controllers.newsfeed.newsfeed import NewsfeedController
 from controllers.rank_card.mastery import MasteryController
+from controllers_v2.root import RootRouterV2
 from middleware.umami import UmamiMiddleware
 
 if TYPE_CHECKING:
@@ -119,6 +120,12 @@ app = Litestar(
                 RankCardController,
                 SettingsController,
             ],
+        ),
+        RootRouterV2(
+            path="/v2",
+            route_handlers=[
+                MapsController,
+            ]
         ),
         create_static_files_router(
             path="/assets",
