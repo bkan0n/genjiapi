@@ -1,0 +1,34 @@
+services:
+  litestar-genji-api:
+    build:
+      context: ./
+      dockerfile: Dockerfile-Dev
+    container_name: "genji-api-test"
+    restart: unless-stopped
+    ports:
+      - "80"
+    environment:
+      - PSQL_USER=${PSQL_USER}
+      - PSQL_PASS=${PSQL_PASS}
+      - PSQL_HOST=${PSQL_HOST}
+      - PSQL_PORT=${PSQL_PORT}
+      - PSQL_DB=${PSQL_DB}
+      - API_KEY=${API_KEY}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - UMAMI_API_ENDPOINT=${UMAMI_API_ENDPOINT}
+      - UMAMI_SITE_ID=${UMAMI_SITE_ID}
+      - SENTRY_DSN
+    networks:
+      - caddy-network
+      - genji-network
+    labels:
+      logging: "promtail"
+      logging_jobname: "containerlogs"
+
+networks:
+  caddy-network:
+    external: true
+  genji-network:
+    external: true
+
