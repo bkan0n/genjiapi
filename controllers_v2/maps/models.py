@@ -1,17 +1,16 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional
+from typing import Literal, Optional
 
 import msgspec
 
-if TYPE_CHECKING:
-    from utils.utilities import (
-        DIFFICULTIES_T,
-        MAP_NAME_T,
-        MAP_TYPE_T,
-        MECHANICS_T,
-        RESTRICTIONS_T,
-    )
+from utils.utilities import (
+    DIFFICULTIES_T,
+    MAP_NAME_T,
+    MAP_TYPE_T,
+    MECHANICS_T,
+    RESTRICTIONS_T,
+)
 
 STATUS = Literal["official", "playtest"]
 

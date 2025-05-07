@@ -1,3 +1,5 @@
+name: litestar-genji-api-test
+
 services:
   litestar-genji-api-test:
     build:
