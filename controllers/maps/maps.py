@@ -460,6 +460,7 @@ class MapsController(BaseController):
             return data
         await data.insert_all(db_connection)
         await rabbit.publish(state, "new_map", data)
+        return data
 
     @staticmethod
     async def _remove_map_medal_entries(db: Connection, map_code: str) -> None:
