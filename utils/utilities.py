@@ -52,7 +52,7 @@ MAP_TYPE_T = Literal[
     "Tournament",
     "Aim Parkour (Hanzo)",
     "Practice",
-] 
+]
 
 MAP_NAME_T = Literal[
     "Ayutthaya",
