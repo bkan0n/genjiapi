@@ -34,6 +34,7 @@ class MapsControllerV2(BaseControllerV2):
         data: MapModel,
     ) -> Response:
 
+        # aa
         await rabbit.publish(
             state,
             "playtest",
