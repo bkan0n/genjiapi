@@ -7,8 +7,6 @@ services:
       dockerfile: Dockerfile
     container_name: "genji-api"
     restart: unless-stopped
-    ports:
-      - "80"
     environment:
       - PSQL_USER=${PSQL_USER}
       - PSQL_PASS=${PSQL_PASS}

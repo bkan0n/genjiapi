@@ -6,6 +6,13 @@ from litestar import Response, get, post
 from litestar.params import Parameter
 
 from utils import rabbit
+from utils.utilities import (
+    DIFFICULTIES_T,  # noqa: TC001
+    MAP_NAME_T,  # noqa: TC001
+    MAP_TYPE_T,  # noqa: TC001
+    MECHANICS_T,  # noqa: TC001
+    RESTRICTIONS_T,  # noqa: TC001
+)
 
 from ..root import BaseControllerV2
 from .models import MapModel, MapSearchResponseV2
@@ -14,13 +21,7 @@ if TYPE_CHECKING:
     from asyncpg import Connection
     from litestar.datastructures import State
 
-    from utils.utilities import (
-        DIFFICULTIES_T,
-        MAP_NAME_T,
-        MAP_TYPE_T,
-        MECHANICS_T,
-        RESTRICTIONS_T,
-    )
+    
 
 class MapsControllerV2(BaseControllerV2):
     path = "/maps"
