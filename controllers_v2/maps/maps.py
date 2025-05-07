@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated, Literal
 
-from litestar import Request, Response, get, post
+from litestar import Response, get, post
 from litestar.params import Parameter
 
 from utils import rabbit
