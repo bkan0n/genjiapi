@@ -73,7 +73,7 @@ class PlaytestResponse(msgspec.Struct):
     def __post_init__(self) -> None:
         """Add map banner url to response dynamically."""
         sanitized_name = sanitize_string(self.name)
-        self.map_banner_url = f"assets/images/map_banners/{sanitized_name}.png"
+        self.map_banner_url = f"https://bkan0n.com/assets/images/map_banners/{sanitized_name}.png"
 
 class Meilisearch(msgspec.Struct):
     hits: list[PlaytestResponse]
