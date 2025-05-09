@@ -54,7 +54,7 @@ class PlaytestResponse(msgspec.Struct):
     archived: bool
     name: MAP_NAME_T
     checkpoints: int
-    difficulty_value: float
+    difficulty_value: float | None
     difficulty: DIFFICULTIES_EXT_T
     initial_difficulty: DIFFICULTIES_EXT_T
     mechanics: list[MECHANICS_T]
