@@ -23,6 +23,8 @@ class Medals(msgspec.Struct):
 class PlaytestData(msgspec.Struct):
     total_votes: int
     required_votes: int
+    thread_id: int
+    participants: list[int]
 
 
 class MapSearchResponseV2(msgspec.Struct):
@@ -43,7 +45,28 @@ class MapSearchResponseV2(msgspec.Struct):
     description: Optional[str]
     guides: Optional[list[str]]
     medals: Optional[Medals]
+
+class PlaytestResponse(msgspec.Struct):
+    id: int
+    code: str
+    category: list[MAP_TYPE_T]
+    status: STATUS
+    archived: bool
+    name: MAP_NAME_T
+    checkpoints: int
+    difficulty_value: float
+    difficulty: DIFFICULTIES_T
+    mechanics: list[MECHANICS_T]
+    restrictions: list[RESTRICTIONS_T]
+    creator_ids: list[int]
+    creator_names: list[str]
+    creator_discord_tags: list[str]
+    # quality: Optional[float]
+    description: Optional[str]
+    guides: Optional[list[str]]
+    # medals: Optional[Medals]
     playtest: Optional[PlaytestData]
+    has_participated: bool
 
 class MapModel(msgspec.Struct):
     code: str
@@ -59,3 +82,13 @@ class MapModel(msgspec.Struct):
     difficulty: str = ""
     mechanics: list[str] = []
     restrictions: list[str] = []
+    # These are fetched from the db during the api call
+    map_id: int = 0
+    creator_names: list[str] = []
+    creator_discord_tags: list[str] = []
+    
+    
+class PlaytestMetadata(msgspec.Struct):
+    thread_id: int
+    map_id: int
+    initial_difficulty: str

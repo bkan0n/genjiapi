@@ -15,17 +15,116 @@ from utils.utilities import (
 )
 
 from ..root import BaseControllerV2
-from .models import MapModel, MapSearchResponseV2
+from .models import MapModel, MapSearchResponseV2, PlaytestMetadata, PlaytestResponse
 
 if TYPE_CHECKING:
     from asyncpg import Connection
     from litestar.datastructures import State
 
-    
 
 class MapsControllerV2(BaseControllerV2):
     path = "/maps"
     tags = ["v2/Maps"]
+
+    @staticmethod
+    async def _insert_core_maps(db_conn: Connection, data: MapModel) -> int:
+        query = """
+            INSERT INTO core.maps (code, name, category, description, checkpoints, status, archived, difficulty)
+            VALUES ($1, $2, $3, $4, $5, 'playtest', false, $6)
+            RETURNING id;
+        """
+        return await db_conn.fetchval(
+            query,
+            data.code,
+            data.name,
+            data.category,
+            data.description,
+            data.checkpoints,
+            data.difficulty,
+        )
+
+    @staticmethod
+    async def _insert_maps_creators(db_conn: Connection, data: MapModel) -> None:
+        query = """
+            INSERT INTO core.creators (map_id, creator_id, is_primary)
+            VALUES ($1, $2, $3)
+        """
+        args = [(data.map_id, _id, i == 0) for i, _id in enumerate(data.creator_ids)]
+        await db_conn.executemany(query, args)
+
+    async def _insert_mechanics(
+        self,
+        db_conn: Connection,
+        data: MapModel,
+    ) -> None:
+        query = """
+            INSERT INTO maps.mechanic_links (map_id, mechanic_id)
+            SELECT $1, m.id
+            FROM maps.mechanics m
+            WHERE m.name = ANY($2::text[])
+            ON CONFLICT (map_id, mechanic_id) DO NOTHING;
+        """
+        await db_conn.execute(query, data.map_id, data.mechanics)
+
+    async def _insert_restrictions(
+        self,
+        db_conn: Connection,
+        data: MapModel,
+    ) -> None:
+        query = """
+            INSERT INTO maps.restriction_links (map_id, restriction_id)
+            SELECT $1, r.id
+            FROM maps.restrictions r
+            WHERE r.name = ANY($2::text[])
+            ON CONFLICT (map_id, restriction_id) DO NOTHING;
+        """
+        await db_conn.execute(query, data.map_id, data.restrictions)
+
+    async def _insert_guide(
+        self,
+        db_conn: Connection,
+        data: MapModel,
+    ) -> None:
+        query = """
+            INSERT INTO maps.guides (map_id, url, user_id)
+            VALUES ($1, $2, $3);
+        """
+        await db_conn.execute(query, data.map_id, data.guide_url, data.creator_ids[0])
+
+    async def _insert_medals(
+        self,
+        db_conn: Connection,
+        data: MapModel,
+    ) -> None:
+        if not data.gold or not data.silver or not data.bronze:
+            return
+
+        query = """
+            INSERT INTO maps.medals (map_id, gold, silver, bronze)
+            VALUES ($1, $2, $3, $4);
+        """
+        await db_conn.execute(query, data.map_id, data.gold, data.silver, data.bronze)
+
+    async def _fetch_creator_names(
+        self,
+        db_conn: Connection,
+        data: MapModel,
+    ) -> None:
+        query = """
+            SELECT
+                coalesce(ow.username, u.nickname, u.global_name, 'Unknown Username') AS nickname,
+                coalesce(global_name, 'Unknown Discord Tag') AS discord_tag
+            FROM maps.creators mc
+            LEFT JOIN core.users u ON mc.user_id = u.id
+            LEFT JOIN user_overwatch_usernames ow ON ow.user_id = mc.user_id
+            WHERE map_id = 2;
+        """
+        rows = await db_conn.fetch(query, data.map_id)
+        if not rows:
+            return
+
+        data.creator_names = [row["nickname"] for row in rows]
+        data.creator_discord_tags = [row["discord_tag"] for row in rows]
 
     @post(path="/playtests")
     async def create_playtest(
@@ -35,13 +134,39 @@ class MapsControllerV2(BaseControllerV2):
         data: MapModel,
     ) -> Response:
 
-        # aa
+        map_id = await self._insert_core_maps(db_connection, data)
+        data.map_id = map_id
+        await self._insert_maps_creators(db_connection, data)
+        await self._insert_mechanics(db_connection, data)
+        await self._insert_restrictions(db_connection, data)
+        await self._insert_guide(db_connection, data)
+        await self._insert_medals(db_connection, data)
+        await self._fetch_creator_names(db_connection, data)
+
         await rabbit.publish(
             state,
             "playtest",
             data,
         )
         return Response(content="Created playtest", status_code=201)
+
+    @post(path="/playtests/metadata")
+    async def create_playtest_metadata(
+        self,
+        db_connection: Connection,
+        data: PlaytestMetadata,
+    ) -> Response:
+        query = """
+            INSERT INTO playtests.meta (map_id, thread_id, initial_difficulty)
+            VALUES ($1, $2, $3);
+        """
+        await db_connection.execute(
+            query,
+            data.map_id,
+            data.thread_id,
+            data.initial_difficulty,
+        )
+        return Response(content="Created playtest metadata", status_code=201)
 
     @get(path="/playtests")
     async def get_playtests(
@@ -61,24 +186,53 @@ class MapsControllerV2(BaseControllerV2):
         restrictions: list[RESTRICTIONS_T] | None = None,
         difficulty: DIFFICULTIES_T | None = None,
         user_id: int | None = None,
-        ignore_playtested: bool = False,
+        participation_filter: Literal["all", "participated", "not_participated"] = "all",
         page_size: Literal[10, 20, 25, 50] = 10,
         page_number: Annotated[int, Parameter(ge=1)] = 1,
-    ) -> list[MapSearchResponseV2]:
+    ) -> list[PlaytestResponse]:
+        """Get all maps that are currently in playtest."""
         query = """
-                SELECT * 
-                FROM playtest_search_v2
-                WHERE ($1::text IS NULL OR code = $1)
-                  AND ($2::text IS NULL OR category <@ $2)
-                  AND ($3::text IS NULL OR name = $3)
-                  AND ($4::bigint IS NULL OR creator_ids <@ $4)
-                  AND ($5::text[] IS NULL OR mechanics <@ $5)
-                  AND ($6::text[] IS NULL OR restrictions <@ $6)
-                  AND ($7::text IS NULL OR difficulty = $7)
-                  AND ($9::bool IS FALSE OR status = 'playtest')
-                --AND ($11::bool IS NULL OR user_id IS NULL)
-                --AND ($12::bool IS FALSE OR ignore_completions IS TRUE)
-                """
+            SELECT *,
+                CASE
+                    WHEN $8::bigint IS NOT NULL AND playtest->'has_participated' @> to_jsonb(ARRAY[$8::bigint])
+                    THEN true
+                    ELSE false
+                END AS has_participated
+            FROM playtest_search_v2
+            WHERE ($1::text IS NULL OR code = $1)
+              AND ($2::text IS NULL OR category <@ $2)
+              AND ($3::text IS NULL OR name = $3)
+              AND ($4::bigint IS NULL OR creator_ids <@ $4)
+              AND ($5::text[] IS NULL OR mechanics <@ $5)
+              AND ($6::text[] IS NULL OR restrictions <@ $6)
+              AND ($7::text IS NULL OR difficulty = $7)
+              AND (
+                  $9::boolean IS NULL OR
+                  ($9 = true  AND playtest->'has_participated' @> to_jsonb(ARRAY[$8::bigint])) OR
+                  ($9 = false AND NOT playtest->'has_participated' @> to_jsonb(ARRAY[$8::bigint]))
+              )
+              AND status = 'playtest' AND NOT archived
+            OFFSET $10
+            LIMIT $11;
+        """
+        rows = await db_connection.fetch(
+            query,
+            code,
+            category,
+            name,
+            creator_id,
+            mechanics,
+            restrictions,
+            difficulty,
+            user_id,
+            participation_filter,
+            page_size * (page_number - 1),
+            page_size,
+        )
+        if not rows:
+            return []
+
+        return [PlaytestResponse(**row) for row in rows]
 
     @get(path="/")
     async def map_search(
