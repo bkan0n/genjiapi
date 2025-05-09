@@ -245,7 +245,7 @@ class MapsControllerV2(BaseControllerV2):
     async def get_playtests_meilisearch(
         self,
         db_connection: Connection,
-        user_id: int = None,
+        user_id: int | None = None,
         q: str | None = None,
         code: Annotated[
                   str,
