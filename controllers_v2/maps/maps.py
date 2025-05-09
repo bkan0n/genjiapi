@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated, Literal, Optional
 
+import msgspec.json
+from httpx import AsyncClient, RequestError, HTTPStatusError
 from litestar import Response, get, post
 from litestar.params import Parameter
 
@@ -15,7 +17,7 @@ from utils.utilities import (
 )
 
 from ..root import BaseControllerV2
-from .models import MapModel, MapSearchResponseV2, PlaytestMetadata, PlaytestResponse
+from .models import MapModel, MapSearchResponseV2, PlaytestMetadata, PlaytestResponse, Meilisearch
 
 if TYPE_CHECKING:
     from asyncpg import Connection
@@ -238,6 +240,41 @@ class MapsControllerV2(BaseControllerV2):
             return []
 
         return [PlaytestResponse(**row) for row in rows]
+
+    @get(path="/playtests/meilisearch")
+    async def get_playtests_meilisearch(
+        self,
+        db_connection: Connection,
+        user_id: int = None,
+        q: str | None = None,
+        code: Annotated[
+                  str,
+                  Parameter(
+                      pattern=r"^[A-Z0-9]{4,6}$",
+                  ),
+              ]
+              | None = None,
+        category: list[MAP_TYPE_T] | None = None,
+        name: MAP_NAME_T | None = None,
+        creator_id: int | None = None,
+        mechanics: list[MECHANICS_T] | None = None,
+        restrictions: list[RESTRICTIONS_T] | None = None,
+        difficulty: DIFFICULTIES_T | None = None,
+        participation_filter: Literal["all", "participated", "not_participated"] = "all",
+        page_size: Literal[10, 20, 25, 50] = 10,
+        page_number: Annotated[int, Parameter(ge=1)] = 1,
+    ) -> Meilisearch:
+        """Get all maps that are currently in playtest."""
+        try:
+            async with AsyncClient() as client:
+                response = await client.get("http://meilisearch:7700/indexes/playtest_search_v2/search", params={'q': q})
+                response.raise_for_status()
+                return msgspec.json.decode(response.json(), type=Meilisearch)
+        except RequestError as exc:
+            return Response({"error": f"Could not connect to Meilisearch: {exc}"}, status_code=502)
+        except HTTPStatusError as exc:
+            return Response({"error": f"Meilisearch returned an error: {exc}"}, status_code=exc.response.status_code)
+
 
     @get(path="/")
     async def map_search(

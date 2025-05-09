@@ -75,6 +75,16 @@ class PlaytestResponse(msgspec.Struct):
         sanitized_name = sanitize_string(self.name)
         self.map_banner_url = f"assets/images/map_banners/{sanitized_name}.png"
 
+class Meilisearch:
+    hits: list[PlaytestResponse]
+    query: str
+    processing_time_ms: int
+    limit: int
+    offset: int
+    estimated_total_hits: int
+
+
+
 class MapModel(msgspec.Struct):
     code: str
     name: str
