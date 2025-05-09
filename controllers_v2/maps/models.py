@@ -56,6 +56,7 @@ class PlaytestResponse(msgspec.Struct):
     checkpoints: int
     difficulty_value: float
     difficulty: DIFFICULTIES_T
+    initial_difficulty: DIFFICULTIES_T
     mechanics: list[MECHANICS_T]
     restrictions: list[RESTRICTIONS_T]
     creator_ids: list[int]
