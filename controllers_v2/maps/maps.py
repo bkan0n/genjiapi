@@ -237,8 +237,6 @@ class MapsControllerV2(BaseControllerV2):
             self.map_participation_filter(participation_filter),
             page_size * (page_number - 1),
             page_size,
-            page_size * (page_number - 1),
-            page_size,
         )
         if not rows:
             return []
