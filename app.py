@@ -102,7 +102,10 @@ async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
 
 UMAMI_API_ENDPOINT = os.getenv("UMAMI_API_ENDPOINT")
 UMAMI_SITE_ID = os.getenv("UMAMI_SITE_ID")
-
+logging.basicConfig(
+    level=logging.DEBUG,  # or logging.ERROR to show only errors
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
 app = Litestar(
     plugins=[
         asyncpg,
@@ -151,6 +154,6 @@ app = Litestar(
     ],
 )
 
-# for logger_name in logging.Logger.manager.loggerDict:
-#     if "api" in logger_name or "httpx" in logger_name:
-#         logging.getLogger(logger_name).setLevel(logging.WARNING)
+for logger_name in logging.Logger.manager.loggerDict:
+    if "api" in logger_name or "httpx" in logger_name:
+        logging.getLogger(logger_name).setLevel(logging.WARNING)
