@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Annotated, Literal
+from typing import TYPE_CHECKING, Annotated, Literal, Optional
 
 from litestar import Response, get, post
 from litestar.params import Parameter
@@ -168,6 +168,15 @@ class MapsControllerV2(BaseControllerV2):
         )
         return Response(content="Created playtest metadata", status_code=201)
 
+    @staticmethod
+    def map_participation_filter(value: str | None) -> Optional[bool]:
+        if value == "participated":
+            return True
+        elif value == "not_participated":
+            return False
+        else:
+            return None
+
     @get(path="/playtests")
     async def get_playtests(
         self,
@@ -225,7 +234,9 @@ class MapsControllerV2(BaseControllerV2):
             restrictions,
             difficulty,
             user_id,
-            participation_filter,
+            self.map_participation_filter(participation_filter),
+            page_size * (page_number - 1),
+            page_size,
             page_size * (page_number - 1),
             page_size,
         )
