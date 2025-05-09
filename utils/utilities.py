@@ -13,6 +13,25 @@ DIFFICULTIES_T = Literal[
     "Hell",
 ]
 
+DIFFICULTIES_EXT_T = Literal[
+    "Easy -",
+    "Easy",
+    "Easy +",
+    "Medium -",
+    "Medium",
+    "Medium +",
+    "Hard -",
+    "Hard",
+    "Hard +",
+    "Very Hard -",
+    "Very Hard",
+    "Very Hard +",
+    "Extreme -",
+    "Extreme",
+    "Extreme +",
+    "Hell",
+]
+
 MECHANICS_T = Literal[
     "Edge Climb",
     "Bhop",

@@ -9,7 +9,7 @@ from utils.utilities import (
     MAP_NAME_T,
     MAP_TYPE_T,
     MECHANICS_T,
-    RESTRICTIONS_T, sanitize_string,
+    RESTRICTIONS_T, sanitize_string, DIFFICULTIES_EXT_T,
 )
 
 STATUS = Literal["official", "playtest"]
@@ -35,7 +35,7 @@ class MapSearchResponseV2(msgspec.Struct):
     name: MAP_NAME_T
     checkpoints: int
     difficulty_value: float
-    difficulty: DIFFICULTIES_T
+    difficulty: DIFFICULTIES_EXT_T
     mechanics: list[MECHANICS_T]
     restrictions: list[RESTRICTIONS_T]
     creator_ids: list[int]
@@ -55,8 +55,8 @@ class PlaytestResponse(msgspec.Struct):
     name: MAP_NAME_T
     checkpoints: int
     difficulty_value: float
-    difficulty: DIFFICULTIES_T
-    initial_difficulty: DIFFICULTIES_T
+    difficulty: DIFFICULTIES_EXT_T
+    initial_difficulty: DIFFICULTIES_EXT_T
     mechanics: list[MECHANICS_T]
     restrictions: list[RESTRICTIONS_T]
     creator_ids: list[int]
