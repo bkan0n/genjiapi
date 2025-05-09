@@ -12,6 +12,7 @@ from aio_pika.pool import Pool
 from litestar import Litestar, MediaType, Request, Response
 from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.exceptions import HTTPException
+from litestar.logging import LoggingConfig
 from litestar.middleware import DefineMiddleware
 from litestar.openapi import OpenAPIConfig
 from litestar.static_files import create_static_files_router
@@ -102,14 +103,12 @@ async def rabbitmq_connection(app: Litestar) -> AsyncGenerator[None, None]:
 
 UMAMI_API_ENDPOINT = os.getenv("UMAMI_API_ENDPOINT")
 UMAMI_SITE_ID = os.getenv("UMAMI_SITE_ID")
-logging.basicConfig(
-    level=logging.DEBUG,  # or logging.ERROR to show only errors
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-)
+
 app = Litestar(
     plugins=[
         asyncpg,
     ],
+    logging_config=LoggingConfig(),
     route_handlers=[
         RootRouter(
             path="/v1",
