@@ -49,7 +49,7 @@ class MapSearchResponseV2(msgspec.Struct):
 class PlaytestResponse(msgspec.Struct):
     id: int
     code: str
-    category: list[MAP_TYPE_T]
+    category: list[MAP_TYPE_T | None]
     status: STATUS
     archived: bool
     name: MAP_NAME_T
@@ -57,14 +57,14 @@ class PlaytestResponse(msgspec.Struct):
     difficulty_value: float | None
     difficulty: DIFFICULTIES_EXT_T | None
     initial_difficulty: DIFFICULTIES_EXT_T | None
-    mechanics: list[MECHANICS_T]
-    restrictions: list[RESTRICTIONS_T]
+    mechanics: list[MECHANICS_T | None]
+    restrictions: list[RESTRICTIONS_T | None]
     creator_ids: list[int]
     creator_names: list[str]
     creator_discord_tags: list[str]
     # quality: Optional[float]
     description: Optional[str]
-    guides: Optional[list[str]]
+    guides: Optional[list[str | None]]
     # medals: Optional[Medals]
     playtest: Optional[PlaytestData]
     has_participated: Optional[bool] = False
