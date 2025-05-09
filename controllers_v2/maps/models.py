@@ -49,7 +49,7 @@ class MapSearchResponseV2(msgspec.Struct):
 class PlaytestResponse(msgspec.Struct):
     id: int
     code: str
-    category: list[MAP_TYPE_T | None]
+    category: list[MAP_TYPE_T]
     status: STATUS
     archived: bool
     name: MAP_NAME_T
