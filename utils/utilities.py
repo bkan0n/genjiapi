@@ -38,7 +38,7 @@ MECHANICS_T = Literal[
 RESTRICTIONS_T = Literal[
     "Dash Start",
     "Triple Jump",
-    "Emote Save Bhop ",
+    "Emote Save Bhop",
     "Death Bhop",
     "Multi Climb",
     "Standing Create Bhop",
