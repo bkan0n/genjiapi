@@ -21,10 +21,10 @@ class Medals(msgspec.Struct):
 
 
 class PlaytestData(msgspec.Struct):
-    total_votes: int
-    required_votes: int
-    thread_id: int
-    participants: list[int]
+    total_votes: int | None = None
+    required_votes: int | None = None
+    thread_id: int | None = None
+    participants: list[int] | None = None
 
 
 class MapSearchResponseV2(msgspec.Struct):
