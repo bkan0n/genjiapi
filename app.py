@@ -41,16 +41,16 @@ if TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 
-# sentry_dsn = os.getenv("SENTRY_DSN")
-# sentry_sdk.init(
-#     dsn=sentry_dsn,
-#     enable_tracing=True,
-#     traces_sample_rate=1.0,
-#     profiles_sample_rate=1.0,
-#     integrations=[
-#         LitestarIntegration(),
-#     ],
-# )
+sentry_dsn = os.getenv("SENTRY_DSN")
+sentry_sdk.init(
+    dsn=sentry_dsn,
+    enable_tracing=True,
+    traces_sample_rate=1.0,
+    profiles_sample_rate=1.0,
+    integrations=[
+        LitestarIntegration(),
+    ],
+)
 
 
 def plain_text_exception_handler(_: Request, exc: Exception) -> Response:
@@ -151,6 +151,6 @@ app = Litestar(
     ],
 )
 
-for logger_name in logging.Logger.manager.loggerDict:
-    if "api" in logger_name or "httpx" in logger_name:
-        logging.getLogger(logger_name).setLevel(logging.WARNING)
+# for logger_name in logging.Logger.manager.loggerDict:
+#     if "api" in logger_name or "httpx" in logger_name:
+#         logging.getLogger(logger_name).setLevel(logging.WARNING)
