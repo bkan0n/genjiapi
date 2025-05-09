@@ -181,6 +181,7 @@ class MapsControllerV2(BaseControllerV2):
     async def get_playtests(
         self,
         db_connection: Connection,
+        user_id: int,
         code: Annotated[
             str,
             Parameter(
@@ -194,7 +195,6 @@ class MapsControllerV2(BaseControllerV2):
         mechanics: list[MECHANICS_T] | None = None,
         restrictions: list[RESTRICTIONS_T] | None = None,
         difficulty: DIFFICULTIES_T | None = None,
-        user_id: int | None = None,
         participation_filter: Literal["all", "participated", "not_participated"] = "all",
         page_size: Literal[10, 20, 25, 50] = 10,
         page_number: Annotated[int, Parameter(ge=1)] = 1,
@@ -202,11 +202,7 @@ class MapsControllerV2(BaseControllerV2):
         """Get all maps that are currently in playtest."""
         query = """
             SELECT *,
-                CASE
-                    WHEN $8::bigint IS NOT NULL AND playtest->'has_participated' @> to_jsonb(ARRAY[$8::bigint])
-                    THEN true
-                    ELSE false
-                END AS has_participated
+                playtest->'participants' @> to_jsonb(ARRAY[$8::bigint]) AS has_participated
             FROM playtest_search_v2
             WHERE ($1::text IS NULL OR code = $1)
               AND ($2::text[] IS NULL OR category <@ $2)
@@ -217,8 +213,8 @@ class MapsControllerV2(BaseControllerV2):
               AND ($7::text IS NULL OR difficulty = $7)
               AND (
                   $9::boolean IS NULL OR
-                  ($9 = true  AND playtest->'has_participated' @> to_jsonb(ARRAY[$8::bigint])) OR
-                  ($9 = false AND NOT playtest->'has_participated' @> to_jsonb(ARRAY[$8::bigint]))
+                  ($9 = true  AND playtest->'participants' @> to_jsonb(ARRAY[$8::bigint])) OR
+                  ($9 = false AND NOT playtest->'participants' @> to_jsonb(ARRAY[$8::bigint]))
               )
               AND status = 'playtest' AND NOT archived
             OFFSET $10
