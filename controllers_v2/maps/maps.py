@@ -267,7 +267,7 @@ class MapsControllerV2(BaseControllerV2):
         """Get all maps that are currently in playtest."""
         try:
             async with AsyncClient() as client:
-                response = await client.get("http://meilisearch:7700/indexes/playtest_search_v2/search", params={'q': q})
+                response = await client.get("http://meilisearch:7700/indexes/playtest_search/search", params={'q': q})
                 response.raise_for_status()
                 return msgspec.json.decode(response.json(), type=Meilisearch)
         except RequestError as exc:
