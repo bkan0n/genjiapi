@@ -78,10 +78,10 @@ class PlaytestResponse(msgspec.Struct):
 class Meilisearch(msgspec.Struct):
     hits: list[PlaytestResponse]
     query: str | None
-    processing_time_ms: int | None
-    limit: int | None
-    offset: int | None
-    estimated_total_hits: int | None
+    processing_time_ms: int | None = None
+    limit: int | None = None
+    offset: int | None = None
+    estimated_total_hits: int | None = None
 
 
 
