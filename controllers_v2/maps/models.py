@@ -67,7 +67,7 @@ class PlaytestResponse(msgspec.Struct):
     guides: Optional[list[str]]
     # medals: Optional[Medals]
     playtest: Optional[PlaytestData]
-    has_participated: bool
+    has_participated: Optional[bool] = False
     map_banner_url: str = ""
 
     def __post_init__(self) -> None:

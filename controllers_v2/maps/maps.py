@@ -271,7 +271,6 @@ class MapsControllerV2(BaseControllerV2):
                 response = await client.get("http://meilisearch:7700/indexes/playtest_search/search",
                                             headers={"Content-Type": "application/json"}, params={'q': q})
                 response.raise_for_status()
-                return response.json()
                 return msgspec.json.decode(response.content, type=Meilisearch)
         except RequestError as exc:
             return Response({"error": f"Could not connect to Meilisearch: {exc}"}, status_code=502)
