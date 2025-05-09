@@ -9,7 +9,7 @@ from utils.utilities import (
     MAP_NAME_T,
     MAP_TYPE_T,
     MECHANICS_T,
-    RESTRICTIONS_T,
+    RESTRICTIONS_T, sanitize_string,
 )
 
 STATUS = Literal["official", "playtest"]
@@ -68,6 +68,12 @@ class PlaytestResponse(msgspec.Struct):
     # medals: Optional[Medals]
     playtest: Optional[PlaytestData]
     has_participated: bool
+    map_banner_url: str = ""
+
+    def __post_init__(self) -> None:
+        """Add map banner url to response dynamically."""
+        sanitized_name = sanitize_string(self.name)
+        self.map_banner_url = f"assets/images/map_banners/{sanitized_name}.png"
 
 class MapModel(msgspec.Struct):
     code: str
