@@ -35,6 +35,7 @@ DIFFICULTIES_EXT_T = Literal[
 MECHANICS_T = Literal[
     "Edge Climb",
     "Bhop",
+    "Save Double",
     "Crouch Edge",
     "Save Climb",
     "Bhop First",
@@ -57,6 +58,7 @@ MECHANICS_T = Literal[
 RESTRICTIONS_T = Literal[
     "Dash Start",
     "Triple Jump",
+    "Double Jump",
     "Emote Save Bhop",
     "Death Bhop",
     "Multi Climb",
