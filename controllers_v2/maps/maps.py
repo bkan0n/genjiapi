@@ -195,7 +195,7 @@ class MapsControllerV2(BaseControllerV2):
             ),
         ]
         | None = None,
-        category: list[MAP_TYPE_T] | None = None,
+        category: MAP_TYPE_T | None = None,
         name: MAP_NAME_T | None = None,
         creator_id: int | None = None,
         mechanics: list[MECHANICS_T] | None = None,
@@ -212,7 +212,7 @@ class MapsControllerV2(BaseControllerV2):
                 count(*) OVER () AS total_results
             FROM playtest_search_v2
             WHERE ($1::text IS NULL OR code = $1)
-              AND ($2::text[] IS NULL OR category <@ $2)
+              AND ($2::text IS NULL OR $2 = ANY(category) )
               AND ($3::text IS NULL OR name = $3)
               AND ($4::bigint[] IS NULL OR creator_ids <@ $4)
               AND ($5::text[] IS NULL OR mechanics <@ $5)
