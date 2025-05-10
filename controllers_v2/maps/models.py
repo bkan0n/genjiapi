@@ -9,7 +9,7 @@ from utils.utilities import (
     MAP_NAME_T,
     MAP_TYPE_T,
     MECHANICS_T,
-    RESTRICTIONS_T, sanitize_string, DIFFICULTIES_EXT_T, sanitize_string_no_spaces,
+    RESTRICTIONS_T, sanitize_string, DIFFICULTIES_EXT_T, sanitize_string_no_spaces, ALL_DIFFICULTY_RANGES_MIDPOINT,
 )
 
 STATUS = Literal["official", "playtest"]
@@ -107,6 +107,14 @@ class MapModel(msgspec.Struct):
     map_id: int = 0
     creator_names: list[str] = []
     creator_discord_tags: list[str] = []
+
+    def difficulty_value(self) -> float:
+        return ALL_DIFFICULTY_RANGES_MIDPOINT[self.difficulty]
+
+    def __post_init__(self) -> None:
+        """Add map banner url to response dynamically."""
+        sanitized_name = sanitize_string_no_spaces(self.name)
+        self.guide_url = f"https://bkan0n.com/assets/images/map_guides/{sanitized_name}.png"
     
     
 class PlaytestMetadata(msgspec.Struct):

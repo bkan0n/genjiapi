@@ -42,7 +42,7 @@ class MapsControllerV2(BaseControllerV2):
             data.category,
             data.description,
             data.checkpoints,
-            data.difficulty,
+            data.difficulty_value(),
         )
 
     @staticmethod
@@ -136,20 +136,21 @@ class MapsControllerV2(BaseControllerV2):
         data: MapModel,
     ) -> Response:
 
-        map_id = await self._insert_core_maps(db_connection, data)
-        data.map_id = map_id
-        await self._insert_maps_creators(db_connection, data)
-        await self._insert_mechanics(db_connection, data)
-        await self._insert_restrictions(db_connection, data)
-        await self._insert_guide(db_connection, data)
-        await self._insert_medals(db_connection, data)
-        await self._fetch_creator_names(db_connection, data)
-        await rabbit.publish(
-            state,
-            "playtest",
-            data,
-        )
-        return Response(content="Created playtest", status_code=201)
+        async with db_connection.transaction():
+            map_id = await self._insert_core_maps(db_connection, data)
+            data.map_id = map_id
+            await self._insert_maps_creators(db_connection, data)
+            await self._insert_mechanics(db_connection, data)
+            await self._insert_restrictions(db_connection, data)
+            await self._insert_guide(db_connection, data)
+            await self._insert_medals(db_connection, data)
+            await self._fetch_creator_names(db_connection, data)
+            await rabbit.publish(
+                state,
+                "playtest",
+                data,
+            )
+            return Response(content="Created playtest", status_code=201)
 
     @post(path="/playtests/metadata")
     async def create_playtest_metadata(
