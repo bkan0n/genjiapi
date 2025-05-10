@@ -204,7 +204,8 @@ class MapsControllerV2(BaseControllerV2):
         """Get all maps that are currently in playtest."""
         query = """
             SELECT *,
-                playtest->'participants' @> to_jsonb(ARRAY[$8::bigint]) AS has_participated
+                playtest->'participants' @> to_jsonb(ARRAY[$8::bigint]) AS has_participated,
+                count(*) OVER () AS total_results
             FROM playtest_search_v2
             WHERE ($1::text IS NULL OR code = $1)
               AND ($2::text[] IS NULL OR category <@ $2)

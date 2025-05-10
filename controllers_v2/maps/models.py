@@ -54,20 +54,21 @@ class PlaytestResponse(msgspec.Struct):
     archived: bool
     name: MAP_NAME_T
     checkpoints: int
-    difficulty_value: float | None
-    difficulty: DIFFICULTIES_EXT_T | None
-    initial_difficulty: DIFFICULTIES_EXT_T | None
-    mechanics: list[MECHANICS_T | None]
-    restrictions: list[RESTRICTIONS_T | None]
+    difficulty_value: float
+    difficulty: DIFFICULTIES_EXT_T
+    initial_difficulty: DIFFICULTIES_EXT_T
+    mechanics: list[MECHANICS_T]
+    restrictions: list[RESTRICTIONS_T]
     creator_ids: list[int]
     creator_names: list[str]
     creator_discord_tags: list[str]
-    # quality: Optional[float]
     description: Optional[str]
-    guides: Optional[list[str | None]]
+    guides: Optional[list[str]]
+    # quality: Optional[float]
     # medals: Optional[Medals]
     playtest: Optional[PlaytestData]
-    has_participated: Optional[bool] = False
+    has_participated: Optional[bool]
+    total_results: int
     map_banner_url: str = ""
 
     def __post_init__(self) -> None:
