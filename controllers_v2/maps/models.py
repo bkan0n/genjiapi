@@ -9,7 +9,7 @@ from utils.utilities import (
     MAP_NAME_T,
     MAP_TYPE_T,
     MECHANICS_T,
-    RESTRICTIONS_T, sanitize_string, DIFFICULTIES_EXT_T,
+    RESTRICTIONS_T, sanitize_string, DIFFICULTIES_EXT_T, sanitize_string_no_spaces,
 )
 
 STATUS = Literal["official", "playtest"]
@@ -73,7 +73,7 @@ class PlaytestResponse(msgspec.Struct):
 
     def __post_init__(self) -> None:
         """Add map banner url to response dynamically."""
-        sanitized_name = sanitize_string(self.name)
+        sanitized_name = sanitize_string_no_spaces(self.name)
         self.map_banner_url = f"https://bkan0n.com/assets/images/map_banners/{sanitized_name}.png"
 
 class Meilisearch(msgspec.Struct):
