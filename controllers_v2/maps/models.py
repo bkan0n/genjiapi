@@ -21,10 +21,10 @@ class Medals(msgspec.Struct):
 
 
 class PlaytestData(msgspec.Struct):
-    total_votes: int | None = None
-    required_votes: int | None = None
-    thread_id: int | None = None
-    participants: list[int] | None = None
+    total_votes: int
+    required_votes: int
+    thread_id: int
+    participants: list[int]
 
 
 class MapSearchResponseV2(msgspec.Struct):
@@ -66,7 +66,10 @@ class PlaytestResponse(msgspec.Struct):
     guides: Optional[list[str]]
     # quality: Optional[float]
     # medals: Optional[Medals]
-    playtest: Optional[PlaytestData]
+    total_votes: int
+    required_votes: int
+    thread_id: int
+    participants: list[int]
     has_participated: Optional[bool]
     total_results: int
     map_banner_url: str = ""

@@ -204,7 +204,7 @@ class MapsControllerV2(BaseControllerV2):
         """Get all maps that are currently in playtest."""
         query = """
             SELECT *,
-                playtest->'participants' @> to_jsonb(ARRAY[$8::bigint]) AS has_participated,
+                $8 = ANY(participants) AS has_participated,
                 count(*) OVER () AS total_results
             FROM playtest_search_v2
             WHERE ($1::text IS NULL OR code = $1)
@@ -216,8 +216,8 @@ class MapsControllerV2(BaseControllerV2):
               AND ($7::text IS NULL OR difficulty = $7)
               AND (
                   $9::boolean IS NULL OR
-                  ($9 = true  AND playtest->'participants' @> to_jsonb(ARRAY[$8::bigint])) OR
-                  ($9 = false AND NOT playtest->'participants' @> to_jsonb(ARRAY[$8::bigint]))
+                  ($9 = true  AND $8 = ANY(participants)) OR
+                  ($9 = false AND NOT $8 = ANY(participants))
               )
               AND status = 'playtest' AND NOT archived
             OFFSET $10
