@@ -235,4 +235,4 @@ def sanitize_string_no_spaces(string: str | None) -> str:
     if not string:
         return ""
     string = re.sub(r"[^a-zA-Z0-9]", "", string)
-    return string.strip().replace(" ", "")
+    return string.lower().strip().replace(" ", "")
