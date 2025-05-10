@@ -48,7 +48,7 @@ class MapsControllerV2(BaseControllerV2):
     @staticmethod
     async def _insert_maps_creators(db_conn: Connection, data: MapModel) -> None:
         query = """
-            INSERT INTO core.creators (map_id, creator_id, is_primary)
+            INSERT INTO maps.creators (map_id, user_id, is_primary)
             VALUES ($1, $2, $3)
         """
         args = [(data.map_id, _id, i == 0) for i, _id in enumerate(data.creator_ids)]
