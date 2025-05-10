@@ -95,7 +95,7 @@ class MapModel(msgspec.Struct):
     checkpoints: int
     creator_ids: list[int]
     description: str = ""
-    guide_url: str = ""
+    guide_urls: list[str] = []
     gold: float = 0
     silver: float = 0
     bronze: float = 0
@@ -114,9 +114,8 @@ class MapModel(msgspec.Struct):
     def __post_init__(self) -> None:
         """Add map banner url to response dynamically."""
         sanitized_name = sanitize_string_no_spaces(self.name)
-        self.guide_url = f"https://bkan0n.com/assets/images/map_guides/{sanitized_name}.png"
-    
-    
+        self.map_banner_url = f"https://bkan0n.com/assets/images/map_banner/{sanitized_name}.png"
+
 class PlaytestMetadata(msgspec.Struct):
     thread_id: int
     map_id: int

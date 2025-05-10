@@ -82,7 +82,7 @@ class MapsControllerV2(BaseControllerV2):
         """
         await db_conn.execute(query, data.map_id, data.restrictions)
 
-    async def _insert_guide(
+    async def _insert_guides(
         self,
         db_conn: Connection,
         data: MapModel,
@@ -91,7 +91,11 @@ class MapsControllerV2(BaseControllerV2):
             INSERT INTO maps.guides (map_id, url, user_id)
             VALUES ($1, $2, $3);
         """
-        await db_conn.execute(query, data.map_id, data.guide_url, data.creator_ids[0])
+        if not data.guide_urls:
+            return
+
+        args = [(data.map_id, g, data.creator_ids[0]) for g in data.guide_urls if g]
+        await db_conn.executemany(query, args)
 
     async def _insert_medals(
         self,
@@ -142,7 +146,7 @@ class MapsControllerV2(BaseControllerV2):
             await self._insert_maps_creators(db_connection, data)
             await self._insert_mechanics(db_connection, data)
             await self._insert_restrictions(db_connection, data)
-            await self._insert_guide(db_connection, data)
+            await self._insert_guides(db_connection, data)
             await self._insert_medals(db_connection, data)
             await self._fetch_creator_names(db_connection, data)
             await rabbit.publish(
