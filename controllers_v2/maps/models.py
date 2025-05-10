@@ -111,10 +111,9 @@ class MapModel(msgspec.Struct):
     def difficulty_value(self) -> float:
         return ALL_DIFFICULTY_RANGES_MIDPOINT[self.difficulty]
 
-    def __post_init__(self) -> None:
-        """Add map banner url to response dynamically."""
-        sanitized_name = sanitize_string_no_spaces(self.name)
-        self.map_banner_url = f"https://bkan0n.com/assets/images/map_banner/{sanitized_name}.png"
+    # def __post_init__(self) -> None:
+    #     """Add map banner url to response dynamically."""
+    #     sanitized_name = sanitize_string_no_spaces(self.name)
 
 class PlaytestMetadata(msgspec.Struct):
     thread_id: int
