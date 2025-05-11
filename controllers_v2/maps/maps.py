@@ -201,7 +201,7 @@ class MapsControllerV2(BaseControllerV2):
         creator_id: int | None = None,
         mechanics: list[MECHANICS_T] | None = None,
         restrictions: list[RESTRICTIONS_T] | None = None,
-        difficulty: DIFFICULTIES_EXT_T | None = None,
+        difficulty: DIFFICULTIES_T | None = None,
         participation_filter: Literal["all", "participated", "not_participated"] = "all",
         page_size: Literal[10, 20, 25, 50] = 10,
         page_number: Annotated[int, Parameter(ge=1)] = 1,
@@ -218,7 +218,7 @@ class MapsControllerV2(BaseControllerV2):
               AND ($4::bigint IS NULL OR $4 = ANY(creator_ids))
               AND ($5::text[] IS NULL OR mechanics @> $5)
               AND ($6::text[] IS NULL OR restrictions @> $6)
-              AND ($7::text IS NULL OR difficulty = $7)
+              AND ($7::text IS NULL OR difficulty IN ($7, $7 || ' +', $7 || ' -'))
               AND (
                   $9::boolean IS NULL OR
                   ($9 = true  AND $8 = ANY(participants)) OR
