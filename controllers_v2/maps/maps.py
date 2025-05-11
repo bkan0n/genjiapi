@@ -3,12 +3,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Annotated, Literal, Optional
 
 import msgspec.json
-from httpx import AsyncClient, RequestError, HTTPStatusError
+from httpx import AsyncClient, HTTPStatusError, RequestError
 from litestar import Response, get, post
 from litestar.params import Parameter
 
 from utils import rabbit
 from utils.utilities import (
+    DIFFICULTIES_EXT_T,  # noqa: TC001
     DIFFICULTIES_T,  # noqa: TC001
     MAP_NAME_T,  # noqa: TC001
     MAP_TYPE_T,  # noqa: TC001
@@ -17,7 +18,7 @@ from utils.utilities import (
 )
 
 from ..root import BaseControllerV2
-from .models import MapModel, MapSearchResponseV2, PlaytestMetadata, PlaytestResponse, Meilisearch
+from .models import MapModel, MapSearchResponseV2, Meilisearch, PlaytestMetadata, PlaytestResponse
 
 if TYPE_CHECKING:
     from asyncpg import Connection
@@ -200,7 +201,7 @@ class MapsControllerV2(BaseControllerV2):
         creator_id: int | None = None,
         mechanics: list[MECHANICS_T] | None = None,
         restrictions: list[RESTRICTIONS_T] | None = None,
-        difficulty: DIFFICULTIES_T | None = None,
+        difficulty: DIFFICULTIES_EXT_T | None = None,
         participation_filter: Literal["all", "participated", "not_participated"] = "all",
         page_size: Literal[10, 20, 25, 50] = 10,
         page_number: Annotated[int, Parameter(ge=1)] = 1,
