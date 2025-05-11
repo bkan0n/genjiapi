@@ -212,10 +212,10 @@ class MapsControllerV2(BaseControllerV2):
                 count(*) OVER () AS total_results
             FROM playtest_search_v2
             WHERE ($1::text IS NULL OR code = $1)
-              AND ($2::text IS NULL OR $2 = ANY(category) )
+              AND ($2::text IS NULL OR $2 = ANY(category))
               AND ($3::text IS NULL OR name = $3)
-              AND ($4::bigint[] IS NULL OR creator_ids @> $4)
-              AND ($5::text[] IS NULL OR mechanics @> $5::text[])
+              AND ($4::bigint[] IS NULL OR $4 = ANY(creator_ids))
+              AND ($5::text[] IS NULL OR mechanics @> $5)
               AND ($6::text[] IS NULL OR restrictions @> $6)
               AND ($7::text IS NULL OR difficulty = $7)
               AND (
