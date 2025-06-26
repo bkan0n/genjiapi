@@ -30,7 +30,7 @@ async def fetch_map_mastery(db: asyncpg.Connection, user_id: int, map_name: str 
                     COALESCE(mc.amount, 0) AS amount
                 FROM all_map_names amn
                 LEFT JOIN map_counts mc ON mc.map_name = amn.name
-                WHERE $2::text IS NULL OR amn.name = $2
+                WHERE ($2::text IS NULL OR amn.name = $2) and amn.name != 'Adlersbrunn'
                 ORDER BY amn.name;
             """
     rows = await db.fetch(query, user_id, map_name)
