@@ -110,7 +110,7 @@ class BaseMapBody(msgspec.Struct):
             query,
             self.map_name,
             [self.map_type],
-            self.map_code,
+            self.map_code.upper().replace("O", "0"),
             self.description,
             self.checkpoints,
         )
