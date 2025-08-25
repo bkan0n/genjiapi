@@ -64,6 +64,7 @@ class CompletionsController(BaseController):
             )
             SELECT
                 r.map_code,
+                r.user_id,
                 record AS time,
                 video,
                 CASE
