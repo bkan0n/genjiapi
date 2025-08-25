@@ -4737,6 +4737,9 @@
           },
           "video": {
             "type": "string"
+          },
+          "user_id": {
+            "type": "integer"
           }
         },
         "type": "object",
@@ -4748,6 +4751,7 @@
           "nickname",
           "time",
           "total_results",
+          "user_id",
           "video"
         ],
         "title": "CompletionsResponse"
