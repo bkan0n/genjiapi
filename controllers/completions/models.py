@@ -18,6 +18,7 @@ class BaseResponse(msgspec.Struct):
 class CompletionsResponse(BaseResponse):
     video: str
     time: str  # Override the type of time to str
+    user_id: int
 
 
 class MapRecordProgressionResponse(msgspec.Struct):
