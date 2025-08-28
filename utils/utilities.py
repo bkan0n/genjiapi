@@ -33,6 +33,7 @@ MECHANICS_T = Literal[
     "Vertical Multi Climb",
     "Create Bhop",
     "Standing Create Bhop",
+    "Save Double",
 ]
 
 RESTRICTIONS_T = Literal[
@@ -44,6 +45,7 @@ RESTRICTIONS_T = Literal[
     "Standing Create Bhop",
     "Create Bhop",
     "Wall Climb",
+    "Save Double",
 ]
 
 MAP_TYPE_T = Literal[
